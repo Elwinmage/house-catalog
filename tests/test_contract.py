@@ -15,11 +15,16 @@ from pathlib import Path
 import pytest
 from conftest import REPO
 
+import house_catalog_sections
 import make_release
 from catalog import LAYOUT, SECTIONS, collect, entry_id, read_json
 from house_catalog_rules import DESCRIPTORS, FOLDERS
 
 # catalog_pack.py
+NAME_RE = re.compile(r"^[a-z]+(?:_[a-z]+)*$")  # sections, kinds, folders
+REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
+#: Kinds of the sections the client publishes itself: taken
+REEF_KINDS = {"tasks", "category", "item", "supplement", "parameter", "water_test"}
 ID_RE = re.compile(r"^[a-z0-9]+(?:[-_][a-z0-9]+)*$")
 FILE_RE = re.compile(r"^[A-Za-z0-9_@.-]{1,120}$")
 SHA_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -39,6 +44,32 @@ def schemas() -> dict[str, dict]:
         path.name.split(".")[0]: read_json(path)
         for path in (REPO / "schema").glob("*.schema.json")
     }
+
+
+def test_the_catalog_describes_itself_for_the_client():
+    """client/house_catalog_sections.py is what a tool gives to `register_section`."""
+    assert house_catalog_sections.REPO == "Elwinmage/house-catalog"
+    assert REPO_RE.match(house_catalog_sections.REPO)
+    assert list(house_catalog_sections.SECTIONS) == list(SECTIONS)
+    kinds = {}
+    for section, declared in house_catalog_sections.SECTIONS.items():
+        assert NAME_RE.match(section) and declared
+        assert LAYOUT[section] == tuple((f, k) for k, (f, _) in declared.items())
+        for kind, (folder, descriptor) in declared.items():
+            # names the client accepts, a kind in one section only, never a reef one
+            assert NAME_RE.match(kind) and NAME_RE.match(folder)
+            assert kind not in kinds and kind not in REEF_KINDS and kind != "schema"
+            assert FILE_RE.match(descriptor) and descriptor.endswith(".json")
+            assert DESCRIPTORS[kind] == descriptor
+            assert FOLDERS[kind] == f"{section}/{folder}"
+            kinds[kind] = section
+    assert set(kinds) == set(DESCRIPTORS)
+    # plain data: a tool without jsonschema (the house view) imports it too
+    source = (REPO / "client/house_catalog_sections.py").read_text(encoding="utf-8")
+    imports = [
+        line for line in source.splitlines() if line.startswith(("import ", "from "))
+    ]
+    assert imports == ["from __future__ import annotations"]
 
 
 def test_layout_is_the_one_of_the_client():

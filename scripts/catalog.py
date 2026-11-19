@@ -11,16 +11,22 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "client"))
+
+import house_catalog_sections
 
 # Bumped only on breaking changes: consumers skip releases they cannot read.
 SCHEMA_VERSION = 1
 
-#: section -> ((folder, kind), ...)
+#: section -> ((folder, kind), ...), from the description the tools share
+#: (client/house_catalog_sections.py)
 LAYOUT: dict[str, tuple[tuple[str, str], ...]] = {
-    "trees": (("items", "tree"),),
-    "objects": (("items", "object"),),
+    section: tuple((folder, kind) for kind, (folder, _) in kinds.items())
+    for section, kinds in house_catalog_sections.SECTIONS.items()
 }
 SECTIONS = tuple(LAYOUT)
 

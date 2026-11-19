@@ -37,7 +37,8 @@ def test_first_entries_are_complete():
             for file, side in (("image.webp", 512), ("thumb.webp", 128)):
                 with Image.open(entry.files[file]) as picture:
                     assert picture.format == "WEBP" and picture.size == (side, side)
-                    assert picture.convert("RGBA").getpixel((0, 0))[3] == 0, name
+                    corner = picture.convert("RGBA").getpixel((0, 0))
+                    assert isinstance(corner, tuple) and corner[3] == 0, name
 
 
 def test_first_trees_show_their_four_seasons():

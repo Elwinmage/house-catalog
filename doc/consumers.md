@@ -57,50 +57,69 @@ the checks of this repository apply too:
   editor turns into a form without knowing the catalog. `tests/test_contract.py`
   keeps it that way.
 
+## Declaring the sections to the catalog client
+
+The catalog client (`catalog_pack.py`, `catalog_runtime.py`, from
+reeftech-catalog) only knows the sections of its own repository. This catalog
+describes itself in [`client/house_catalog_sections.py`](../client/house_catalog_sections.py)
+(its repository, its sections, the folder and the descriptor of each kind of
+entry: plain data, no dependency), which `scripts/sync_client.py` copies into
+the tools using it. Each of them declares the sections to its copy of the
+client when its package is imported:
+
+```python
+from . import house_catalog_sections as house
+from .catalog_pack import register_section
+
+for section, kinds in house.SECTIONS.items():
+    register_section(section, kinds, house.REPO)
+```
+
+From then on the sections are downloaded from this repository, checked and
+merged like the ones of reeftech-catalog. A new section here (sprinklers, for
+instance) is a change of that file and of the rules, with no change in
+reeftech-catalog.
+
 ## In the catalog editor
 
 The editor builds its forms from `schema.zip` and checks drafts with the rules
-of the catalog, so supporting these sections needs no knowledge of trees or
-objects, only their declaration. The lists below are the whole wiring.
-
-In the catalog client (`reeftech-catalog/client/catalog_pack.py`, then
-`sync_client.py`):
-
-```python
-KIND_LAYOUT |= {"tree": ("items", "tree.json"), "object": ("items", "object.json")}
-SECTION_KINDS |= {"trees": frozenset({"tree"}), "objects": frozenset({"object"})}
-```
-
-In the editor:
+of the catalog, so it needs no knowledge of trees or objects:
 
 | Where | What |
 |---|---|
-| `const.py` | `SECTION_KINDS`: `"trees": ("tree",)`, `"objects": ("object",)`; `VIEW_GROUPS`: `"tree": "items"`, `"object": "items"` |
-| `hints.py` | `ID_FROM`: `("name.en",)` for both kinds; `HAS_VISUAL`: `True` for both |
-| `source.py`, `schemas.py`, GitHub client | the repository of these two sections is `Elwinmage/house-catalog` (`async_acquire_pack(..., repo=)`, `PackClient(session, section, repo)`, `GithubClient(upstream=)`) |
-| rules | `house_catalog_rules.py`, copied by `scripts/sync_client.py` of this repository: same interface as `catalog_rules.py` (`DESCRIPTORS`, `FOLDERS`, `Context`, `validate_draft`), to use for the kinds `tree` and `object`; its `Context` takes the other `trees` and `objects` |
-| translations | names of the two catalogs (config flow) and of the two kinds (card) |
-| `forms.py` (optional) | `_WIDGETS["color"] = "color"` for a colour picker; a colour is a text field otherwise |
+| `catalogs.py` | declares the sections of `house_catalog_sections.py` to the client; the tables of the editor (kinds of a section, group in the merged view, id from the English name, picture, order in a pull request) follow from it |
+| `rules.py` | picks the rules of a kind: `house_catalog_rules.py` for the kinds of this catalog (same interface as `catalog_rules.py`), copied by `scripts/sync_client.py` |
+| card and translations | the names of the catalogs and of the kinds; a colour (`common.schema.json#/$defs/color`) is a colour picker |
 
-`scripts/sync_client.py --check` fails when the copy of the rules in the
-editor is out of date.
+A pull request of the editor goes to the repository of its entry
+(`repo_of(section)`); proposing entries of both catalogs at once opens one pull
+request per repository. `scripts/sync_client.py --check` fails when a copy in
+the editor is out of date.
 
 ## In the house_view integration
 
-The integration reads the sections with the catalog client
-(`catalog_pack.py`, `catalog_runtime.py`), with the repository given:
+The integration declares the sections as above (in its `catalog.py`), then
+reads them with the catalog client (`catalog_pack.py`, `catalog_runtime.py`,
+copied by `sync_client.py` of reeftech-catalog):
 
 ```python
-REPO = "Elwinmage/house-catalog"
-TREES = CatalogSpec(DOMAIN, "trees", "Trees", device_title="House view catalog", repo=REPO)
-OBJECTS = CatalogSpec(DOMAIN, "objects", "Objects", repo=REPO, by_section=True)
+TREES = CatalogSpec(DOMAIN, "trees", "Trees", device_title="House view catalog")
+OBJECTS = CatalogSpec(DOMAIN, "objects", "Objects", by_section=True)
 ```
 
 (one `CatalogSpec` per section, the second one with `by_section=True`: see
 "Several sections" in `doc/consumers.md` of reeftech-catalog).
 
+`scripts/sync_client.py` of this repository writes `house_catalog_sections.py`
+and the built-in snapshots the integration ships, used before the first
+download and offline:
+`catalog_builtin/` (trees) and `catalog_builtin_objects/` (objects), and its
+`--check` fails when one is out of date.
+
 The pack is shared (`<config>/reeftech_catalog/pack/<section>/`) with the
 editor, and the user layer written by the editor
 (`<config>/reeftech_catalog/user/<section>/`) is merged over it: an entry
-saved in the editor is usable at once. The card reads the merged view and
-draws the entries as [format.md](format.md) says.
+saved in the editor is usable at once. The card asks the integration
+(`house_view/catalog`, `house_view/catalog/subscribe`), never the network, and
+draws the entries as [format.md](format.md) says: `card/src/catalog-lib.js`
+reads the descriptors, `card/src/engine/catalog.js` draws them.

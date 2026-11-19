@@ -11,6 +11,7 @@ ignore = ["E501"]
 known-first-party = [
     "catalog",
     "house_catalog_rules",
+    "house_catalog_sections",
     "make_release",
     "readme_catalog",
     "render_previews",

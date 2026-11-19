@@ -14,8 +14,8 @@ The catalog follows the conventions of
 [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog): one folder
 per entry, JSON Schemas, one release per section, and the same release format,
 so that the [catalog editor](https://github.com/Elwinmage/catalog-editor) and
-the catalog client handle it like any other section. See
-[doc/consumers.md](doc/consumers.md).
+the catalog client handle its sections like any other, once declared to them.
+See [doc/consumers.md](doc/consumers.md).
 
 Entries are **data only**: no 3D model, no texture. A tree is a few numbers
 and colours, an object a list of boxes, cylinders, spheres and cones; the card
@@ -36,8 +36,11 @@ objects/
     object.json                 name, category, parts
     image.webp / thumb.webp     pictures (optional)
 scripts/                        validate.py, make_release.py, render_previews.py,
-                                readme_catalog.py, sync_client.py
-client/                         rules of the catalog, copied into the tools editing it
+                                readme_catalog.py, sync_client.py (description and
+                                rules into the editor, description and built-in
+                                snapshots into the house view)
+client/                         what the tools using the catalog get a copy of: its
+                                description (repository, sections) and its rules
 ```
 
 A folder name is the entry id. Ids are **stable**: house views refer to them,
