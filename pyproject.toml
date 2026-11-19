@@ -1,0 +1,30 @@
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+# Long strings are left to the formatter (as in the integrations)
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = [
+    "catalog",
+    "house_catalog_rules",
+    "make_release",
+    "readme_catalog",
+    "render_previews",
+    "sync_client",
+    "validate",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["scripts", "client"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.pyright]
+# scripts/ reach client/house_catalog_rules.py through sys.path
+extraPaths = ["client", "scripts"]

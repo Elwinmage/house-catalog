@@ -1,0 +1,58 @@
+{
+  "name": {
+    "en": "Yew",
+    "fr": "If",
+    "de": "Eibe",
+    "es": "Tejo",
+    "it": "Tasso",
+    "pl": "Cis",
+    "pt": "Teixo"
+  },
+  "latin": "Taxus baccata",
+  "icon": "mdi:pine-tree",
+  "keywords": [
+    "yew",
+    "if",
+    "eibe",
+    "tejo",
+    "tasso",
+    "cis",
+    "teixo",
+    "taxus"
+  ],
+  "shape": "conical",
+  "evergreen": true,
+  "height": {
+    "default": 6,
+    "min": 1.5,
+    "max": 15
+  },
+  "crown_radius": 2.2,
+  "trunk": {
+    "height": 0.4,
+    "radius": 0.25,
+    "color": "#6e4a3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#2f6336"
+    },
+    "summer": {
+      "foliage": "#1f4a2c"
+    },
+    "autumn": {
+      "foliage": "#1f4a2c",
+      "fruits": {
+        "color": "#c8242b",
+        "amount": 0.3
+      }
+    },
+    "winter": {
+      "foliage": "#1c4428",
+      "fruits": {
+        "color": "#c8242b",
+        "amount": 0.1
+      }
+    }
+  }
+}

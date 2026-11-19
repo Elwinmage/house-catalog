@@ -1,0 +1,89 @@
+{
+  "name": {
+    "en": "Chair",
+    "fr": "Chaise",
+    "de": "Stuhl",
+    "es": "Silla",
+    "it": "Sedia",
+    "pl": "Krzesło",
+    "pt": "Cadeira"
+  },
+  "category": "seating",
+  "icon": "mdi:chair-school",
+  "keywords": [
+    "chair",
+    "chaise",
+    "stuhl",
+    "silla",
+    "sedia",
+    "krzeslo",
+    "cadeira"
+  ],
+  "parts": [
+    {
+      "shape": "box",
+      "width": 0.04,
+      "height": 0.41,
+      "depth": 0.04,
+      "x": -0.19,
+      "z": 0.19,
+      "color": "#8a6a45"
+    },
+    {
+      "shape": "box",
+      "width": 0.04,
+      "height": 0.41,
+      "depth": 0.04,
+      "x": 0.19,
+      "z": 0.19,
+      "color": "#8a6a45"
+    },
+    {
+      "shape": "box",
+      "width": 0.04,
+      "height": 0.9,
+      "depth": 0.04,
+      "x": -0.19,
+      "z": -0.19,
+      "color": "#8a6a45"
+    },
+    {
+      "shape": "box",
+      "width": 0.04,
+      "height": 0.9,
+      "depth": 0.04,
+      "x": 0.19,
+      "z": -0.19,
+      "color": "#8a6a45"
+    },
+    {
+      "shape": "box",
+      "width": 0.42,
+      "height": 0.04,
+      "depth": 0.42,
+      "elevation": 0.41,
+      "color": "#b8915f",
+      "tint": true
+    },
+    {
+      "shape": "box",
+      "width": 0.34,
+      "height": 0.07,
+      "depth": 0.02,
+      "z": -0.19,
+      "elevation": 0.6,
+      "color": "#b8915f",
+      "tint": true
+    },
+    {
+      "shape": "box",
+      "width": 0.34,
+      "height": 0.07,
+      "depth": 0.02,
+      "z": -0.19,
+      "elevation": 0.78,
+      "color": "#b8915f",
+      "tint": true
+    }
+  ]
+}

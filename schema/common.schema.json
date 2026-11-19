@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/common.schema.json",
+  "title": "Shared definitions",
+  "$defs": {
+    "id": {
+      "description": "Stable identifier. Never renamed once released: house views point to it.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$",
+      "maxLength": 64
+    },
+    "i18n": {
+      "description": "Text per language (BCP-47 short tag). English is mandatory and used as fallback.",
+      "type": "object",
+      "required": ["en"],
+      "propertyNames": { "pattern": "^[a-z]{2}(-[A-Z]{2})?$" },
+      "additionalProperties": { "type": "string", "minLength": 1, "maxLength": 400 }
+    },
+    "icon": {
+      "description": "Material Design Icon shown in the lists when there is no picture.",
+      "type": "string",
+      "pattern": "^mdi:[a-z0-9-]+$"
+    },
+    "color": {
+      "description": "Colour, as #rrggbb in lower case.",
+      "type": "string",
+      "pattern": "^#[0-9a-f]{6}$"
+    },
+    "keywords": {
+      "description": "Words that name this entry in a Sweet Home 3D plan, in any language (lower case, no accent): a piece of furniture whose name holds one of them is drawn with this entry.",
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(?: [a-z0-9]+)*$", "minLength": 2, "maxLength": 40 },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "bounded_length": {
+      "description": "A length in metres: the usual one, and the bounds a user may choose within.",
+      "type": "object",
+      "required": ["default", "min", "max"],
+      "additionalProperties": false,
+      "properties": {
+        "default": { "type": "number", "exclusiveMinimum": 0, "maximum": 60 },
+        "min": { "type": "number", "exclusiveMinimum": 0, "maximum": 60 },
+        "max": { "type": "number", "exclusiveMinimum": 0, "maximum": 60 }
+      }
+    },
+    "scatter": {
+      "description": "Small coloured dots (flowers, fruits, fallen leaves) and how much of the surface they cover.",
+      "type": "object",
+      "required": ["color", "amount"],
+      "additionalProperties": false,
+      "properties": {
+        "color": { "$ref": "#/$defs/color" },
+        "amount": {
+          "description": "Share of the surface covered: just above 0 (a few) to 1 (everywhere).",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "rendering": {
+      "description": "How a tree looks during one season.",
+      "type": "object",
+      "required": ["foliage"],
+      "additionalProperties": false,
+      "properties": {
+        "foliage": {
+          "description": "Colour of the leaves or needles.",
+          "$ref": "#/$defs/color"
+        },
+        "density": {
+          "description": "Share of the full foliage: 1 fills the crown, 0 leaves bare branches.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 1
+        },
+        "flowers": {
+          "description": "Blossom on the crown.",
+          "$ref": "#/$defs/scatter"
+        },
+        "fruits": {
+          "description": "Fruits (or cones, berries) on the crown.",
+          "$ref": "#/$defs/scatter"
+        },
+        "fallen": {
+          "description": "Leaves, petals or needles on the ground under the crown.",
+          "$ref": "#/$defs/scatter"
+        }
+      }
+    },
+    "part": {
+      "description": "A solid of an object. x is the width, y the height, z the depth, in metres; the object stands on the ground, centred on its footprint, its front toward +z.",
+      "type": "object",
+      "required": ["shape", "width", "height", "depth", "color"],
+      "additionalProperties": false,
+      "properties": {
+        "shape": {
+          "description": "box, cylinder (upright, as wide and deep as given), sphere (an ellipsoid of the three sizes) or cone (upright, point up).",
+          "enum": ["box", "cylinder", "sphere", "cone"]
+        },
+        "width": { "description": "Size along x.", "type": "number", "exclusiveMinimum": 0, "maximum": 20 },
+        "height": { "description": "Size along y.", "type": "number", "exclusiveMinimum": 0, "maximum": 20 },
+        "depth": { "description": "Size along z.", "type": "number", "exclusiveMinimum": 0, "maximum": 20 },
+        "x": { "description": "Centre of the part along x.", "type": "number", "minimum": -10, "maximum": 10, "default": 0 },
+        "z": { "description": "Centre of the part along z.", "type": "number", "minimum": -10, "maximum": 10, "default": 0 },
+        "elevation": {
+          "description": "Height of the bottom of the part above the ground, before any rotation.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 20,
+          "default": 0
+        },
+        "yaw": {
+          "description": "Rotation about the vertical axis, in degrees, about the centre of the part (positive turns the front toward +x).",
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "default": 0
+        },
+        "pitch": {
+          "description": "Rotation about the width axis, in degrees (positive leans the top toward the front).",
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "default": 0
+        },
+        "roll": {
+          "description": "Rotation about the depth axis, in degrees (positive leans the top toward -x).",
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "default": 0
+        },
+        "color": { "$ref": "#/$defs/color" },
+        "tint": {
+          "description": "Painted with the colour chosen for the object when it is placed; the colour above is then its default one.",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+}

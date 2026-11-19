@@ -1,0 +1,8 @@
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+dist/
+prev/
+# Coverage reports (pre-commit hook)
+reports/

@@ -1,0 +1,151 @@
+# house-catalog
+
+Data catalog of the [house view](https://github.com/Elwinmage/ha-house-view-component)
+for Home Assistant: the trees and the objects it draws around and inside the
+house. Adding a tree species or a piece of furniture is a pull request here,
+not a new release of the integration or of the card.
+
+| Section | Content | Downloaded by | Shown by |
+|---|---|---|---|
+| `trees` | trees and shrubs: a simple shape and up to four renderings, one per season | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `objects` | furniture and outdoor objects, made of a few simple solids | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+
+The catalog follows the conventions of
+[reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog): one folder
+per entry, JSON Schemas, one release per section, and the same release format,
+so that the [catalog editor](https://github.com/Elwinmage/catalog-editor) and
+the catalog client handle it like any other section. See
+[doc/consumers.md](doc/consumers.md).
+
+Entries are **data only**: no 3D model, no texture. A tree is a few numbers
+and colours, an object a list of boxes, cylinders, spheres and cones; the card
+draws them itself, in its own style, and a whole section weighs a few
+kilobytes. See [doc/format.md](doc/format.md).
+
+## Layout
+
+```
+schema/                         JSON schemas (2020-12)
+trees/
+  items/<tree_id>/
+    tree.json                   name, shape, sizes, one rendering per season
+    image.webp                  picture (optional): the four seasons
+    thumb.webp                  small picture for lists (optional): summer
+objects/
+  items/<object_id>/
+    object.json                 name, category, parts
+    image.webp / thumb.webp     pictures (optional)
+scripts/                        validate.py, make_release.py, render_previews.py,
+                                readme_catalog.py, sync_client.py
+client/                         rules of the catalog, copied into the tools editing it
+```
+
+A folder name is the entry id. Ids are **stable**: house views refer to them,
+so an entry is never renamed, only removed.
+
+## Trees
+
+```json
+{
+  "name": { "en": "Cherry tree", "fr": "Cerisier" },
+  "latin": "Prunus avium",
+  "shape": "round",
+  "evergreen": false,
+  "height": { "default": 7, "min": 3, "max": 15 },
+  "crown_radius": 3,
+  "trunk": { "height": 2.2, "radius": 0.2, "color": "#5a3a30" },
+  "seasons": {
+    "spring": { "foliage": "#a9d47a", "density": 0.75, "flowers": { "color": "#fbf3f5", "amount": 0.85 } },
+    "summer": { "foliage": "#3f8a3a", "fruits": { "color": "#c2182b", "amount": 0.35 } },
+    "autumn": { "foliage": "#d9642b", "density": 0.75, "fallen": { "color": "#c9652e", "amount": 0.5 } },
+    "winter": { "foliage": "#6b4a3c", "density": 0 }
+  }
+}
+```
+
+- `shape`: `round` (a crown of leafy clumps: oak, birch, fruit trees, a
+  shrub) or `conical` (stacked cones: pine, fir, yew).
+- Sizes are in metres, for a tree of the default `height`; the card scales
+  the whole tree to the height chosen when it is placed, within `min` and `max`.
+- `seasons`: up to four renderings. `summer` is mandatory; a missing season is
+  drawn like summer (enough for most evergreens). Each one gives the colour of
+  the `foliage`, its `density` (1 fills the crown, 0 leaves bare branches) and
+  optional `flowers`, `fruits` and `fallen` leaves or petals, each with a
+  colour and an amount. The card blends from one season to the next.
+- `evergreen`: keeps its foliage in winter. A deciduous tree should give its
+  four seasons.
+- `keywords`: words naming the tree in a Sweet Home 3D plan, so that a plant of
+  the plan is drawn with it.
+
+## Objects
+
+```json
+{
+  "name": { "en": "Chair", "fr": "Chaise" },
+  "category": "seating",
+  "parts": [
+    { "shape": "box", "width": 0.04, "height": 0.9, "depth": 0.04, "x": -0.19, "z": -0.19, "color": "#8a6a45" },
+    { "shape": "box", "width": 0.42, "height": 0.04, "depth": 0.42, "elevation": 0.41, "color": "#b8915f", "tint": true }
+  ]
+}
+```
+
+- An object stands on the ground, **centred on its footprint**, its front
+  toward +z; x is the width, y the height, z the depth, in metres.
+- `parts`: `box`, `cylinder`, `sphere` or `cone`, each with its three sizes,
+  the position of its centre (`x`, `z`), the `elevation` of its bottom and
+  optional rotations (`yaw`, `pitch`, `roll`, in degrees).
+- `tint`: the part takes the colour chosen for the object when it is placed
+  (the colour of a piece of furniture of the plan, for instance).
+- The size of an object is the one of its parts; it is not written twice.
+
+## Pictures
+
+`scripts/render_previews.py` draws `image.webp` and `thumb.webp` from the
+descriptor, with the same reading of the format as the card: the picture of a
+tree shows its four seasons (spring, summer / autumn, winter). A photo or a
+drawing of your own may replace them.
+
+## Catalog content
+
+<!-- catalog:begin -->
+<!-- Generated by scripts/readme_catalog.py: do not edit by hand -->
+
+<details>
+<summary><b>Trees</b> (5)</summary>
+
+|  | Id | Tree | Botanical name | Shape | Foliage | Height | Seasons |
+|---|---|---|---|---|---|---|---|
+| <img src="trees/items/apricot-tree/thumb.webp" width="48" alt=""> | `apricot-tree` | Apricot tree | <i>Prunus armeniaca</i> | round | deciduous | 4.5 m (2-8) | spring, summer, autumn, winter |
+| <img src="trees/items/cherry-tree/thumb.webp" width="48" alt=""> | `cherry-tree` | Cherry tree | <i>Prunus avium</i> | round | deciduous | 7 m (3-15) | spring, summer, autumn, winter |
+| <img src="trees/items/oak/thumb.webp" width="48" alt=""> | `oak` | Oak | <i>Quercus robur</i> | round | deciduous | 9 m (4-25) | spring, summer, autumn, winter |
+| <img src="trees/items/pine/thumb.webp" width="48" alt=""> | `pine` | Pine | <i>Pinus sylvestris</i> | conical | evergreen | 10 m (3-25) | spring, summer, autumn, winter |
+| <img src="trees/items/yew/thumb.webp" width="48" alt=""> | `yew` | Yew | <i>Taxus baccata</i> | conical | evergreen | 6 m (1.5-15) | spring, summer, autumn, winter |
+
+</details>
+
+<details>
+<summary><b>Objects</b> (1)</summary>
+
+|  | Id | Object | Category | Width x depth x height | Parts |
+|---|---|---|---|---|---|
+| <img src="objects/items/chair/thumb.webp" width="48" alt=""> | `chair` | Chair | seating | 0.42 x 0.42 x 0.9 m | 7 |
+
+</details>
+
+<!-- catalog:end -->
+
+## Development
+
+```
+pip install -r requirements.txt
+pre-commit install                       # same checks as the CI, before each commit
+python scripts/validate.py               # schemas and rules
+python scripts/render_previews.py        # pictures of the entries that have none
+pytest --cov=scripts --cov=client --cov-fail-under=100
+```
+
+## License
+
+Catalog data and pictures: CC BY 4.0. Scripts and schemas: MIT. See
+[LICENSE.md](LICENSE.md).

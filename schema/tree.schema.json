@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/tree.schema.json",
+  "title": "Tree (trees/items/<id>/tree.json)",
+  "description": "A tree or a shrub as the house view draws it: a simple shape and up to four renderings, one per season.",
+  "type": "object",
+  "required": ["name", "shape", "evergreen", "height", "crown_radius", "trunk", "seasons"],
+  "additionalProperties": false,
+  "properties": {
+    "name": { "$ref": "common.schema.json#/$defs/i18n" },
+    "latin": {
+      "description": "Botanical name, to tell two species apart (Quercus robur). Unique in the catalog.",
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "icon": { "$ref": "common.schema.json#/$defs/icon" },
+    "keywords": { "$ref": "common.schema.json#/$defs/keywords" },
+    "shape": {
+      "description": "round: a crown of leafy blobs (oak, birch, cherry, a shrub); conical: stacked cones (pine, fir, yew).",
+      "enum": ["round", "conical"]
+    },
+    "evergreen": {
+      "description": "Keeps its foliage in winter (snow settles on it). A deciduous tree should give its four seasons.",
+      "type": "boolean"
+    },
+    "height": {
+      "description": "Height of the top of the tree, in metres: the usual one in a garden, and the bounds offered when it is placed.",
+      "$ref": "common.schema.json#/$defs/bounded_length"
+    },
+    "crown_radius": {
+      "description": "Widest radius of the crown, in metres, for a tree of the default height.",
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 20
+    },
+    "trunk": {
+      "description": "The trunk, for a tree of the default height.",
+      "type": "object",
+      "required": ["height", "radius", "color"],
+      "additionalProperties": false,
+      "properties": {
+        "height": {
+          "description": "Height of the bare trunk, in metres: the crown starts there (0: branches from the ground).",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "radius": {
+          "description": "Radius of the trunk at the ground, in metres.",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 3
+        },
+        "color": { "$ref": "common.schema.json#/$defs/color" }
+      }
+    },
+    "seasons": {
+      "description": "One rendering per season. Summer is mandatory; a missing season is drawn like summer.",
+      "type": "object",
+      "required": ["summer"],
+      "additionalProperties": false,
+      "properties": {
+        "spring": { "$ref": "common.schema.json#/$defs/rendering" },
+        "summer": { "$ref": "common.schema.json#/$defs/rendering" },
+        "autumn": { "$ref": "common.schema.json#/$defs/rendering" },
+        "winter": { "$ref": "common.schema.json#/$defs/rendering" }
+      }
+    }
+  }
+}

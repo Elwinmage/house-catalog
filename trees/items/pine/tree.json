@@ -1,0 +1,65 @@
+{
+  "name": {
+    "en": "Pine",
+    "fr": "Pin",
+    "de": "Kiefer",
+    "es": "Pino",
+    "it": "Pino",
+    "pl": "Sosna",
+    "pt": "Pinheiro"
+  },
+  "latin": "Pinus sylvestris",
+  "icon": "mdi:pine-tree",
+  "keywords": [
+    "pine",
+    "pin",
+    "kiefer",
+    "pino",
+    "sosna",
+    "pinheiro",
+    "pinus"
+  ],
+  "shape": "conical",
+  "evergreen": true,
+  "height": {
+    "default": 10,
+    "min": 3,
+    "max": 25
+  },
+  "crown_radius": 2.4,
+  "trunk": {
+    "height": 3,
+    "radius": 0.22,
+    "color": "#8a5a3c"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7d4c",
+      "flowers": {
+        "color": "#d9c25a",
+        "amount": 0.12
+      }
+    },
+    "summer": {
+      "foliage": "#2f6b45"
+    },
+    "autumn": {
+      "foliage": "#2f6b45",
+      "fruits": {
+        "color": "#6b4a30",
+        "amount": 0.12
+      },
+      "fallen": {
+        "color": "#a8743a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#2b5f40",
+      "fallen": {
+        "color": "#8f6a3c",
+        "amount": 0.2
+      }
+    }
+  }
+}

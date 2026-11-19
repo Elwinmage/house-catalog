@@ -1,0 +1,10 @@
+jsonschema>=4.23
+referencing>=0.35
+# scripts/render_previews.py (pictures drawn from the descriptors)
+numpy>=2
+pillow>=11
+pytest>=8
+pytest-cov>=6
+ruff==0.15.14
+pyright
+pre-commit

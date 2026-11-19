@@ -1,0 +1,50 @@
+# Same checks as .github/workflows/ci.yml, run before each commit:
+#   pip install pre-commit && pre-commit install
+# Each hook runs in an environment of its own, created by pre-commit with the
+# dependencies it needs, so nothing has to be installed by hand. Keep the
+# versions in line with requirements.txt.
+fail_fast: true
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.14
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: validate-catalog
+        name: Catalog checks
+        entry: python scripts/validate.py
+        language: python
+        additional_dependencies: [jsonschema>=4.23, referencing>=0.35]
+        pass_filenames: false
+        files: ^(trees|objects|schema|scripts|client)/
+
+      - id: pyright
+        name: Pyright
+        entry: pyright scripts client
+        language: python
+        additional_dependencies:
+          - pyright
+          - jsonschema>=4.23
+          - referencing>=0.35
+          - numpy>=2
+          - pillow>=11
+        pass_filenames: false
+        types: [python]
+
+      - id: pytest
+        name: Tests (100 % coverage)
+        entry: pytest -q --cov=scripts --cov=client --cov-fail-under=100 --cov-report=term-missing --cov-report=xml:reports/coverage.xml --cov-report=html:reports/htmlcov
+        language: python
+        additional_dependencies:
+          - pytest>=8
+          - pytest-cov>=6
+          - jsonschema>=4.23
+          - referencing>=0.35
+          - numpy>=2
+          - pillow>=11
+        pass_filenames: false
+        files: ^(client|scripts|schema|trees|objects|tests|README\.md|pyproject\.toml)

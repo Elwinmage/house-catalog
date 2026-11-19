@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/object.schema.json",
+  "title": "Object (objects/items/<id>/object.json)",
+  "description": "A piece of furniture or an outdoor object as the house view draws it: a few simple solids.",
+  "type": "object",
+  "required": ["name", "category", "parts"],
+  "additionalProperties": false,
+  "properties": {
+    "name": { "$ref": "common.schema.json#/$defs/i18n" },
+    "category": {
+      "description": "Family of the object, to sort the lists.",
+      "enum": ["seating", "table", "bed", "storage", "appliance", "sanitary", "garden", "vehicle", "decoration", "other"]
+    },
+    "icon": { "$ref": "common.schema.json#/$defs/icon" },
+    "keywords": { "$ref": "common.schema.json#/$defs/keywords" },
+    "parts": {
+      "description": "The solids of the object, in any order.",
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/part" },
+      "minItems": 1,
+      "maxItems": 64
+    }
+  }
+}

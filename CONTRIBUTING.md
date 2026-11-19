@@ -1,0 +1,46 @@
+# Contributing
+
+The [catalog editor](https://github.com/Elwinmage/catalog-editor) is the easy
+way once it lists these catalogs: it shows the form of an entry, checks it and
+opens the pull request. By hand:
+
+## Add a tree
+
+1. Create `trees/items/<id>/tree.json`, the id in lower case with `-`
+   (`cherry-tree`, `silver-birch`), from the English name.
+2. Give its `shape`, its sizes for a usual adult tree in a garden, and its
+   seasons: all four for a deciduous tree, `summer` at least for an evergreen.
+   [doc/format.md](doc/format.md) says what each field means; the entries of
+   the catalog are good starting points.
+3. Give the `name` in English at least, and the `latin` name.
+
+## Add an object
+
+1. Create `objects/items/<id>/object.json`.
+2. List its `parts`, in metres, centred on the footprint of the object, its
+   front toward +z. Keep it simple: a dozen parts draw most furniture, and
+   the card draws many objects at once.
+3. Mark with `"tint": true` the parts that should take the colour chosen when
+   the object is placed.
+
+## Pictures
+
+```
+python scripts/render_previews.py <id>
+```
+
+draws `image.webp` and `thumb.webp` from the descriptor. You may replace them
+by a photo or a drawing **of your own** (transparent background, about 512 px
+and under 300 KB; 128 px and under 40 KB for the thumbnail): only pictures you
+are allowed to share under CC BY 4.0, nothing copied from a site or a shop.
+
+## Before opening the pull request
+
+```
+python scripts/validate.py
+pytest
+```
+
+The lists of `README.md` are refreshed automatically after the merge: a pull
+request only adds the folder of its entry, so that two open pull requests never
+conflict on the README.
