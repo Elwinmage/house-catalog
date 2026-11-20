@@ -60,13 +60,13 @@ FISH_MAX = 2.0
 DESCRIPTORS = {
     "tree": "tree.json",
     "object": "object.json",
-    "fish": "fish.json",
+    "pond_fish": "pond_fish.json",
 }
 #: Folder of each kind, from the root of the repository
 FOLDERS = {
     "tree": "trees/items",
     "object": "objects/items",
-    "fish": "fish/items",
+    "pond_fish": "pond_fish/items",
 }
 
 
@@ -338,13 +338,13 @@ def _check_fish(report, where, entry_id, data, files, ctx) -> None:
 _RULES = {
     "tree": _check_tree,
     "object": _check_object,
-    "fish": _check_fish,
+    "pond_fish": _check_fish,
 }
 #: Group of `Context` the accepted entries of each kind join
 _GROUPS = {
     "tree": "trees",
     "object": "objects",
-    "fish": "fish",
+    "pond_fish": "fish",
 }
 
 

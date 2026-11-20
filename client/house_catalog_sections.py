@@ -28,5 +28,5 @@ REPO = "Elwinmage/house-catalog"
 SECTIONS: dict[str, dict[str, tuple[str, str]]] = {
     "trees": {"tree": ("items", "tree.json")},
     "objects": {"object": ("items", "object.json")},
-    "fish": {"fish": ("items", "fish.json")},
+    "pond_fish": {"pond_fish": ("items", "pond_fish.json")},
 }

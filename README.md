@@ -10,7 +10,7 @@ the card.
 |---|---|---|---|
 | `trees` | trees and shrubs: a simple shape and up to four renderings, one per season | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `objects` | furniture and outdoor objects, made of a few simple solids | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
-| `fish` | pond fish: a body, its fins and its colour varieties | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `pond_fish` | pond fish: a body, its fins and its colour varieties | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 
 The catalog follows the conventions of
 [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog): one folder
@@ -37,9 +37,9 @@ objects/
   items/<object_id>/
     object.json                 name, category, parts
     image.webp / thumb.webp     pictures (optional)
-fish/
+pond_fish/
   items/<fish_id>/
-    fish.json                   name, sizes, swimming, colour varieties
+    pond_fish.json              name, sizes, swimming, colour varieties
     image.webp / thumb.webp     pictures (optional): every variety, the first one
 scripts/                        validate.py, make_release.py, render_previews.py,
                                 readme_catalog.py, sync_client.py (description and
@@ -173,7 +173,7 @@ drawing of your own may replace them.
 
 |  | Id | Fish | Scientific name | Length | Varieties |
 |---|---|---|---|---|---|
-| <img src="fish/items/koi/thumb.webp" width="48" alt=""> | `koi` | Koi carp | <i>Cyprinus rubrofuscus</i> | 0.5 m (0.15-0.9) | kohaku, sanke, showa, tancho, benigoi, yamabuki-ogon, platinum-ogon, kigoi, chagoi, asagi, karasugoi |
+| <img src="pond_fish/items/koi/thumb.webp" width="48" alt=""> | `koi` | Koi carp | <i>Cyprinus rubrofuscus</i> | 0.5 m (0.15-0.9) | kohaku, sanke, showa, tancho, benigoi, yamabuki-ogon, platinum-ogon, kigoi, chagoi, asagi, karasugoi |
 
 </details>
 

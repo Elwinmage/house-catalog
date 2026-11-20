@@ -137,9 +137,9 @@ def objects_table(root: Path) -> list[str]:
 
 def fish_table(root: Path) -> list[str]:
     rows = []
-    entries = folders(root / "fish" / "items")
+    entries = folders(root / "pond_fish" / "items")
     for folder in entries:
-        data = read_json(folder / "fish.json")
+        data = read_json(folder / "pond_fish.json")
         length = data["length"]
         rows.append(
             [

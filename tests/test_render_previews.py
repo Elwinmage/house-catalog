@@ -232,14 +232,14 @@ def quick(monkeypatch):
         calls.append(data["name"]["en"])
         return tiny, tiny
 
-    monkeypatch.setattr(rp, "PICTURES", {"tree": draw, "object": draw, "fish": draw})
+    monkeypatch.setattr(rp, "PICTURES", {"tree": draw, "object": draw, "pond_fish": draw})
     return calls
 
 
 def test_only_missing_pictures_are_drawn(root: Path, quick):
     (root / "objects/items/stool/image.png").write_bytes(b"a photo")
     (root / "trees/items/empty").mkdir()
-    (root / "fish/items/goldfish/image.webp").write_bytes(b"drawn")
+    (root / "pond_fish/items/goldfish/image.webp").write_bytes(b"drawn")
     assert rp.write_pictures(root) == ["trees/oak"]
     assert quick == ["Oak"]
     with Image.open(root / "trees/items/oak/image.webp") as image:
@@ -252,7 +252,7 @@ def test_only_missing_pictures_are_drawn(root: Path, quick):
     assert rp.write_pictures(root, force=True) == [
         "trees/oak",
         "objects/stool",
-        "fish/goldfish",
+        "pond_fish/goldfish",
     ]
 
 
@@ -260,7 +260,7 @@ def test_command(root: Path, quick, capsys):
     args = ["--root", str(root)]
     assert rp.main(args) == 0
     assert (
-        "drawn: trees/oak\ndrawn: objects/stool\ndrawn: fish/goldfish\n3 entries drawn"
+        "drawn: trees/oak\ndrawn: objects/stool\ndrawn: pond_fish/goldfish\n3 entries drawn"
         in capsys.readouterr().out
     )
     assert rp.main([*args, "oak"]) == 0
@@ -274,11 +274,11 @@ def test_real_drawing_ends_in_a_file(root: Path, monkeypatch):
     small = {
         "tree": lambda data: rp.tree_pictures(data, 32, 16),
         "object": lambda data: rp.object_pictures(data, 32, 16),
-        "fish": lambda data: rp.fish_pictures(data, 32, 16),
+        "pond_fish": lambda data: rp.fish_pictures(data, 32, 16),
     }
     monkeypatch.setattr(rp, "PICTURES", small)
     dump(root / "trees/items/oak/tree.json", TREE)
-    assert rp.write_pictures(root) == ["trees/oak", "objects/stool", "fish/goldfish"]
+    assert rp.write_pictures(root) == ["trees/oak", "objects/stool", "pond_fish/goldfish"]
     with Image.open(root / "objects/items/stool/thumb.webp") as thumb:
         assert thumb.size == (16, 16) and thumb.mode == "RGBA"
 

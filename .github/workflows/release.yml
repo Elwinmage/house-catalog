@@ -18,7 +18,7 @@ on:
         required: true
         type: choice
         default: all
-        options: [all, trees, objects, fish]
+        options: [all, trees, objects, pond_fish]
       version:
         description: "Release version (ex: 2026.11.0)"
         required: true
@@ -55,7 +55,7 @@ jobs:
           SECTION: ${{ inputs.section }}
         run: |
           if [ "$SECTION" = all ]; then
-            echo 'sections=["trees","objects","fish"]' >> "$GITHUB_OUTPUT"
+            echo 'sections=["trees","objects","pond_fish"]' >> "$GITHUB_OUTPUT"
           else
             echo "sections=[\"$SECTION\"]" >> "$GITHUB_OUTPUT"
           fi

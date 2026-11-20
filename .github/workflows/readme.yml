@@ -14,7 +14,7 @@ on:
     paths:
       - "trees/**"
       - "objects/**"
-      - "fish/**"
+      - "pond_fish/**"
       - "scripts/catalog.py"
       - "scripts/readme_catalog.py"
   workflow_dispatch:

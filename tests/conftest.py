@@ -114,5 +114,5 @@ def root(tmp_path: Path) -> Path:
     shutil.copytree(REPO / "schema", tmp_path / "schema")
     dump(tmp_path / "trees/items/oak/tree.json", TREE)
     dump(tmp_path / "objects/items/stool/object.json", OBJECT)
-    dump(tmp_path / "fish/items/goldfish/fish.json", FISH)
+    dump(tmp_path / "pond_fish/items/goldfish/pond_fish.json", FISH)
     return tmp_path

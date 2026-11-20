@@ -25,7 +25,7 @@ opens the pull request. By hand:
 
 ## Add a fish
 
-1. Create `fish/items/<id>/fish.json` (`koi`, `goldfish`).
+1. Create `pond_fish/items/<id>/pond_fish.json` (`koi`, `goldfish`).
 2. Give its usual adult `length` and the bounds offered in a pond, the shape of
    its `body` (shares of the length), how it swims, and its `varieties`: the
    colour of the body, of the flanks and fins if they differ, and the layers of

@@ -71,7 +71,7 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
     (root / "trees/items/oak/thumb.webp").write_bytes(b"picture")
     trees = "ha-house-view-component/catalog_builtin"
     objects = "ha-house-view-component/catalog_builtin_objects"
-    fish = "ha-house-view-component/catalog_builtin_fish"
+    fish = "ha-house-view-component/catalog_builtin_pond_fish"
 
     assert sync_client.sync(tmp_path, check=True, root=root) == [
         SECTIONS,
@@ -90,8 +90,8 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
     assert sorted(p.relative_to(house).as_posix() for p in house.rglob("*.*")) == [
         "catalog_builtin/items/oak/thumb.webp",
         "catalog_builtin/items/oak/tree.json",
-        "catalog_builtin_fish/items/goldfish/fish.json",
         "catalog_builtin_objects/items/stool/object.json",
+        "catalog_builtin_pond_fish/items/goldfish/pond_fish.json",
         "house_catalog_sections.py",
     ]
     assert sync_client.sync(tmp_path, check=True, root=root) == []
@@ -132,7 +132,7 @@ def test_command(tmp_path: Path, capsys):
     assert f"updated: {RULES}" in capsys.readouterr().out
     assert (house / "catalog_builtin/items/oak/tree.json").is_file()
     assert (house / "catalog_builtin_objects/items/chair/image.webp").is_file()
-    assert (house / "catalog_builtin_fish/items/koi/fish.json").is_file()
+    assert (house / "catalog_builtin_pond_fish/items/koi/pond_fish.json").is_file()
     assert (editor / "house_catalog_rules.py").read_text().startswith("# Generated")
     # the copy of the description is the one the scripts of the catalog use
     copied = (house / "house_catalog_sections.py").read_text().split("\n", 1)[1]

@@ -642,7 +642,7 @@ def fish_pictures(
     return sheet, fish_picture(data, varieties[0], thumb)
 
 
-PICTURES = {"tree": tree_pictures, "object": object_pictures, "fish": fish_pictures}
+PICTURES = {"tree": tree_pictures, "object": object_pictures, "pond_fish": fish_pictures}
 
 
 def write_pictures(
