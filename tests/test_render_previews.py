@@ -232,7 +232,9 @@ def quick(monkeypatch):
         calls.append(data["name"]["en"])
         return tiny, tiny
 
-    monkeypatch.setattr(rp, "PICTURES", {"tree": draw, "object": draw, "pond_fish": draw})
+    monkeypatch.setattr(
+        rp, "PICTURES", {"tree": draw, "object": draw, "pond_fish": draw}
+    )
     return calls
 
 
@@ -278,7 +280,11 @@ def test_real_drawing_ends_in_a_file(root: Path, monkeypatch):
     }
     monkeypatch.setattr(rp, "PICTURES", small)
     dump(root / "trees/items/oak/tree.json", TREE)
-    assert rp.write_pictures(root) == ["trees/oak", "objects/stool", "pond_fish/goldfish"]
+    assert rp.write_pictures(root) == [
+        "trees/oak",
+        "objects/stool",
+        "pond_fish/goldfish",
+    ]
     with Image.open(root / "objects/items/stool/thumb.webp") as thumb:
         assert thumb.size == (16, 16) and thumb.mode == "RGBA"
 
@@ -322,3 +328,22 @@ def test_fish_pictures():
     wide = np.array(rp.fish_picture(FISH, FISH["varieties"][0], 64))[:, :, 3] > 100
     narrow = np.array(rp.fish_picture(short, FISH["varieties"][0], 64))[:, :, 3] > 100
     assert wide.any(axis=1).sum() > narrow.any(axis=1).sum()  # long fins reach out
+
+
+def test_weeping_tree_hangs_curtains_to_the_trunk():
+    willow = TREE | {
+        "shape": "weeping",
+        "latin": "Salix",
+        "trunk": {"height": 1.5, "radius": 0.2, "color": "#5a4b3a"},
+        "seasons": {
+            "summer": {"foliage": "#6aa14a"},
+            "winter": {"foliage": "#6aa14a", "density": 0},
+        },
+    }
+    low, high = extent(rp.tree_mesh(willow, "summer").arrays()[0])
+    assert high[1] == pytest.approx(willow["height"]["default"], rel=0.03)
+    assert low[1] < willow["trunk"]["height"] + 0.5  # the curtains reach the bottom
+    assert high[0] == pytest.approx(willow["crown_radius"], rel=0.25)
+    assert len(rp._weeping(9, 3.8, 1.5, 1)) == 5 + rp._CURTAINS
+    # bare in winter: branches only, and the blossom of a bare weeping tree sits on them
+    assert len(rp.tree_mesh(willow, "winter").arrays()[0]) < 400

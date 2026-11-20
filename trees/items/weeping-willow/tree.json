@@ -1,0 +1,63 @@
+{
+  "name": {
+    "en": "Weeping willow",
+    "fr": "Saule pleureur",
+    "de": "Trauerweide",
+    "es": "Sauce llorón",
+    "it": "Salice piangente",
+    "pl": "Wierzba płacząca",
+    "pt": "Salgueiro-chorão"
+  },
+  "latin": "Salix babylonica",
+  "icon": "mdi:tree",
+  "keywords": [
+    "weeping willow",
+    "willow",
+    "saule pleureur",
+    "saule",
+    "trauerweide",
+    "weide",
+    "sauce lloron",
+    "sauce",
+    "salice piangente",
+    "salice",
+    "wierzba placzaca",
+    "wierzba",
+    "salgueiro chorao",
+    "salgueiro"
+  ],
+  "shape": "weeping",
+  "evergreen": false,
+  "height": {
+    "default": 10,
+    "min": 5,
+    "max": 18
+  },
+  "crown_radius": 4.5,
+  "trunk": {
+    "height": 1.8,
+    "radius": 0.3,
+    "color": "#5a4b3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#b4d96e",
+      "density": 0.75
+    },
+    "summer": {
+      "foliage": "#6aa14a"
+    },
+    "autumn": {
+      "foliage": "#d3b94a",
+      "density": 0.65,
+      "fallen": {
+        "color": "#c9b445",
+        "amount": 0.5
+      }
+    },
+    "winter": {
+      "foliage": "#8a7a52",
+      "density": 0.1
+    }
+  }
+}

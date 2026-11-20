@@ -230,6 +230,22 @@ def object_size(parts: Iterable[Mapping[str, Any]]) -> tuple[float, float, float
 # -- one rule set per kind ------------------------------------------------------
 
 
+def _check_varieties(report, where, data) -> None:
+    """Varieties colour what the seasons show: blossom, fruits."""
+    varieties = data.get("varieties", [])
+    seen: set[str] = set()
+    for variety in varieties:
+        if variety["id"] in seen:
+            report.error(where, f"variety {variety['id']!r} is listed twice")
+        seen.add(variety["id"])
+        if "flowers" not in variety and "fruits" not in variety:
+            report.error(where, f"variety {variety['id']!r} changes no colour")
+    for key in ("flowers", "fruits"):
+        shown = any(key in look for look in data["seasons"].values())
+        if not shown and any(key in variety for variety in varieties):
+            report.error(where, f"varieties colour the {key}, but no season shows any")
+
+
 def _check_tree(report, where, entry_id, data, files, ctx) -> None:
     _check_i18n(report, where, data["name"])
 
@@ -259,6 +275,8 @@ def _check_tree(report, where, entry_id, data, files, ctx) -> None:
             if str(other.get("latin", "")).lower() == latin.lower():
                 report.error(where, f"latin {latin!r} already used by {other_id!r}")
                 break
+
+    _check_varieties(report, where, data)
 
     missing = [season for season in SEASONS if season not in data["seasons"]]
     if missing and not data["evergreen"]:

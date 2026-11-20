@@ -232,7 +232,9 @@ def test_a_complete_fish_passes(fish, validators):
     fish["name"] = ALL_LANGS
     for variety in fish["varieties"]:
         variety["name"] = ALL_LANGS
-    report = check("pond_fish", fish, validators, {"pond_fish.json": 900, "image.webp": 1})
+    report = check(
+        "pond_fish", fish, validators, {"pond_fish.json": 900, "image.webp": 1}
+    )
     assert (report.errors, report.warnings) == ([], [])
 
 
@@ -269,3 +271,28 @@ def test_fish_schema(fish, validators):
     )
     errors = check("pond_fish", fish, validators).errors
     assert len(errors) == 1 and "huge" in errors[0]
+
+
+def test_varieties_colour_what_the_seasons_show(tree, validators):
+    tree["varieties"] = [
+        {"id": "red", "name": {"en": "Red"}, "fruits": "#aa0000"},
+        {"id": "pink", "name": {"en": "Pink"}, "flowers": "#f9d3e0"},
+    ]
+    assert check("tree", tree, validators).errors == []
+    tree["varieties"] += [
+        {"id": "red", "name": {"en": "Again"}, "fruits": "#bb0000"},
+        {"id": "plain", "name": {"en": "Plain"}},
+    ]
+    assert check("tree", tree, validators).errors == [
+        "trees/items/draft: variety 'red' is listed twice",
+        "trees/items/draft: variety 'plain' changes no colour",
+    ]
+
+
+def test_varieties_cannot_colour_what_no_season_shows(tree, validators):
+    for look in tree["seasons"].values():
+        look.pop("fruits", None)
+    tree["varieties"] = [{"id": "red", "name": {"en": "Red"}, "fruits": "#aa0000"}]
+    assert check("tree", tree, validators).errors == [
+        "trees/items/draft: varieties colour the fruits, but no season shows any"
+    ]

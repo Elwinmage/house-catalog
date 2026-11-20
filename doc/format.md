@@ -29,6 +29,10 @@ placing a tree of another height scales the whole tree by
   - `round`: leafy clumps (rough ellipsoids) filling that box.
   - `conical`: stacked cones, the widest at the bottom (`crown_radius`), the
     last one ending at the top.
+  - `weeping`: a low dome in the upper part of the box, and ten curtains of
+    branches hanging from its rim (0.85 of `crown_radius`) down to the trunk,
+    some longer than others (weeping willow). Thinner foliage shortens the
+    curtains too, down to bare branches.
 - The **trunk** goes from the ground into the crown, thinner toward the top,
   in `trunk.color`. A `round` tree has a few branches inside its crown: they
   show when the foliage is thin or gone.
@@ -46,6 +50,16 @@ blend colours and amounts (the house view does, day after day).
 | `flowers` | Dots of `color` on the foliage (on the branches when there is no foliage); `amount` from just above 0 (a few) to 1 (the crown is covered). |
 | `fruits` | Same, smaller: fruits, cones, berries. |
 | `fallen` | Dots of `color` on the ground under the crown: fallen leaves, petals, needles. |
+
+### Varieties
+
+`varieties` lists the colours a tree comes in when it is planted: each one has
+an `id`, a `name`, and a colour of its `flowers` and/or of its `fruits` (at
+least one). A variety replaces the colour of the blossom or of the fruits in
+every season that shows some; `seasons` keeps saying how many there are and
+when. A tree planted without choosing a variety has the colours of `seasons`.
+The card offers each variety as a species of its own (`<id>:<variety>`), so a
+view can hold a red apple tree next to a yellow one.
 
 `evergreen` says the tree keeps its foliage in winter: the house view lets snow
 settle on it.

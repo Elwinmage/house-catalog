@@ -239,6 +239,56 @@ _CLUMPS = (
 _TIERS = 4
 
 
+#: Curtains of branches hanging from a weeping crown
+_CURTAINS = 10
+
+
+def _weeping(
+    top: float, radius: float, bottom: float, thin: float
+) -> list[tuple[str, tuple, tuple]]:
+    """A low dome and curtains of branches hanging from its rim down to the trunk.
+
+    The crown fills the same box as the others: the dome is in its upper part,
+    the curtains hang from the rim (0.85 of the radius), some longer than others.
+    """
+    span = top - bottom
+    solids: list[tuple[str, tuple, tuple]] = [
+        (
+            "blob",
+            (0.0, bottom + 0.78 * span, 0.0),
+            (0.7 * radius * thin, 0.22 * span * thin, 0.7 * radius * thin),
+        )
+    ]
+    for index in range(4):
+        angle = math.radians(index * 90 + 45)
+        solids.append(
+            (
+                "blob",
+                (
+                    0.55 * radius * math.cos(angle),
+                    bottom + 0.68 * span,
+                    0.55 * radius * math.sin(angle),
+                ),
+                (0.45 * radius * thin, 0.18 * span * thin, 0.45 * radius * thin),
+            )
+        )
+    for index in range(_CURTAINS):
+        angle = math.radians(index * 360 / _CURTAINS)
+        half = 0.33 * span * (0.9 + 0.1 * (index % 3 - 1))
+        solids.append(
+            (
+                "blob",
+                (
+                    0.85 * radius * math.cos(angle),
+                    bottom + 0.7 * span - half,
+                    0.85 * radius * math.sin(angle),
+                ),
+                (0.2 * radius * thin, half * thin, 0.2 * radius * thin),
+            )
+        )
+    return solids
+
+
 def _crown(data: dict[str, Any], density: float) -> list[tuple[str, tuple, tuple]]:
     """The solids of the foliage: (kind, centre or base, sizes), once thinned out.
 
@@ -251,6 +301,8 @@ def _crown(data: dict[str, Any], density: float) -> list[tuple[str, tuple, tuple
     middle, half = (bottom + top) / 2, (top - bottom) / 2
     thin = density**0.6
     solids: list[tuple[str, tuple, tuple]] = []
+    if data["shape"] == "weeping":
+        return _weeping(top, radius, bottom, thin)
     if data["shape"] == "round":
         reach = max(abs(c[axis]) + c[3] for c in _CLUMPS for axis in range(3))
         for x, y, z, size in _CLUMPS:
@@ -313,7 +365,7 @@ def tree_mesh(data: dict[str, Any], season: str) -> Mesh:
     mesh.add(
         frustum((0, 0, 0), (0, fork, 0), trunk["radius"], trunk["radius"] * 0.6), bark
     )
-    if data["shape"] == "round":
+    if data["shape"] in ("round", "weeping"):
         for index in range(5):
             angle = index * 2.4 + 0.5
             reach = radius * (0.5 + 0.12 * (index % 3))
@@ -345,7 +397,11 @@ def tree_mesh(data: dict[str, Any], season: str) -> Mesh:
             mesh.add(frustum(centre, tip, sizes[0], 0, 10), color)
 
     # Flowers and fruits sit on the foliage (on the bare branches of a round crown)
-    bare = _crown(data, 0.75) if not solids and data["shape"] == "round" else solids
+    bare = (
+        _crown(data, 0.75)
+        if not solids and data["shape"] in ("round", "weeping")
+        else solids
+    )
     for key, count, size in (("flowers", 170, 0.075), ("fruits", 110, 0.05)):
         if key in look and bare:
             dot = radius * size
@@ -642,7 +698,11 @@ def fish_pictures(
     return sheet, fish_picture(data, varieties[0], thumb)
 
 
-PICTURES = {"tree": tree_pictures, "object": object_pictures, "pond_fish": fish_pictures}
+PICTURES = {
+    "tree": tree_pictures,
+    "object": object_pictures,
+    "pond_fish": fish_pictures,
+}
 
 
 def write_pictures(

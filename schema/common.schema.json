@@ -141,6 +141,24 @@
         }
       }
     },
+    "tree_variety": {
+      "description": "A variety of a tree: the colours of its blossom and its fruits (a red, a yellow or a green apple).",
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/i18n" },
+        "flowers": {
+          "description": "Colour of the blossom, in every season that has some.",
+          "$ref": "#/$defs/color"
+        },
+        "fruits": {
+          "description": "Colour of the fruits, in every season that has some.",
+          "$ref": "#/$defs/color"
+        }
+      }
+    },
     "fish_variety": {
       "description": "A colour variety: the colour of the body, then patches over it, in order.",
       "type": "object",

@@ -1,0 +1,39 @@
+{
+  "name": {
+    "en": "Eucalyptus",
+    "fr": "Eucalyptus",
+    "de": "Eukalyptus",
+    "es": "Eucalipto",
+    "it": "Eucalipto",
+    "pl": "Eukaliptus",
+    "pt": "Eucalipto"
+  },
+  "latin": "Eucalyptus globulus",
+  "icon": "mdi:tree",
+  "keywords": [
+    "eucalyptus",
+    "eukalyptus",
+    "eucalipto",
+    "eukaliptus",
+    "gum tree",
+    "blue gum"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 14,
+    "min": 6,
+    "max": 30
+  },
+  "crown_radius": 3,
+  "trunk": {
+    "height": 5,
+    "radius": 0.3,
+    "color": "#b8b09c"
+  },
+  "seasons": {
+    "summer": {
+      "foliage": "#7d9a86"
+    }
+  }
+}

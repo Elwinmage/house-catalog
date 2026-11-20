@@ -1,0 +1,94 @@
+{
+  "name": {
+    "en": "Japanese flowering cherry",
+    "fr": "Cerisier du Japon",
+    "de": "Japanische Blütenkirsche",
+    "es": "Cerezo japonés",
+    "it": "Ciliegio giapponese",
+    "pl": "Wiśnia piłkowana",
+    "pt": "Cerejeira-do-japão"
+  },
+  "latin": "Prunus serrulata",
+  "icon": "mdi:tree",
+  "keywords": [
+    "japanese cherry",
+    "cherry blossom",
+    "sakura",
+    "cerisier du japon",
+    "cerisier a fleurs",
+    "bluetenkirsche",
+    "zierkirsche",
+    "cerezo japones",
+    "ciliegio giapponese",
+    "wisnia pilkowana",
+    "cerejeira do japao"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 6,
+    "min": 3,
+    "max": 10
+  },
+  "crown_radius": 3.2,
+  "trunk": {
+    "height": 1.6,
+    "radius": 0.18,
+    "color": "#4a3a35"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#b6d98a",
+      "density": 0.45,
+      "flowers": {
+        "color": "#f2a3c1",
+        "amount": 1
+      },
+      "fallen": {
+        "color": "#f7c9d8",
+        "amount": 0.6
+      }
+    },
+    "summer": {
+      "foliage": "#3f8a3a"
+    },
+    "autumn": {
+      "foliage": "#d8602a",
+      "density": 0.7,
+      "fallen": {
+        "color": "#c9652e",
+        "amount": 0.45
+      }
+    },
+    "winter": {
+      "foliage": "#6b4a3c",
+      "density": 0
+    }
+  },
+  "varieties": [
+    {
+      "id": "kanzan",
+      "name": {
+        "en": "Kanzan (deep pink)",
+        "fr": "Kanzan (rose soutenu)"
+      },
+      "flowers": "#e87aa6"
+    },
+    {
+      "id": "yoshino",
+      "name": {
+        "en": "Yoshino (pale pink)",
+        "fr": "Yoshino (rose pâle)"
+      },
+      "flowers": "#f9d3e0"
+    },
+    {
+      "id": "shirotae",
+      "name": {
+        "en": "Shirotae (white)",
+        "fr": "Shirotae (blanc)"
+      },
+      "flowers": "#fbf6f7"
+    }
+  ]
+}

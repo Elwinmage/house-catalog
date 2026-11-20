@@ -1,0 +1,107 @@
+{
+  "name": {
+    "en": "Apple tree",
+    "fr": "Pommier",
+    "de": "Apfelbaum",
+    "es": "Manzano",
+    "it": "Melo",
+    "pl": "Jabłoń",
+    "pt": "Macieira"
+  },
+  "latin": "Malus domestica",
+  "icon": "mdi:tree",
+  "keywords": [
+    "apple",
+    "apple tree",
+    "pommier",
+    "apfelbaum",
+    "manzano",
+    "melo",
+    "jablon",
+    "macieira"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 5,
+    "min": 2.5,
+    "max": 9
+  },
+  "crown_radius": 2.6,
+  "trunk": {
+    "height": 1.2,
+    "radius": 0.15,
+    "color": "#5b4636"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#a9d47a",
+      "density": 0.7,
+      "flowers": {
+        "color": "#f8e6ea",
+        "amount": 0.8
+      },
+      "fallen": {
+        "color": "#f6e8ec",
+        "amount": 0.3
+      }
+    },
+    "summer": {
+      "foliage": "#4a8f3b",
+      "fruits": {
+        "color": "#c8281e",
+        "amount": 0.3
+      }
+    },
+    "autumn": {
+      "foliage": "#c9a533",
+      "density": 0.8,
+      "fruits": {
+        "color": "#c8281e",
+        "amount": 0.5
+      },
+      "fallen": {
+        "color": "#b98a2e",
+        "amount": 0.5
+      }
+    },
+    "winter": {
+      "foliage": "#6b4a3c",
+      "density": 0
+    }
+  },
+  "varieties": [
+    {
+      "id": "gala",
+      "name": {
+        "en": "Gala (red)",
+        "fr": "Gala (rouge)"
+      },
+      "fruits": "#c8281e"
+    },
+    {
+      "id": "golden-delicious",
+      "name": {
+        "en": "Golden Delicious (yellow)",
+        "fr": "Golden Delicious (jaune)"
+      },
+      "fruits": "#e3c534"
+    },
+    {
+      "id": "granny-smith",
+      "name": {
+        "en": "Granny Smith (green)",
+        "fr": "Granny Smith (vert)"
+      },
+      "fruits": "#8fc03a"
+    },
+    {
+      "id": "reinette-grise",
+      "name": {
+        "en": "Grey reinette (russet)",
+        "fr": "Reinette grise (roux)"
+      },
+      "fruits": "#b98a3e"
+    }
+  ]
+}

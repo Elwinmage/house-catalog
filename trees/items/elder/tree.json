@@ -1,0 +1,68 @@
+{
+  "name": {
+    "en": "Black elder",
+    "fr": "Sureau noir",
+    "de": "Schwarzer Holunder",
+    "es": "Saúco negro",
+    "it": "Sambuco nero",
+    "pl": "Bez czarny",
+    "pt": "Sabugueiro-negro"
+  },
+  "latin": "Sambucus nigra",
+  "icon": "mdi:tree",
+  "keywords": [
+    "elder",
+    "elderberry",
+    "black elder",
+    "sureau",
+    "sureau noir",
+    "holunder",
+    "schwarzer holunder",
+    "sauco",
+    "sambuco",
+    "bez czarny",
+    "sabugueiro"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 4,
+    "min": 2,
+    "max": 7
+  },
+  "crown_radius": 2,
+  "trunk": {
+    "height": 0.6,
+    "radius": 0.08,
+    "color": "#7a6a58"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#7fbf5a",
+      "density": 0.8
+    },
+    "summer": {
+      "foliage": "#4a8a3a",
+      "flowers": {
+        "color": "#f4f1dc",
+        "amount": 0.5
+      }
+    },
+    "autumn": {
+      "foliage": "#a8a84a",
+      "density": 0.7,
+      "fruits": {
+        "color": "#2b1a33",
+        "amount": 0.55
+      },
+      "fallen": {
+        "color": "#b0a050",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#6b5a48",
+      "density": 0
+    }
+  }
+}

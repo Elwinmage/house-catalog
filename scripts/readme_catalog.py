@@ -90,6 +90,9 @@ def trees_table(root: Path) -> list[str]:
                 "evergreen" if data["evergreen"] else "deciduous",
                 f"{_metres(height['default'])} m ({_metres(height['min'])}-{_metres(height['max'])})",
                 _cell(", ".join(seasons)),
+                _cell(
+                    ", ".join(variety["id"] for variety in data.get("varieties", []))
+                ),
             ]
         )
     return _details(
@@ -104,6 +107,7 @@ def trees_table(root: Path) -> list[str]:
                 "Foliage",
                 "Height",
                 "Seasons",
+                "Varieties",
             ],
             rows,
         ),
