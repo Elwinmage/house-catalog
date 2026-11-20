@@ -1,6 +1,6 @@
 """Write the lists of the catalog into README.md.
 
-The trees and the objects of the catalog are listed, with their pictures,
+The trees, the objects and the fish of the catalog are listed, with their pictures,
 between two markers of the README; the rest of the file is left alone:
 
     <!-- catalog:begin -->
@@ -135,6 +135,28 @@ def objects_table(root: Path) -> list[str]:
     )
 
 
+def fish_table(root: Path) -> list[str]:
+    rows = []
+    entries = folders(root / "fish" / "items")
+    for folder in entries:
+        data = read_json(folder / "fish.json")
+        length = data["length"]
+        rows.append(
+            [
+                _visual(root, folder),
+                f"`{folder.name}`",
+                _cell(_name(data, folder.name)),
+                f"<i>{_cell(data['latin'])}</i>" if "latin" in data else "",
+                f"{_metres(length['default'])} m ({_metres(length['min'])}-{_metres(length['max'])})",
+                _cell(", ".join(variety["id"] for variety in data["varieties"])),
+            ]
+        )
+    return _details(
+        f"<b>Fish</b> ({len(entries)})",
+        _table(["", "Id", "Fish", "Scientific name", "Length", "Varieties"], rows),
+    )
+
+
 def render(root: Path) -> str:
     """The generated block, markers included."""
     lines = [
@@ -144,6 +166,8 @@ def render(root: Path) -> str:
         *trees_table(root),
         "",
         *objects_table(root),
+        "",
+        *fish_table(root),
         "",
         END,
     ]

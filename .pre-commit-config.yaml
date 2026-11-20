@@ -20,7 +20,7 @@ repos:
         language: python
         additional_dependencies: [jsonschema>=4.23, referencing>=0.35]
         pass_filenames: false
-        files: ^(trees|objects|schema|scripts|client)/
+        files: ^(trees|objects|fish|schema|scripts|client)/
 
       - id: pyright
         name: Pyright

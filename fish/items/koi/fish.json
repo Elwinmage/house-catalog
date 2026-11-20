@@ -1,0 +1,220 @@
+{
+  "name": {
+    "en": "Koi carp",
+    "fr": "Carpe koï",
+    "de": "Koi-Karpfen",
+    "es": "Carpa koi",
+    "it": "Carpa koi",
+    "pl": "Karp koi",
+    "pt": "Carpa koi"
+  },
+  "latin": "Cyprinus rubrofuscus",
+  "icon": "mdi:fish",
+  "length": {
+    "default": 0.5,
+    "min": 0.15,
+    "max": 0.9
+  },
+  "body": {
+    "width": 0.2,
+    "height": 0.22,
+    "tail": 0.2,
+    "fins": "short"
+  },
+  "swim": {
+    "speed": 0.18,
+    "depth": "middle",
+    "school": false
+  },
+  "varieties": [
+    {
+      "id": "kohaku",
+      "name": {
+        "en": "Kohaku (red and white)",
+        "fr": "Kohaku (rouge et blanc)",
+        "de": "Kohaku (rot und weiß)",
+        "es": "Kohaku (rojo y blanco)",
+        "it": "Kohaku (rosso e bianco)",
+        "pl": "Kohaku (czerwono-biały)",
+        "pt": "Kohaku (vermelho e branco)"
+      },
+      "base": "#f6f2ea",
+      "patches": [
+        {
+          "color": "#d3301f",
+          "amount": 0.45,
+          "size": "large",
+          "where": "back"
+        }
+      ]
+    },
+    {
+      "id": "sanke",
+      "name": {
+        "en": "Sanke (white, red, black)",
+        "fr": "Sanke (blanc, rouge, noir)",
+        "de": "Sanke (weiß, rot, schwarz)",
+        "es": "Sanke (blanco, rojo, negro)",
+        "it": "Sanke (bianco, rosso, nero)",
+        "pl": "Sanke (biały, czerwony, czarny)",
+        "pt": "Sanke (branco, vermelho, preto)"
+      },
+      "base": "#f6f2ea",
+      "patches": [
+        {
+          "color": "#d3301f",
+          "amount": 0.4,
+          "size": "large",
+          "where": "back"
+        },
+        {
+          "color": "#1c1c1f",
+          "amount": 0.1,
+          "size": "small",
+          "where": "back"
+        }
+      ]
+    },
+    {
+      "id": "showa",
+      "name": {
+        "en": "Showa (black, red, white)",
+        "fr": "Showa (noir, rouge, blanc)",
+        "de": "Showa (schwarz, rot, weiß)",
+        "es": "Showa (negro, rojo, blanco)",
+        "it": "Showa (nero, rosso, bianco)",
+        "pl": "Showa (czarny, czerwony, biały)",
+        "pt": "Showa (preto, vermelho, branco)"
+      },
+      "base": "#1c1c1f",
+      "patches": [
+        {
+          "color": "#d3301f",
+          "amount": 0.35,
+          "size": "large"
+        },
+        {
+          "color": "#f6f2ea",
+          "amount": 0.25,
+          "size": "medium"
+        }
+      ]
+    },
+    {
+      "id": "tancho",
+      "name": {
+        "en": "Tancho (red spot on the head)",
+        "fr": "Tancho (tache rouge sur la tête)",
+        "de": "Tancho (roter Fleck auf dem Kopf)",
+        "es": "Tancho (mancha roja en la cabeza)",
+        "it": "Tancho (macchia rossa sulla testa)",
+        "pl": "Tancho (czerwona plama na głowie)",
+        "pt": "Tancho (mancha vermelha na cabeça)"
+      },
+      "base": "#f6f2ea",
+      "patches": [
+        {
+          "color": "#d3301f",
+          "amount": 0.08,
+          "size": "large",
+          "where": "head"
+        }
+      ]
+    },
+    {
+      "id": "benigoi",
+      "name": {
+        "en": "Benigoi (red)",
+        "fr": "Benigoi (rouge)",
+        "de": "Benigoi (rot)",
+        "es": "Benigoi (rojo)",
+        "it": "Benigoi (rosso)",
+        "pl": "Benigoi (czerwony)",
+        "pt": "Benigoi (vermelho)"
+      },
+      "base": "#c9361f"
+    },
+    {
+      "id": "yamabuki-ogon",
+      "name": {
+        "en": "Yamabuki ogon (gold yellow)",
+        "fr": "Yamabuki ogon (jaune or)",
+        "de": "Yamabuki Ogon (goldgelb)",
+        "es": "Yamabuki ogon (amarillo oro)",
+        "it": "Yamabuki ogon (giallo oro)",
+        "pl": "Yamabuki ogon (złotożółty)",
+        "pt": "Yamabuki ogon (amarelo dourado)"
+      },
+      "base": "#f0bf2c",
+      "metallic": true
+    },
+    {
+      "id": "platinum-ogon",
+      "name": {
+        "en": "Platinum ogon (silver white)",
+        "fr": "Platinum ogon (blanc argenté)",
+        "de": "Platinum Ogon (silberweiß)",
+        "es": "Platinum ogon (blanco plateado)",
+        "it": "Platinum ogon (bianco argento)",
+        "pl": "Platinum ogon (srebrzystobiały)",
+        "pt": "Platinum ogon (branco prateado)"
+      },
+      "base": "#e9e8e2",
+      "metallic": true
+    },
+    {
+      "id": "kigoi",
+      "name": {
+        "en": "Kigoi (lemon yellow)",
+        "fr": "Kigoi (jaune citron)",
+        "de": "Kigoi (zitronengelb)",
+        "es": "Kigoi (amarillo limón)",
+        "it": "Kigoi (giallo limone)",
+        "pl": "Kigoi (cytrynowożółty)",
+        "pt": "Kigoi (amarelo-limão)"
+      },
+      "base": "#ecd54a"
+    },
+    {
+      "id": "chagoi",
+      "name": {
+        "en": "Chagoi (brown)",
+        "fr": "Chagoi (brun)",
+        "de": "Chagoi (braun)",
+        "es": "Chagoi (marrón)",
+        "it": "Chagoi (marrone)",
+        "pl": "Chagoi (brązowy)",
+        "pt": "Chagoi (castanho)"
+      },
+      "base": "#8b6a43"
+    },
+    {
+      "id": "asagi",
+      "name": {
+        "en": "Asagi (blue grey, red flanks)",
+        "fr": "Asagi (gris bleu, flancs rouges)",
+        "de": "Asagi (blaugrau, rote Flanken)",
+        "es": "Asagi (gris azulado, flancos rojos)",
+        "it": "Asagi (grigio azzurro, fianchi rossi)",
+        "pl": "Asagi (niebieskoszary, czerwone boki)",
+        "pt": "Asagi (cinzento-azulado, flancos vermelhos)"
+      },
+      "base": "#6c8ba3",
+      "belly": "#d0552e",
+      "fins": "#d0552e"
+    },
+    {
+      "id": "karasugoi",
+      "name": {
+        "en": "Karasugoi (black)",
+        "fr": "Karasugoi (noir)",
+        "de": "Karasugoi (schwarz)",
+        "es": "Karasugoi (negro)",
+        "it": "Karasugoi (nero)",
+        "pl": "Karasugoi (czarny)",
+        "pt": "Karasugoi (preto)"
+      },
+      "base": "#1c1c1f"
+    }
+  ]
+}

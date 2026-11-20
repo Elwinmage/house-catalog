@@ -34,6 +34,7 @@ VERSION_RE = re.compile(r"^\d{4}\.\d{1,2}\.\d+$")
 CONSUMERS = {
     "trees": ("house_view",),
     "objects": ("house_view",),
+    "fish": ("house_view",),
 }
 # JSON Schemas (schema/<kind>.schema.json) of the entries of each section. Data
 # only: a release never carries code, which integrations would have to run.
@@ -65,6 +66,9 @@ def _summary(entry: Entry) -> dict:
         data = read_json(entry.files["tree.json"])
         summary["shape"] = data["shape"]
         summary["evergreen"] = data["evergreen"]
+    elif entry.kind == "fish":
+        data = read_json(entry.files["fish.json"])
+        summary["varieties"] = [variety["id"] for variety in data["varieties"]]
     else:
         summary["category"] = read_json(entry.files["object.json"])["category"]
     return summary

@@ -27,8 +27,8 @@ def test_collect_lists_the_entries_of_a_section(root: Path):
     ]
     assert catalog.entry_id(entries[0]) == "oak"
     assert catalog.collect(root / "nowhere", "objects") == []
-    with pytest.raises(ValueError, match="unknown section 'fish'"):
-        catalog.collect(root, "fish")
+    with pytest.raises(ValueError, match="unknown section 'birds'"):
+        catalog.collect(root, "birds")
 
 
 def test_content_hash_follows_the_content_only(root: Path):
@@ -44,12 +44,13 @@ def test_content_hash_follows_the_content_only(root: Path):
 def test_valid_catalog(root: Path, capsys):
     report = validate.validate(root)
     assert report.errors == []
-    assert len(report.warnings) == 4  # translations and pictures, twice
+    # translations and pictures of each entry, the names of the two varieties
+    assert len(report.warnings) == 8
     assert validate.main(["--root", str(root)]) == 0
     assert validate.main(["--root", str(root), "--strict"]) == 1
     out = capsys.readouterr().out
     assert "warning: trees/items/oak: missing translations" in out
-    assert "0 error(s), 4 warning(s)" in out
+    assert "0 error(s), 8 warning(s)" in out
 
 
 def test_broken_catalog(root: Path, capsys):
@@ -110,6 +111,8 @@ def test_first_release(root: Path, tmp_path: Path):
 
     chair = build(root, tmp_path / "objects", "objects")["entries"]["object.stool"]
     assert chair["kind"] == "object" and chair["category"] == "seating"
+    goldfish = build(root, tmp_path / "fish", "fish")["entries"]["fish.goldfish"]
+    assert goldfish["kind"] == "fish" and goldfish["varieties"] == ["red-white", "gold"]
 
 
 def test_archives_are_reproducible(root: Path, tmp_path: Path):
@@ -153,8 +156,8 @@ def test_next_release_only_carries_what_changed(root: Path, tmp_path: Path):
 
 
 def test_refused_releases(root: Path, tmp_path: Path):
-    with pytest.raises(SystemExit, match="unknown section 'fish'"):
-        build(root, tmp_path, "fish")
+    with pytest.raises(SystemExit, match="unknown section 'birds'"):
+        build(root, tmp_path, "birds")
     with pytest.raises(SystemExit, match=r"version must look like 2026\.11\.0"):
         build(root, tmp_path, version="v1")
     objects = build(root, tmp_path / "o", "objects")

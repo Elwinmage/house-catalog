@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/fish.schema.json",
+  "title": "Fish (fish/items/<id>/fish.json)",
+  "description": "A pond fish as the house view draws it, mostly seen from above: a tapered body, its fins and its varieties (colours and patterns). The view builds every fish itself, with a robe of its own drawn from its variety.",
+  "type": "object",
+  "required": ["name", "length", "body", "varieties"],
+  "additionalProperties": false,
+  "properties": {
+    "name": { "$ref": "common.schema.json#/$defs/i18n" },
+    "latin": {
+      "description": "Scientific name (Cyprinus rubrofuscus). Unique in the catalog.",
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "icon": { "$ref": "common.schema.json#/$defs/icon" },
+    "length": {
+      "description": "Length of an adult fish, from the snout to the end of the tail, in metres: the usual one, and the bounds offered in a pond.",
+      "$ref": "common.schema.json#/$defs/bounded_length"
+    },
+    "body": {
+      "description": "Shape of the body, as shares of the length.",
+      "type": "object",
+      "required": ["width", "height"],
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "description": "Widest part of the body seen from above.",
+          "type": "number",
+          "minimum": 0.05,
+          "maximum": 0.5
+        },
+        "height": {
+          "description": "Highest part of the body seen from the side.",
+          "type": "number",
+          "minimum": 0.05,
+          "maximum": 0.6
+        },
+        "tail": {
+          "description": "Length of the tail fin.",
+          "type": "number",
+          "minimum": 0.08,
+          "maximum": 0.45,
+          "default": 0.2
+        },
+        "fins": {
+          "description": "short fins, or long flowing ones (butterfly koi, veiltail goldfish).",
+          "enum": ["short", "long"],
+          "default": "short"
+        }
+      }
+    },
+    "swim": {
+      "description": "How the fish moves about.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "speed": {
+          "description": "Cruising speed, in metres per second.",
+          "type": "number",
+          "minimum": 0.02,
+          "maximum": 2,
+          "default": 0.2
+        },
+        "depth": {
+          "description": "Where it stays when the water is warm: near the surface, in the middle, or near the bottom. Every fish goes down in cold water.",
+          "enum": ["surface", "middle", "bottom"],
+          "default": "middle"
+        },
+        "school": {
+          "description": "Swims in a group rather than alone.",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "varieties": {
+      "description": "The colour varieties offered for this fish (the first one by default).",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": { "$ref": "common.schema.json#/$defs/fish_variety" }
+    }
+  }
+}

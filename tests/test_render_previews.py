@@ -7,7 +7,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from conftest import OBJECT, TREE, dump
+from conftest import FISH, OBJECT, TREE, dump
 from PIL import Image
 
 import render_previews as rp
@@ -232,13 +232,14 @@ def quick(monkeypatch):
         calls.append(data["name"]["en"])
         return tiny, tiny
 
-    monkeypatch.setattr(rp, "PICTURES", {"tree": draw, "object": draw})
+    monkeypatch.setattr(rp, "PICTURES", {"tree": draw, "object": draw, "fish": draw})
     return calls
 
 
 def test_only_missing_pictures_are_drawn(root: Path, quick):
     (root / "objects/items/stool/image.png").write_bytes(b"a photo")
     (root / "trees/items/empty").mkdir()
+    (root / "fish/items/goldfish/image.webp").write_bytes(b"drawn")
     assert rp.write_pictures(root) == ["trees/oak"]
     assert quick == ["Oak"]
     with Image.open(root / "trees/items/oak/image.webp") as image:
@@ -248,14 +249,18 @@ def test_only_missing_pictures_are_drawn(root: Path, quick):
 
     assert rp.write_pictures(root) == []
     assert rp.write_pictures(root, only=["stool"]) == ["objects/stool"]
-    assert rp.write_pictures(root, force=True) == ["trees/oak", "objects/stool"]
+    assert rp.write_pictures(root, force=True) == [
+        "trees/oak",
+        "objects/stool",
+        "fish/goldfish",
+    ]
 
 
 def test_command(root: Path, quick, capsys):
     args = ["--root", str(root)]
     assert rp.main(args) == 0
     assert (
-        "drawn: trees/oak\ndrawn: objects/stool\n2 entries drawn"
+        "drawn: trees/oak\ndrawn: objects/stool\ndrawn: fish/goldfish\n3 entries drawn"
         in capsys.readouterr().out
     )
     assert rp.main([*args, "oak"]) == 0
@@ -269,9 +274,51 @@ def test_real_drawing_ends_in_a_file(root: Path, monkeypatch):
     small = {
         "tree": lambda data: rp.tree_pictures(data, 32, 16),
         "object": lambda data: rp.object_pictures(data, 32, 16),
+        "fish": lambda data: rp.fish_pictures(data, 32, 16),
     }
     monkeypatch.setattr(rp, "PICTURES", small)
     dump(root / "trees/items/oak/tree.json", TREE)
-    assert rp.write_pictures(root) == ["trees/oak", "objects/stool"]
+    assert rp.write_pictures(root) == ["trees/oak", "objects/stool", "fish/goldfish"]
     with Image.open(root / "objects/items/stool/thumb.webp") as thumb:
         assert thumb.size == (16, 16) and thumb.mode == "RGBA"
+
+
+# -- fish -----------------------------------------------------------------------
+
+
+def test_body_is_narrow_at_the_tail_and_round_at_the_head():
+    assert rp.body_halfwidth(0) == pytest.approx(0.28)
+    assert rp.body_halfwidth(0.62) == pytest.approx(1)
+    assert rp.body_halfwidth(1) == pytest.approx(0, abs=1e-6)
+    assert rp.body_halfwidth(-1) == rp.body_halfwidth(0)
+    assert rp.body_halfwidth(2) == rp.body_halfwidth(1)
+
+
+def test_patches_of_a_fish():
+    red_white, gold = FISH["varieties"]
+    body = FISH["body"]
+    patches = rp.fish_patches(red_white, body, 1)
+    assert len(patches) == rp.PATCH_COUNT["large"] + rp.PATCH_COUNT["small"]
+    assert patches == rp.fish_patches(red_white, body, 1)  # same seed, same robe
+    assert patches != rp.fish_patches(red_white, body, 2)
+    for color, x, _, rx, ry in patches:
+        assert color in ("#dd2200", "#000000") and -0.25 < x < 0.5 and rx > ry
+    # a head spot: one round patch on the middle line, near the snout
+    [(color, x, y, rx, ry)] = rp.fish_patches(gold, body, 3)
+    assert (color, y, rx) == ("#cc0000", 0, ry) and x > 0.3
+    assert rp.fish_patches({"base": "#000000"}, body, 1) == []
+
+
+def test_fish_pictures():
+    sheet, thumb = rp.fish_pictures(FISH, size=96, thumb=48)
+    assert sheet.size == (96, 96) and thumb.size == (48, 48)
+    left, right = sheet.crop((0, 0, 48, 48)), sheet.crop((48, 0, 96, 48))
+    assert pixels(left, "#ffffff") > 20 and pixels(left, "#dd2200") > 5
+    assert pixels(right, "#ffaa00", 120) > 20  # the gold one, made shinier
+    assert pixels(right, "#ffaa00", 60) > 3 * pixels(left, "#ffaa00", 60)
+    assert np.array(sheet)[0, 0, 3] == 0
+    assert pixels(thumb, "#dd2200") > 5
+    short = FISH | {"body": FISH["body"] | {"fins": "short"}}
+    wide = np.array(rp.fish_picture(FISH, FISH["varieties"][0], 64))[:, :, 3] > 100
+    narrow = np.array(rp.fish_picture(short, FISH["varieties"][0], 64))[:, :, 3] > 100
+    assert wide.any(axis=1).sum() > narrow.any(axis=1).sum()  # long fins reach out

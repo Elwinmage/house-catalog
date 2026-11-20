@@ -8,7 +8,7 @@ contract of [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog)
 
 ## Releases
 
-Each section (`trees`, `objects`) has:
+Each section (`trees`, `objects`, `fish`) has:
 
 - versioned releases `<section>-<version>` (`trees-2026.11.0`) holding the
   archives that changed in that version: `<kind>.<id>.zip` per entry (flat:
@@ -105,15 +105,17 @@ copied by `sync_client.py` of reeftech-catalog):
 ```python
 TREES = CatalogSpec(DOMAIN, "trees", "Trees", device_title="House view catalog")
 OBJECTS = CatalogSpec(DOMAIN, "objects", "Objects", by_section=True)
+FISH = CatalogSpec(DOMAIN, "fish", "Fish", by_section=True)
 ```
 
-(one `CatalogSpec` per section, the second one with `by_section=True`: see
+(one `CatalogSpec` per section, the ones after the first with `by_section=True`: see
 "Several sections" in `doc/consumers.md` of reeftech-catalog).
 
 `scripts/sync_client.py` of this repository writes `house_catalog_sections.py`
 and the built-in snapshots the integration ships, used before the first
 download and offline:
-`catalog_builtin/` (trees) and `catalog_builtin_objects/` (objects), and its
+`catalog_builtin/` (trees), `catalog_builtin_objects/` (objects) and
+`catalog_builtin_fish/` (fish), and its
 `--check` fails when one is out of date.
 
 The pack is shared (`<config>/reeftech_catalog/pack/<section>/`) with the

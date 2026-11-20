@@ -59,6 +59,35 @@ OBJECT = {
 }
 
 
+FISH = {
+    "name": {"en": "Goldfish"},
+    "latin": "Carassius auratus",
+    "length": {"default": 0.2, "min": 0.05, "max": 0.35},
+    "body": {"width": 0.24, "height": 0.3, "tail": 0.25, "fins": "long"},
+    "swim": {"speed": 0.15, "depth": "surface", "school": True},
+    "varieties": [
+        {
+            "id": "red-white",
+            "name": {"en": "Red and white"},
+            "base": "#ffffff",
+            "fins": "#ff8800",
+            "patches": [
+                {"color": "#dd2200", "amount": 0.5, "size": "large"},
+                {"color": "#000000", "amount": 0.1, "size": "small", "where": "back"},
+            ],
+        },
+        {
+            "id": "gold",
+            "name": {"en": "Gold"},
+            "base": "#ffaa00",
+            "belly": "#ffee88",
+            "metallic": True,
+            "patches": [{"color": "#cc0000", "amount": 0.05, "where": "head"}],
+        },
+    ],
+}
+
+
 def dump(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data), encoding="utf-8")
@@ -75,9 +104,15 @@ def thing() -> dict:
 
 
 @pytest.fixture
+def fish() -> dict:
+    return copy.deepcopy(FISH)
+
+
+@pytest.fixture
 def root(tmp_path: Path) -> Path:
-    """A minimal valid catalog: one tree, one object, no picture."""
+    """A minimal valid catalog: one tree, one object, one fish, no picture."""
     shutil.copytree(REPO / "schema", tmp_path / "schema")
     dump(tmp_path / "trees/items/oak/tree.json", TREE)
     dump(tmp_path / "objects/items/stool/object.json", OBJECT)
+    dump(tmp_path / "fish/items/goldfish/fish.json", FISH)
     return tmp_path

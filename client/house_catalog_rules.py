@@ -13,7 +13,7 @@ needs `jsonschema` and `referencing`. Everything works on data already read
 
     validators = load_validators(schema_dir)        # schema/ of the repository,
                                                     # or schema.zip of a release
-    ctx = Context(trees=..., objects=...)
+    ctx = Context(trees=..., objects=..., fish=...)
     report = validate_draft("tree", "oak", data, {"tree.json": 900}, ctx, validators)
     report.errors, report.warnings
 
@@ -53,16 +53,20 @@ CENTER_TOLERANCE = 0.02
 GROUND_TOLERANCE = 0.01
 #: Largest size of an object along any axis, in metres
 OBJECT_MAX = 20.0
+#: Longest fish, in metres
+FISH_MAX = 2.0
 
 #: Descriptor file of each kind of entry
 DESCRIPTORS = {
     "tree": "tree.json",
     "object": "object.json",
+    "fish": "fish.json",
 }
 #: Folder of each kind, from the root of the repository
 FOLDERS = {
     "tree": "trees/items",
     "object": "objects/items",
+    "fish": "fish/items",
 }
 
 
@@ -86,6 +90,7 @@ class Context:
 
     trees: dict[str, dict[str, Any]] = field(default_factory=dict)
     objects: dict[str, dict[str, Any]] = field(default_factory=dict)
+    fish: dict[str, dict[str, Any]] = field(default_factory=dict)
 
 
 def where_of(kind: str, entry_id: str) -> str:
@@ -290,14 +295,56 @@ def _check_object(report, where, entry_id, data, files, ctx) -> None:
         report.warn(where, "no picture, only the icon will be shown")
 
 
+def _check_fish(report, where, entry_id, data, files, ctx) -> None:
+    _check_i18n(report, where, data["name"])
+
+    length = data["length"]
+    if not length["min"] <= length["default"] <= length["max"]:
+        report.error(where, f"length needs min <= default <= max, got {length}")
+    if length["max"] > FISH_MAX:
+        report.error(
+            where, f"a fish of {length['max']} m is larger than {FISH_MAX:g} m"
+        )
+
+    latin = data.get("latin")
+    if latin is not None:
+        for other_id, other in ctx.fish.items():
+            if str(other.get("latin", "")).lower() == latin.lower():
+                report.error(where, f"latin {latin!r} already used by {other_id!r}")
+                break
+
+    seen: set[str] = set()
+    for variety in data["varieties"]:
+        here = f"{where} variety {variety['id']}"
+        if variety["id"] in seen:
+            report.error(here, "id used twice")
+        seen.add(variety["id"])
+        _check_i18n(report, here, variety["name"])
+        patches = variety.get("patches", [])
+        covered = sum(
+            p["amount"] for p in patches if p.get("where", "anywhere") != "head"
+        )
+        if covered > 1:
+            report.error(
+                here,
+                f"the patches cover {covered:.2f} of the back, more than all of it",
+            )
+        if any(p["color"] == variety["base"] for p in patches):
+            report.warn(here, "a patch has the colour of the body: it does not show")
+    if not _has_image(files):
+        report.warn(where, "no picture, only the icon will be shown")
+
+
 _RULES = {
     "tree": _check_tree,
     "object": _check_object,
+    "fish": _check_fish,
 }
 #: Group of `Context` the accepted entries of each kind join
 _GROUPS = {
     "tree": "trees",
     "object": "objects",
+    "fish": "fish",
 }
 
 
@@ -340,6 +387,8 @@ def validate_draft(
     """
     report = Report()
     check_files(report, where_of(kind, entry_id), files, DESCRIPTORS[kind])
-    scratch = Context(trees=dict(ctx.trees), objects=dict(ctx.objects))
+    scratch = Context(
+        trees=dict(ctx.trees), objects=dict(ctx.objects), fish=dict(ctx.fish)
+    )
     validate_entry(report, kind, entry_id, data, files, scratch, validators)
     return report

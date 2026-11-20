@@ -73,7 +73,7 @@ def test_the_catalog_describes_itself_for_the_client():
 
 
 def test_layout_is_the_one_of_the_client():
-    assert set(SECTIONS) == {"trees", "objects"}
+    assert set(SECTIONS) == {"trees", "objects", "fish"}
     for section, kinds in LAYOUT.items():
         assert re.fullmatch(r"[a-z_]+", section)
         for folder, kind in kinds:

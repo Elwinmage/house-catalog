@@ -2,13 +2,15 @@
 
 Data catalog of the [house view](https://github.com/Elwinmage/ha-house-view-component)
 for Home Assistant: the trees and the objects it draws around and inside the
-house. Adding a tree species or a piece of furniture is a pull request here,
-not a new release of the integration or of the card.
+house, and the fish of its ponds. Adding a tree species, a piece of furniture
+or a fish is a pull request here, not a new release of the integration or of
+the card.
 
 | Section | Content | Downloaded by | Shown by |
 |---|---|---|---|
 | `trees` | trees and shrubs: a simple shape and up to four renderings, one per season | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `objects` | furniture and outdoor objects, made of a few simple solids | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `fish` | pond fish: a body, its fins and its colour varieties | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 
 The catalog follows the conventions of
 [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog): one folder
@@ -35,6 +37,10 @@ objects/
   items/<object_id>/
     object.json                 name, category, parts
     image.webp / thumb.webp     pictures (optional)
+fish/
+  items/<fish_id>/
+    fish.json                   name, sizes, swimming, colour varieties
+    image.webp / thumb.webp     pictures (optional): every variety, the first one
 scripts/                        validate.py, make_release.py, render_previews.py,
                                 readme_catalog.py, sync_client.py (description and
                                 rules into the editor, description and built-in
@@ -102,11 +108,37 @@ so an entry is never renamed, only removed.
   (the colour of a piece of furniture of the plan, for instance).
 - The size of an object is the one of its parts; it is not written twice.
 
+## Fish
+
+```json
+{
+  "name": { "en": "Koi carp", "fr": "Carpe koï" },
+  "latin": "Cyprinus rubrofuscus",
+  "length": { "default": 0.5, "min": 0.15, "max": 0.9 },
+  "body": { "width": 0.2, "height": 0.22, "tail": 0.2, "fins": "short" },
+  "swim": { "speed": 0.18, "depth": "middle", "school": false },
+  "varieties": [
+    { "id": "kohaku", "name": { "en": "Kohaku (red and white)" }, "base": "#f6f2ea",
+      "patches": [{ "color": "#d3301f", "amount": 0.45, "size": "large", "where": "back" }] },
+    { "id": "yamabuki-ogon", "name": { "en": "Yamabuki ogon (gold yellow)" }, "base": "#f0bf2c", "metallic": true }
+  ]
+}
+```
+
+- The card draws the fish itself, mostly seen from above: `body` sizes are
+  shares of the `length` (metres, snout to tail).
+- `varieties`: the colour of the body (`base`), optionally of the flanks
+  (`belly`) and of the fins, `metallic` scales, and `patches` (colour, share
+  of the back covered, size, place). Each fish of a pond gets a robe of its
+  own from its variety; a pond can also give colours of its own.
+- `swim`: cruising speed, the depth kept in warm water, schooling.
+
 ## Pictures
 
 `scripts/render_previews.py` draws `image.webp` and `thumb.webp` from the
 descriptor, with the same reading of the format as the card: the picture of a
-tree shows its four seasons (spring, summer / autumn, winter). A photo or a
+tree shows its four seasons (spring, summer / autumn, winter), the one of a
+fish every variety, seen from above. A photo or a
 drawing of your own may replace them.
 
 ## Catalog content
@@ -133,6 +165,15 @@ drawing of your own may replace them.
 |  | Id | Object | Category | Width x depth x height | Parts |
 |---|---|---|---|---|---|
 | <img src="objects/items/chair/thumb.webp" width="48" alt=""> | `chair` | Chair | seating | 0.42 x 0.42 x 0.9 m | 7 |
+
+</details>
+
+<details>
+<summary><b>Fish</b> (1)</summary>
+
+|  | Id | Fish | Scientific name | Length | Varieties |
+|---|---|---|---|---|---|
+| <img src="fish/items/koi/thumb.webp" width="48" alt=""> | `koi` | Koi carp | <i>Cyprinus rubrofuscus</i> | 0.5 m (0.15-0.9) | kohaku, sanke, showa, tancho, benigoi, yamabuki-ogon, platinum-ogon, kigoi, chagoi, asagi, karasugoi |
 
 </details>
 

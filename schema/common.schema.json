@@ -140,6 +140,64 @@
           "default": false
         }
       }
+    },
+    "fish_variety": {
+      "description": "A colour variety: the colour of the body, then patches over it, in order.",
+      "type": "object",
+      "required": ["id", "name", "base"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "$ref": "#/$defs/i18n" },
+        "base": {
+          "description": "Colour of the body.",
+          "$ref": "#/$defs/color"
+        },
+        "belly": {
+          "description": "Colour of the flanks and of the belly, when it differs from the back.",
+          "$ref": "#/$defs/color"
+        },
+        "fins": {
+          "description": "Colour of the fins (the colour of the body by default).",
+          "$ref": "#/$defs/color"
+        },
+        "metallic": {
+          "description": "Shiny scales (ogon koi).",
+          "type": "boolean",
+          "default": false
+        },
+        "patches": {
+          "description": "Patches over the body, drawn in order (the later ones over the earlier ones).",
+          "type": "array",
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/fish_patch" }
+        }
+      }
+    },
+    "fish_patch": {
+      "description": "Patches of one colour on the back.",
+      "type": "object",
+      "required": ["color", "amount"],
+      "additionalProperties": false,
+      "properties": {
+        "color": { "$ref": "#/$defs/color" },
+        "amount": {
+          "description": "Share of the back covered: just above 0 (a touch) to 1 (all of it).",
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
+        "size": {
+          "description": "Size of each patch: small spots, medium patches or large ones.",
+          "enum": ["small", "medium", "large"],
+          "default": "medium"
+        },
+        "where": {
+          "description": "anywhere on the back, only on the head (a round spot for one patch: tancho), or on the back behind the head.",
+          "enum": ["anywhere", "head", "back"],
+          "default": "anywhere"
+        }
+      }
     }
   }
 }

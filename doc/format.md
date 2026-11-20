@@ -75,12 +75,52 @@ object is the box around its parts (`object_size` in
 [`client/house_catalog_rules.py`](../client/house_catalog_rules.py)); a
 renderer fitting an object to a piece of furniture of a plan scales that box.
 
+## Fish
+
+A fish is drawn by the renderer from its sizes; every fish of a pond gets a
+robe of its own, drawn from its variety. Lengths are shares of the length of
+the fish, `length` being in metres (snout to the end of the tail).
+
+```
+   tail fin          body                head
+   ◁───────┤▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▶   seen from above
+   body.tail          body.width at its widest
+```
+
+- The **body** goes from the root of the tail to the snout: narrow at the
+  tail, widest a little ahead of its middle (`body.width`), rounded at the
+  head; `body.height` is its height seen from the side. The **tail fin**,
+  `body.tail` long, fans out behind it; `body.fins` says whether the fins are
+  `short` or `long` and flowing (butterfly koi).
+- `swim` tells how it moves: its cruising `speed` (m/s), the `depth` it keeps
+  in warm water (`surface`, `middle`, `bottom`; every fish goes down in cold
+  water), and whether it swims in a `school`.
+
+### Varieties
+
+Each variety gives the colour of the body (`base`), of the flanks and belly
+(`belly`, the base colour by default) and of the fins (`fins`), `metallic`
+for shiny scales, and up to four layers of `patches` drawn in order over the
+back:
+
+| Field | Meaning |
+|---|---|
+| `color` | Colour of the patches of the layer. |
+| `amount` | Share of the back they cover together, just above 0 to 1. |
+| `size` | `small` spots, `medium` patches (the default) or `large` ones: the same amount is spread over more or fewer patches. |
+| `where` | `anywhere` on the back, `back` (behind the head), or `head`: one round patch on the head (tancho koi). |
+
+Where the patches fall is left to the renderer, from a seed of its own for
+each fish, so that two fish of a variety are never alike but one fish keeps
+its robe; `scripts/render_previews.py` (`fish_patches`) is the reference.
+
 ## Shared fields
 
 | Field | Meaning |
 |---|---|
 | `name` | Name per language; English is mandatory and is the fallback. |
 | `icon` | Material Design Icon shown in lists when there is no picture. |
+| `latin` | Botanical or scientific name of a tree or a fish, unique in its section. |
 | `keywords` | Words naming the entry in a Sweet Home 3D plan, in any language, in lower case without accents. A plant or a piece of furniture whose name holds one of these words (whole word, case and accents ignored) is drawn with the entry. |
 
 ## Pictures

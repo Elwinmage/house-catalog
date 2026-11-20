@@ -5,7 +5,9 @@
 Writes `image.webp` (512 px) and `thumb.webp` (128 px) next to each descriptor
 that has no picture yet (`--force`: every entry, or the given ids). A tree gets
 its four seasons on the picture (spring, summer / autumn, winter) and its summer
-on the thumbnail; an object is seen from three quarters.
+on the thumbnail; an object is seen from three quarters; a fish is seen from
+above, one fish per variety on the picture and the first variety on the
+thumbnail.
 
 The pictures are drawn exactly from what the descriptor says (see
 doc/format.md), with a small software renderer (flat shading, depth buffer):
@@ -487,7 +489,160 @@ def object_pictures(
     )
 
 
-PICTURES = {"tree": tree_pictures, "object": object_pictures}
+# -- fish, seen from above ---------------------------------------------------------
+
+#: Patches of each size drawn for a layer (their total area follows `amount`)
+PATCH_COUNT = {"small": 12, "medium": 5, "large": 2}
+#: Part of the body, from the root of the tail (0) to the snout (1), patches go to
+PATCH_SPAN = {"anywhere": (0.06, 0.94), "back": (0.12, 0.76), "head": (0.8, 0.9)}
+
+
+def body_halfwidth(u: float) -> float:
+    """Half width of the body seen from above, as a share of its widest point.
+
+    `u` goes from the root of the tail (0) to the snout (1): narrow at the tail,
+    widest a little ahead of the middle, rounded at the head.
+    """
+    u = min(max(u, 0.0), 1.0)
+    if u < 0.62:
+        return 0.28 + 0.72 * math.sin(math.pi / 2 * u / 0.62)
+    return math.cos(math.pi / 2 * (u - 0.62) / 0.38) ** 0.6
+
+
+def fish_patches(
+    variety: dict[str, Any], body: dict[str, Any], seed: int
+) -> list[tuple[str, float, float, float, float]]:
+    """The patches of one fish: (colour, x, y, rx, ry), the fish being 1 long.
+
+    x goes from the end of the tail (-0.5) to the snout (0.5), y across the body.
+    Two fish of a variety get two seeds, so two robes of their own.
+    """
+    rng = random.Random(seed)
+    tail = body.get("tail", 0.2)
+    start, span = -0.5 + tail, 1 - tail
+    width = body["width"]
+    area = width * span * 0.7  # rough area of the body seen from above
+    out = []
+    for patch in variety.get("patches", []):
+        where = patch.get("where", "anywhere")
+        count = 1 if where == "head" else PATCH_COUNT[patch.get("size", "medium")]
+        each = patch["amount"] * area / count
+        low, high = PATCH_SPAN[where]
+        for _ in range(count):
+            u = rng.uniform(low, high)
+            half = width / 2 * body_halfwidth(u)
+            y = 0.0 if where == "head" else rng.uniform(-0.55, 0.55) * half
+            stretch = 1.0 if where == "head" else 1.5
+            rx = math.sqrt(each / math.pi * stretch)
+            out.append((patch["color"], start + u * span, y, rx, rx / stretch))
+    return out
+
+
+def fish_picture(
+    data: dict[str, Any], variety: dict[str, Any], size: int, seed: int = 1
+) -> Image.Image:
+    """One fish of a variety seen from above, head to the right, on a clear ground."""
+    big = size * SUPERSAMPLE
+    body = data["body"]
+    tail = body.get("tail", 0.2)
+    width = body["width"]
+    long_fins = body.get("fins", "short") == "long"
+    scale = big * 0.86
+
+    def at(x: float, y: float) -> tuple[float, float]:
+        return (big / 2 + x * scale, big / 2 + y * scale)
+
+    start, span = -0.5 + tail, 1 - tail
+    steps = 48
+    side = [
+        (start + span * k / steps, width / 2 * body_halfwidth(k / steps))
+        for k in range(steps + 1)
+    ]
+    outline = [at(x, -y) for x, y in side] + [at(x, y) for x, y in reversed(side)]
+    fins_color = rgb(variety.get("fins", variety["base"]))
+    fin = (*map(int, fins_color), 200)
+    picture = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(picture)
+    # tail fin: a fan behind the root of the tail, notched in the middle
+    root = width / 2 * body_halfwidth(0)
+    spread = width * (0.75 if long_fins else 0.55)
+    draw.polygon(
+        [
+            at(start + 0.01, -root),
+            at(-0.5, -spread),
+            at(-0.5 + tail * 0.4, 0),
+            at(-0.5, spread),
+            at(start + 0.01, root),
+        ],
+        fill=fin,
+    )
+    # pectoral fins, on both sides a little behind the head
+    reach = width * (0.6 if long_fins else 0.42)
+    for sign in (-1, 1):
+        x0 = start + span * 0.66
+        y0 = sign * width / 2 * body_halfwidth(0.66) * 0.8
+        draw.polygon(
+            [
+                at(x0, y0),
+                at(x0 - reach * 0.9, y0 + sign * reach),
+                at(x0 - reach * 0.2, y0),
+            ],
+            fill=fin,
+        )
+    # body: flanks in the colour of the belly, the back over them
+    draw.polygon(
+        outline, fill=(*map(int, rgb(variety.get("belly", variety["base"]))), 255)
+    )
+    back = [at(x, -y * 0.78) for x, y in side] + [
+        at(x, y * 0.78) for x, y in reversed(side)
+    ]
+    draw.polygon(back, fill=(*map(int, rgb(variety["base"])), 255))
+    # patches, kept inside the body
+    mask = Image.new("L", (big, big), 0)
+    ImageDraw.Draw(mask).polygon(back, fill=255)
+    layer = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+    paint = ImageDraw.Draw(layer)
+    for color, x, y, rx, ry in fish_patches(variety, body, seed):
+        x0, y0 = at(x - rx, y - ry)
+        x1, y1 = at(x + rx, y + ry)
+        paint.ellipse((x0, y0, x1, y1), fill=(*map(int, rgb(color)), 255))
+    layer.putalpha(
+        Image.fromarray(np.minimum(np.array(layer)[:, :, 3], np.array(mask)))
+    )
+    picture = Image.alpha_composite(picture, layer)
+    if variety.get("metallic"):
+        # shiny scales: a light streak along the back
+        shine = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+        streak = [at(x, -y * 0.25) for x, y in side] + [
+            at(x, y * 0.25) for x, y in reversed(side)
+        ]
+        ImageDraw.Draw(shine).polygon(streak, fill=(255, 255, 255, 90))
+        picture = Image.alpha_composite(picture, shine)
+    # eyes
+    for sign in (-1, 1):
+        ex, ey = start + span * 0.9, sign * width / 2 * body_halfwidth(0.9) * 0.7
+        cx, cy = at(ex, ey)
+        r = scale * 0.012
+        draw = ImageDraw.Draw(picture)
+        draw.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(20, 20, 20, 255))
+    return picture.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def fish_pictures(
+    data: dict[str, Any], size: int = IMAGE_SIZE, thumb: int = THUMB_SIZE
+) -> tuple[Image.Image, Image.Image]:
+    """Every variety on the picture (up to 16, in a grid), the first one on the thumbnail."""
+    varieties = data["varieties"][:16]
+    columns = math.ceil(math.sqrt(len(varieties)))
+    tile = size // columns
+    sheet = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    for index, variety in enumerate(varieties):
+        picture = fish_picture(data, variety, tile, seed=index + 1)
+        sheet.paste(picture, ((index % columns) * tile, (index // columns) * tile))
+    return sheet, fish_picture(data, varieties[0], thumb)
+
+
+PICTURES = {"tree": tree_pictures, "object": object_pictures, "fish": fish_pictures}
 
 
 def write_pictures(

@@ -40,7 +40,8 @@ def check(kind, data, validators, files=None, ctx=None) -> Report:
 
 
 def test_validators_cover_the_kinds_only(validators):
-    assert sorted(validators) == ["object", "tree"]
+    assert sorted(validators) == ["fish", "object", "tree"]
+    assert where_of("fish", "koi") == "fish/items/koi"
     assert where_of("tree", "oak") == "trees/items/oak"
     assert where_of("object", "chair") == "objects/items/chair"
 
@@ -225,3 +226,46 @@ def test_schemas_are_read_from_any_folder(tmp_path: Path, tree):
     for path in (REPO / "schema").glob("*.json"):
         (tmp_path / path.name).write_bytes(path.read_bytes())
     assert check("tree", tree, load_validators(tmp_path)).errors == []
+
+
+def test_a_complete_fish_passes(fish, validators):
+    fish["name"] = ALL_LANGS
+    for variety in fish["varieties"]:
+        variety["name"] = ALL_LANGS
+    report = check("fish", fish, validators, {"fish.json": 900, "image.webp": 1})
+    assert (report.errors, report.warnings) == ([], [])
+
+
+def test_fish_rules(fish, validators):
+    fish["length"] = {"default": 0.5, "min": 0.6, "max": 3}
+    fish["varieties"][1]["id"] = "red-white"
+    fish["varieties"][0]["patches"][0]["amount"] = 0.95
+    fish["varieties"][1]["patches"][0]["color"] = "#ffaa00"
+    ctx = Context(fish={"other": {}, "carp": {"latin": "carassius AURATUS"}})
+    report = check("fish", fish, validators, {"fish.json": 1}, ctx)
+    assert report.errors == [
+        "fish/items/draft: length needs min <= default <= max, got {'default': 0.5, 'min': 0.6, 'max': 3}",
+        "fish/items/draft: a fish of 3 m is larger than 2 m",
+        "fish/items/draft: latin 'Carassius auratus' already used by 'carp'",
+        "fish/items/draft variety red-white: the patches cover 1.05 of the back, more than all of it",
+        "fish/items/draft variety red-white: id used twice",
+    ]
+    assert report.warnings == [
+        "fish/items/draft: missing translations: fr, de, es, it, pl, pt",
+        "fish/items/draft variety red-white: missing translations: fr, de, es, it, pl, pt",
+        "fish/items/draft variety red-white: missing translations: fr, de, es, it, pl, pt",
+        "fish/items/draft variety red-white: a patch has the colour of the body: it does not show",
+        "fish/items/draft: no picture, only the icon will be shown",
+    ]
+    del fish["latin"]
+    assert not any(
+        "latin" in e for e in check("fish", fish, validators, ctx=ctx).errors
+    )
+
+
+def test_fish_schema(fish, validators):
+    fish["varieties"][0]["patches"].append(
+        {"color": "#123456", "amount": 0.1, "size": "huge"}
+    )
+    errors = check("fish", fish, validators).errors
+    assert len(errors) == 1 and "huge" in errors[0]
