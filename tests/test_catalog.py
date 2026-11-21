@@ -111,8 +111,13 @@ def test_first_release(root: Path, tmp_path: Path):
 
     chair = build(root, tmp_path / "objects", "objects")["entries"]["object.stool"]
     assert chair["kind"] == "object" and chair["category"] == "seating"
-    goldfish = build(root, tmp_path / "pond_fish", "pond_fish")["entries"]["pond_fish.goldfish"]
-    assert goldfish["kind"] == "pond_fish" and goldfish["varieties"] == ["red-white", "gold"]
+    goldfish = build(root, tmp_path / "pond_fish", "pond_fish")["entries"][
+        "pond_fish.goldfish"
+    ]
+    assert goldfish["kind"] == "pond_fish" and goldfish["varieties"] == [
+        "red-white",
+        "gold",
+    ]
 
 
 def test_archives_are_reproducible(root: Path, tmp_path: Path):

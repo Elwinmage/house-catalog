@@ -55,7 +55,9 @@ class Target:
 #: checkout folder -> what the tool takes
 TARGETS: dict[str, Target] = {
     "catalog-editor": Target("catalog_editor", rules=True),
-    "ha-house-view-component": Target("house_view", reads=("trees", "objects", "pond_fish")),
+    "ha-house-view-component": Target(
+        "house_view", reads=("trees", "objects", "pond_fish")
+    ),
 }
 
 
