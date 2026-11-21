@@ -94,7 +94,6 @@ def trees_table(root: Path) -> list[str]:
                 "4 seasons"
                 if len(seasons) == len(SEASONS)
                 else _cell(", ".join(seasons)),
-                str(len(data.get("varieties", []))) if data.get("varieties") else "",
             ]
         )
     return _details(
@@ -108,7 +107,6 @@ def trees_table(root: Path) -> list[str]:
                 "Foliage",
                 "Height",
                 "Seasons",
-                "Varieties",
             ],
             rows,
         ),
