@@ -83,8 +83,8 @@ def trees_table(root: Path) -> list[str]:
         rows.append(
             [
                 _visual(root, folder),
-                f"`{folder.name}`",
-                _cell(_name(data, folder.name)),
+                # name and id in one cell: one column less, so that the picture keeps its width
+                f"{_cell(_name(data, folder.name))}<br>`{folder.name}`",
                 f"<i>{_cell(data['latin'])}</i>" if "latin" in data else "",
                 _cell(data["shape"]),
                 "evergreen" if data["evergreen"] else "deciduous",
@@ -102,7 +102,6 @@ def trees_table(root: Path) -> list[str]:
         _table(
             [
                 "",
-                "Id",
                 "Tree",
                 "Botanical name",
                 "Shape",

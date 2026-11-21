@@ -22,11 +22,11 @@ def test_tables(root: Path):
     assert block.startswith(readme_catalog.BEGIN) and block.endswith(readme_catalog.END)
     assert "<summary><b>Trees</b> (2)</summary>" in block
     assert (
-        '| <img src="trees/items/oak/thumb.webp" width="48" alt=""> | `oak` | Oak '
+        '| <img src="trees/items/oak/thumb.webp" width="48" alt=""> | Oak<br>`oak` '
         "| <i>Quercus robur</i> | round | deciduous | 9 m (4-25) "
         "| 4 seasons |"
     ) in block
-    assert "|  | `fir` | Fir \\| spruce |  | round | evergreen |" in block
+    assert "|  | Fir \\| spruce<br>`fir` |  | round | evergreen |" in block
     assert "<summary><b>Objects</b> (1)</summary>" in block
     assert (
         '| <img src="objects/items/stool/image.png" width="48" alt=""> | `stool` '
@@ -36,9 +36,9 @@ def test_tables(root: Path):
 
 def test_name_falls_back_to_the_id(root: Path):
     dump(root / "trees/items/oak/tree.json", TREE | {"name": "Oak"})
-    assert "| `oak` | oak |" in readme_catalog.render(root)
+    assert "| oak<br>`oak` |" in readme_catalog.render(root)
     dump(root / "trees/items/oak/tree.json", TREE | {"name": {"fr": "Chêne"}})
-    assert "| `oak` | oak |" in readme_catalog.render(root)
+    assert "| oak<br>`oak` |" in readme_catalog.render(root)
 
 
 def test_update_replaces_or_appends():
