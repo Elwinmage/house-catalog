@@ -74,7 +74,8 @@ so an entry is never renamed, only removed.
 
 - `shape`: `round` (a crown of leafy clumps: oak, birch, fruit trees, a
   shrub), `conical` (stacked cones: pine, fir, yew) or `weeping` (a low dome
-  with curtains of branches hanging from it: weeping willow).
+  with curtains of branches hanging from it: weeping willow) or `palm` (a bare
+  trunk and a tuft of fronds: date palm, coconut palm).
 - Sizes are in metres, for a tree of the default `height`; the card scales
   the whole tree to the height chosen when it is placed, within `min` and `max`.
 - `seasons`: up to four renderings. `summer` is mandatory; a missing season is

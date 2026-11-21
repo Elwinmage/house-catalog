@@ -1,0 +1,64 @@
+{
+  "name": {
+    "en": "Silver fir",
+    "fr": "Sapin pectiné",
+    "de": "Weißtanne",
+    "es": "Abeto blanco",
+    "it": "Abete bianco",
+    "pl": "Jodła pospolita",
+    "pt": "Abeto-prateado"
+  },
+  "latin": "Abies alba",
+  "icon": "mdi:pine-tree",
+  "keywords": [
+    "silver fir",
+    "fir",
+    "sapin",
+    "sapin pectine",
+    "tanne",
+    "weisstanne",
+    "abeto",
+    "abete",
+    "jodla",
+    "abeto prateado"
+  ],
+  "shape": "conical",
+  "evergreen": true,
+  "height": {
+    "default": 16,
+    "min": 4,
+    "max": 40
+  },
+  "crown_radius": 2.7,
+  "trunk": {
+    "height": 1.2,
+    "radius": 0.28,
+    "color": "#6b4a35"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#2f6a4a"
+    },
+    "summer": {
+      "foliage": "#265c42"
+    },
+    "autumn": {
+      "foliage": "#265c42",
+      "fruits": {
+        "color": "#6b4a30",
+        "amount": 0.1
+      },
+      "fallen": {
+        "color": "#8a5a3a",
+        "amount": 0.2
+      }
+    },
+    "winter": {
+      "foliage": "#234f3c",
+      "fallen": {
+        "color": "#8a5a3a",
+        "amount": 0.15
+      }
+    }
+  }
+}

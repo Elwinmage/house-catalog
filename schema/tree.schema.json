@@ -17,8 +17,8 @@
     "icon": { "$ref": "common.schema.json#/$defs/icon" },
     "keywords": { "$ref": "common.schema.json#/$defs/keywords" },
     "shape": {
-      "description": "round: a crown of leafy blobs (oak, birch, cherry, a shrub); conical: stacked cones (pine, fir, yew); weeping: a low dome with curtains of branches hanging from it (weeping willow).",
-      "enum": ["round", "conical", "weeping"]
+      "description": "round: a crown of leafy blobs (oak, birch, cherry, a shrub); conical: stacked cones (pine, fir, yew); weeping: a low dome with curtains of branches hanging from it (weeping willow); palm: a bare trunk and a tuft of fronds (date palm, coconut palm).",
+      "enum": ["round", "conical", "weeping", "palm"]
     },
     "evergreen": {
       "description": "Keeps its foliage in winter (snow settles on it). A deciduous tree should give its four seasons.",

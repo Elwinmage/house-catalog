@@ -33,6 +33,10 @@ placing a tree of another height scales the whole tree by
     branches hanging from its rim (0.85 of `crown_radius`) down to the trunk,
     some longer than others (weeping willow). Thinner foliage shortens the
     curtains too, down to bare branches.
+  - `palm`: a bare slender trunk, a little thicker at its foot, up to the top of
+    the tree, and nine fronds around it that leave the top, rise a little and
+    droop (date palm, coconut palm). `trunk.height` is the height of the bare
+    trunk, so the tuft is `crown_radius` wide above it.
 - The **trunk** goes from the ground into the crown, thinner toward the top,
   in `trunk.color`. A `round` tree has a few branches inside its crown: they
   show when the foliage is thin or gone.

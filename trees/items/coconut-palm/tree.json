@@ -1,0 +1,62 @@
+{
+  "name": {
+    "en": "Coconut palm",
+    "fr": "Cocotier",
+    "de": "Kokospalme",
+    "es": "Cocotero",
+    "it": "Palma da cocco",
+    "pl": "Palma kokosowa",
+    "pt": "Coqueiro"
+  },
+  "latin": "Cocos nucifera",
+  "icon": "mdi:palm-tree",
+  "keywords": [
+    "coconut palm",
+    "cocotier",
+    "kokospalme",
+    "cocotero",
+    "palma da cocco",
+    "palma kokosowa",
+    "coqueiro",
+    "cocos"
+  ],
+  "shape": "palm",
+  "evergreen": true,
+  "height": {
+    "default": 13,
+    "min": 4,
+    "max": 28
+  },
+  "crown_radius": 4.4,
+  "trunk": {
+    "height": 11.2,
+    "radius": 0.2,
+    "color": "#a08a68"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#58a03a"
+    },
+    "summer": {
+      "foliage": "#4a9a35",
+      "fruits": {
+        "color": "#6b4a2a",
+        "amount": 0.3
+      }
+    },
+    "autumn": {
+      "foliage": "#4a9a35",
+      "fruits": {
+        "color": "#6b4a2a",
+        "amount": 0.3
+      }
+    },
+    "winter": {
+      "foliage": "#4a9535",
+      "fruits": {
+        "color": "#6b4a2a",
+        "amount": 0.3
+      }
+    }
+  }
+}

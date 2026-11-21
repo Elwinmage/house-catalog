@@ -1,0 +1,63 @@
+{
+  "name": {
+    "en": "Norway spruce",
+    "fr": "Épicéa",
+    "de": "Fichte",
+    "es": "Pícea",
+    "it": "Abete rosso",
+    "pl": "Świerk pospolity",
+    "pt": "Espruce"
+  },
+  "latin": "Picea abies",
+  "icon": "mdi:pine-tree",
+  "keywords": [
+    "spruce",
+    "norway spruce",
+    "epicea",
+    "epicea commun",
+    "fichte",
+    "picea",
+    "abete rosso",
+    "swierk",
+    "espruce"
+  ],
+  "shape": "conical",
+  "evergreen": true,
+  "height": {
+    "default": 14,
+    "min": 4,
+    "max": 35
+  },
+  "crown_radius": 2.4,
+  "trunk": {
+    "height": 1.0,
+    "radius": 0.25,
+    "color": "#6a4a38"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3a7050"
+    },
+    "summer": {
+      "foliage": "#2f6246"
+    },
+    "autumn": {
+      "foliage": "#2f6246",
+      "fruits": {
+        "color": "#7a5232",
+        "amount": 0.1
+      },
+      "fallen": {
+        "color": "#8a5a3a",
+        "amount": 0.2
+      }
+    },
+    "winter": {
+      "foliage": "#285642",
+      "fallen": {
+        "color": "#8a5a3a",
+        "amount": 0.15
+      }
+    }
+  }
+}

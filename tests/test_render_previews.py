@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import random
 from pathlib import Path
 
@@ -347,3 +348,26 @@ def test_weeping_tree_hangs_curtains_to_the_trunk():
     assert len(rp._weeping(9, 3.8, 1.5, 1)) == 5 + rp._CURTAINS
     # bare in winter: branches only, and the blossom of a bare weeping tree sits on them
     assert len(rp.tree_mesh(willow, "winter").arrays()[0]) < 400
+
+
+def test_palm_has_a_bare_trunk_and_a_tuft_of_turned_fronds():
+    palm = TREE | {
+        "shape": "palm",
+        "latin": "Phoenix",
+        "height": {"default": 12, "min": 4, "max": 25},
+        "crown_radius": 4,
+        "trunk": {"height": 10, "radius": 0.3, "color": "#8a6f4f"},
+        "seasons": {"summer": {"foliage": "#5b8c34"}},
+    }
+    solids = rp._palm(12, 4, 10, 1)
+    assert len(solids) == 1 + rp._FRONDS * 3
+    assert all(len(solid) == 4 for solid in solids)  # kind, centre, sizes, yaw
+    low, high = extent(rp.tree_mesh(palm, "summer").arrays()[0])
+    assert low[1] == pytest.approx(0, abs=0.01)
+    assert high[1] == pytest.approx(12, rel=0.05)
+    assert high[0] > 2  # the fronds spread well beyond the trunk
+    # a turned blob keeps its size: a frond along x, turned a quarter turn, lies along z
+    flat = rp.blob((0, 0, 0), (3, 0.2, 0.5), level=1)
+    turned = rp.blob((0, 0, 0), (3, 0.2, 0.5), level=1, yaw=math.pi / 2)
+    assert extent(flat)[1][0] == pytest.approx(3, rel=0.01)
+    assert extent(turned)[1][2] == pytest.approx(3, rel=0.01)

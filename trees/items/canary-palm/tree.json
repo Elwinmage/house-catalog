@@ -1,0 +1,59 @@
+{
+  "name": {
+    "en": "Canary Island date palm",
+    "fr": "Palmier des Canaries",
+    "de": "Kanarische Dattelpalme",
+    "es": "Palmera canaria",
+    "it": "Palma delle Canarie",
+    "pl": "Palma kanaryjska",
+    "pt": "Palmeira-das-canárias"
+  },
+  "latin": "Phoenix canariensis",
+  "icon": "mdi:palm-tree",
+  "keywords": [
+    "canary palm",
+    "canary island date palm",
+    "palmier des canaries",
+    "palmier canarien",
+    "kanarische dattelpalme",
+    "palmera canaria",
+    "palma delle canarie",
+    "palma kanaryjska",
+    "palmeira das canarias"
+  ],
+  "shape": "palm",
+  "evergreen": true,
+  "height": {
+    "default": 9,
+    "min": 3,
+    "max": 20
+  },
+  "crown_radius": 4.8,
+  "trunk": {
+    "height": 7.0,
+    "radius": 0.42,
+    "color": "#8f7a5a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#4f8f34"
+    },
+    "summer": {
+      "foliage": "#3f8530",
+      "fruits": {
+        "color": "#e0952a",
+        "amount": 0.25
+      }
+    },
+    "autumn": {
+      "foliage": "#3f8530",
+      "fruits": {
+        "color": "#e0952a",
+        "amount": 0.3
+      }
+    },
+    "winter": {
+      "foliage": "#437f33"
+    }
+  }
+}

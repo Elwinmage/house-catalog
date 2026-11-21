@@ -1,0 +1,61 @@
+{
+  "name": {
+    "en": "Date palm",
+    "fr": "Palmier dattier",
+    "de": "Echte Dattelpalme",
+    "es": "Palmera datilera",
+    "it": "Palma da dattero",
+    "pl": "Palma daktylowa",
+    "pt": "Tamareira"
+  },
+  "latin": "Phoenix dactylifera",
+  "icon": "mdi:palm-tree",
+  "keywords": [
+    "date palm",
+    "palmier dattier",
+    "palmier",
+    "palm",
+    "palme",
+    "dattelpalme",
+    "palmera",
+    "palma",
+    "palmeira",
+    "tamareira",
+    "palma daktylowa"
+  ],
+  "shape": "palm",
+  "evergreen": true,
+  "height": {
+    "default": 12,
+    "min": 4,
+    "max": 25
+  },
+  "crown_radius": 4.2,
+  "trunk": {
+    "height": 10.2,
+    "radius": 0.28,
+    "color": "#8a6f4f"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#6a9a3c"
+    },
+    "summer": {
+      "foliage": "#5b8c34",
+      "fruits": {
+        "color": "#c98a2e",
+        "amount": 0.35
+      }
+    },
+    "autumn": {
+      "foliage": "#5b8c34",
+      "fruits": {
+        "color": "#a8642a",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#587f36"
+    }
+  }
+}

@@ -173,13 +173,21 @@ def blob(
     radii: Sequence[float],
     rng: random.Random | None = None,
     level: int = 1,
+    yaw: float = 0.0,
 ) -> np.ndarray:
-    """An ellipsoid of triangles; with `rng`, bumpy like a clump of leaves."""
+    """An ellipsoid of triangles; with `rng`, bumpy like a clump of leaves.
+
+    `yaw` turns it about the vertical axis (the fronds of a palm), in radians.
+    """
     vertices, faces = _icosphere(level)
     if rng is not None:
         bumps = np.array([1 + (rng.random() - 0.5) * 0.3 for _ in vertices])
         vertices = vertices * bumps[:, None]
-    return (vertices * np.array(radii) + np.array(centre))[faces]
+    vertices = vertices * np.array(radii)
+    if yaw:
+        cos, sin = math.cos(yaw), math.sin(yaw)
+        vertices = vertices @ np.array([[cos, 0, -sin], [0, 1, 0], [sin, 0, cos]])
+    return (vertices + np.array(centre))[faces]
 
 
 _UNIT_BOX = np.array(
@@ -242,6 +250,52 @@ _TIERS = 4
 #: Curtains of branches hanging from a weeping crown
 _CURTAINS = 10
 
+#: Fronds of a palm, around the trunk
+_FRONDS = 9
+
+
+def _palm(
+    top: float, radius: float, bottom: float, thin: float
+) -> list[tuple[str, tuple, tuple, float]]:
+    """A tuft at the top of the trunk and fronds that leave it, rise a little and
+    droop at their tip: three flat blobs along each frond, turned about the
+    vertical axis (the fourth value of a solid, in radians).
+    """
+    reach = min(max(0.5, top - bottom), radius * 0.8)
+    solids: list[tuple[str, tuple, tuple, float]] = [
+        (
+            "blob",
+            (0.0, top - 0.25 * reach, 0.0),
+            (0.28 * radius * thin, 0.3 * reach * thin, 0.28 * radius * thin),
+            0.0,
+        )
+    ]
+    for index in range(_FRONDS):
+        angle = index / _FRONDS * 2 * math.pi + (index % 2) * 0.18
+        lift = 0.05 if index % 2 else 0.2  # two ranks: the upper fronds rise
+        for along, drop, length, thick, width in (
+            (0.28, 0.1, 0.32, 0.08, 0.15),
+            (0.62, 0.5, 0.34, 0.07, 0.14),
+            (0.98, 1.2, 0.26, 0.06, 0.10),
+        ):
+            solids.append(
+                (
+                    "blob",
+                    (
+                        along * radius * math.cos(angle),
+                        top - (drop - lift) * reach,
+                        along * radius * math.sin(angle),
+                    ),
+                    (
+                        length * radius * thin,
+                        thick * reach * thin,
+                        width * radius * thin,
+                    ),
+                    -angle,
+                )
+            )
+    return solids
+
 
 def _weeping(
     top: float, radius: float, bottom: float, thin: float
@@ -289,7 +343,7 @@ def _weeping(
     return solids
 
 
-def _crown(data: dict[str, Any], density: float) -> list[tuple[str, tuple, tuple]]:
+def _crown(data: dict[str, Any], density: float) -> list[tuple[Any, ...]]:
     """The solids of the foliage: (kind, centre or base, sizes), once thinned out.
 
     The crown fills the box between the top of the trunk and the top of the tree,
@@ -300,9 +354,11 @@ def _crown(data: dict[str, Any], density: float) -> list[tuple[str, tuple, tuple
     bottom = data["trunk"]["height"]
     middle, half = (bottom + top) / 2, (top - bottom) / 2
     thin = density**0.6
-    solids: list[tuple[str, tuple, tuple]] = []
+    solids: list[tuple] = []
     if data["shape"] == "weeping":
         return _weeping(top, radius, bottom, thin)
+    if data["shape"] == "palm":
+        return _palm(top, radius, bottom, thin)
     if data["shape"] == "round":
         reach = max(abs(c[axis]) + c[3] for c in _CLUMPS for axis in range(3))
         for x, y, z, size in _CLUMPS:
@@ -329,18 +385,20 @@ def _crown(data: dict[str, Any], density: float) -> list[tuple[str, tuple, tuple
 
 
 def _on_crown(
-    solids: list[tuple[str, tuple, tuple]], rng: random.Random
+    solids: list[tuple[Any, ...]], rng: random.Random
 ) -> tuple[float, float, float]:
     """A point on the surface of the foliage, taken at random."""
-    kind, centre, sizes = rng.choice(solids)
+    kind, centre, sizes, *turn = rng.choice(solids)
     angle = rng.random() * 2 * math.pi
     if kind == "blob":
         y = rng.uniform(-0.6, 1)
         ring = math.sqrt(1 - y * y)
+        dx, dz = sizes[0] * ring * math.cos(angle), sizes[2] * ring * math.sin(angle)
+        yaw = turn[0] if turn else 0.0
         return (
-            centre[0] + sizes[0] * ring * math.cos(angle),
+            centre[0] + dx * math.cos(yaw) + dz * math.sin(yaw),
             centre[1] + sizes[1] * y,
-            centre[2] + sizes[2] * ring * math.sin(angle),
+            centre[2] - dx * math.sin(yaw) + dz * math.cos(yaw),
         )
     up = rng.uniform(0.05, 0.9)
     return (
@@ -362,9 +420,11 @@ def tree_mesh(data: dict[str, Any], season: str) -> Mesh:
 
     # The trunk goes on into the crown, where the branches leave it
     fork = trunk["height"] + (top - trunk["height"]) * 0.3
-    mesh.add(
-        frustum((0, 0, 0), (0, fork, 0), trunk["radius"], trunk["radius"] * 0.6), bark
-    )
+    if data["shape"] != "palm":
+        mesh.add(
+            frustum((0, 0, 0), (0, fork, 0), trunk["radius"], trunk["radius"] * 0.6),
+            bark,
+        )
     if data["shape"] in ("round", "weeping"):
         for index in range(5):
             angle = index * 2.4 + 0.5
@@ -379,6 +439,24 @@ def tree_mesh(data: dict[str, Any], season: str) -> Mesh:
                 frustum(start, end, trunk["radius"] * 0.4, trunk["radius"] * 0.1, 5),
                 bark,
             )
+    elif data["shape"] == "palm":
+        # one slender trunk, a little thicker at its foot, up to the tuft of fronds
+        mesh.add(
+            frustum(
+                (0, 0, 0),
+                (0, top * 0.97, 0),
+                trunk["radius"],
+                trunk["radius"] * 0.62,
+                8,
+            ),
+            bark,
+        )
+        mesh.add(
+            frustum(
+                (0, 0, 0), (0, top * 0.06, 0), trunk["radius"] * 1.5, trunk["radius"], 8
+            ),
+            bark,
+        )
     else:
         mesh.add(
             frustum((0, fork, 0), (0, top * 0.97, 0), trunk["radius"] * 0.6, 0.01, 6),
@@ -387,11 +465,11 @@ def tree_mesh(data: dict[str, Any], season: str) -> Mesh:
 
     solids = _crown(data, density) if density > 0.03 else []
     leaf = rgb(look["foliage"])
-    for index, (kind, centre, sizes) in enumerate(solids):
+    for index, (kind, centre, sizes, *turn) in enumerate(solids):
         tone = 1 - 0.05 * (index % 3)
         color = (leaf[0] * tone, leaf[1] * tone, leaf[2] * tone)
         if kind == "blob":
-            mesh.add(blob(centre, sizes, rng), color)
+            mesh.add(blob(centre, sizes, rng, yaw=turn[0] if turn else 0.0), color)
         else:
             tip = (centre[0], centre[1] + sizes[1], centre[2])
             mesh.add(frustum(centre, tip, sizes[0], 0, 10), color)
