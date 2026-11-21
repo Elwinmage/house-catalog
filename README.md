@@ -156,22 +156,22 @@ drawing of your own may replace them.
 
 |  | Id | Tree | Botanical name | Shape | Foliage | Height | Seasons | Varieties |
 |---|---|---|---|---|---|---|---|---|
-| <img src="trees/items/apple-tree/thumb.webp" width="48" alt=""> | `apple-tree` | Apple tree | <i>Malus domestica</i> | round | deciduous | 5 m (2.5-9) | spring, summer, autumn, winter | gala, golden-delicious, granny-smith, reinette-grise |
-| <img src="trees/items/apricot-tree/thumb.webp" width="48" alt=""> | `apricot-tree` | Apricot tree | <i>Prunus armeniaca</i> | round | deciduous | 4.5 m (2-8) | spring, summer, autumn, winter |  |
-| <img src="trees/items/canary-palm/thumb.webp" width="48" alt=""> | `canary-palm` | Canary Island date palm | <i>Phoenix canariensis</i> | palm | evergreen | 9 m (3-20) | spring, summer, autumn, winter |  |
-| <img src="trees/items/cherry-tree/thumb.webp" width="48" alt=""> | `cherry-tree` | Cherry tree | <i>Prunus avium</i> | round | deciduous | 7 m (3-15) | spring, summer, autumn, winter |  |
-| <img src="trees/items/coconut-palm/thumb.webp" width="48" alt=""> | `coconut-palm` | Coconut palm | <i>Cocos nucifera</i> | palm | evergreen | 13 m (4-28) | spring, summer, autumn, winter |  |
-| <img src="trees/items/date-palm/thumb.webp" width="48" alt=""> | `date-palm` | Date palm | <i>Phoenix dactylifera</i> | palm | evergreen | 12 m (4-25) | spring, summer, autumn, winter |  |
-| <img src="trees/items/elder/thumb.webp" width="48" alt=""> | `elder` | Black elder | <i>Sambucus nigra</i> | round | deciduous | 4 m (2-7) | spring, summer, autumn, winter |  |
+| <img src="trees/items/apple-tree/thumb.webp" width="48" alt=""> | `apple-tree` | Apple tree | <i>Malus domestica</i> | round | deciduous | 5 m (2.5-9) | 4 seasons | 4 |
+| <img src="trees/items/apricot-tree/thumb.webp" width="48" alt=""> | `apricot-tree` | Apricot tree | <i>Prunus armeniaca</i> | round | deciduous | 4.5 m (2-8) | 4 seasons |  |
+| <img src="trees/items/canary-palm/thumb.webp" width="48" alt=""> | `canary-palm` | Canary Island date palm | <i>Phoenix canariensis</i> | palm | evergreen | 9 m (3-20) | 4 seasons |  |
+| <img src="trees/items/cherry-tree/thumb.webp" width="48" alt=""> | `cherry-tree` | Cherry tree | <i>Prunus avium</i> | round | deciduous | 7 m (3-15) | 4 seasons |  |
+| <img src="trees/items/coconut-palm/thumb.webp" width="48" alt=""> | `coconut-palm` | Coconut palm | <i>Cocos nucifera</i> | palm | evergreen | 13 m (4-28) | 4 seasons |  |
+| <img src="trees/items/date-palm/thumb.webp" width="48" alt=""> | `date-palm` | Date palm | <i>Phoenix dactylifera</i> | palm | evergreen | 12 m (4-25) | 4 seasons |  |
+| <img src="trees/items/elder/thumb.webp" width="48" alt=""> | `elder` | Black elder | <i>Sambucus nigra</i> | round | deciduous | 4 m (2-7) | 4 seasons |  |
 | <img src="trees/items/eucalyptus/thumb.webp" width="48" alt=""> | `eucalyptus` | Eucalyptus | <i>Eucalyptus globulus</i> | round | evergreen | 14 m (6-30) | summer |  |
-| <img src="trees/items/japanese-cherry/thumb.webp" width="48" alt=""> | `japanese-cherry` | Japanese flowering cherry | <i>Prunus serrulata</i> | round | deciduous | 6 m (3-10) | spring, summer, autumn, winter | kanzan, yoshino, shirotae |
-| <img src="trees/items/norway-spruce/thumb.webp" width="48" alt=""> | `norway-spruce` | Norway spruce | <i>Picea abies</i> | conical | evergreen | 14 m (4-35) | spring, summer, autumn, winter |  |
-| <img src="trees/items/oak/thumb.webp" width="48" alt=""> | `oak` | Oak | <i>Quercus robur</i> | round | deciduous | 9 m (4-25) | spring, summer, autumn, winter |  |
-| <img src="trees/items/pear-tree/thumb.webp" width="48" alt=""> | `pear-tree` | Pear tree | <i>Pyrus communis</i> | round | deciduous | 6 m (3-12) | spring, summer, autumn, winter | williams, conference, passe-crassane |
-| <img src="trees/items/pine/thumb.webp" width="48" alt=""> | `pine` | Pine | <i>Pinus sylvestris</i> | conical | evergreen | 10 m (3-25) | spring, summer, autumn, winter |  |
-| <img src="trees/items/silver-fir/thumb.webp" width="48" alt=""> | `silver-fir` | Silver fir | <i>Abies alba</i> | conical | evergreen | 16 m (4-40) | spring, summer, autumn, winter |  |
-| <img src="trees/items/weeping-willow/thumb.webp" width="48" alt=""> | `weeping-willow` | Weeping willow | <i>Salix babylonica</i> | weeping | deciduous | 10 m (5-18) | spring, summer, autumn, winter |  |
-| <img src="trees/items/yew/thumb.webp" width="48" alt=""> | `yew` | Yew | <i>Taxus baccata</i> | conical | evergreen | 6 m (1.5-15) | spring, summer, autumn, winter |  |
+| <img src="trees/items/japanese-cherry/thumb.webp" width="48" alt=""> | `japanese-cherry` | Japanese flowering cherry | <i>Prunus serrulata</i> | round | deciduous | 6 m (3-10) | 4 seasons | 3 |
+| <img src="trees/items/norway-spruce/thumb.webp" width="48" alt=""> | `norway-spruce` | Norway spruce | <i>Picea abies</i> | conical | evergreen | 14 m (4-35) | 4 seasons |  |
+| <img src="trees/items/oak/thumb.webp" width="48" alt=""> | `oak` | Oak | <i>Quercus robur</i> | round | deciduous | 9 m (4-25) | 4 seasons |  |
+| <img src="trees/items/pear-tree/thumb.webp" width="48" alt=""> | `pear-tree` | Pear tree | <i>Pyrus communis</i> | round | deciduous | 6 m (3-12) | 4 seasons | 3 |
+| <img src="trees/items/pine/thumb.webp" width="48" alt=""> | `pine` | Pine | <i>Pinus sylvestris</i> | conical | evergreen | 10 m (3-25) | 4 seasons |  |
+| <img src="trees/items/silver-fir/thumb.webp" width="48" alt=""> | `silver-fir` | Silver fir | <i>Abies alba</i> | conical | evergreen | 16 m (4-40) | 4 seasons |  |
+| <img src="trees/items/weeping-willow/thumb.webp" width="48" alt=""> | `weeping-willow` | Weeping willow | <i>Salix babylonica</i> | weeping | deciduous | 10 m (5-18) | 4 seasons |  |
+| <img src="trees/items/yew/thumb.webp" width="48" alt=""> | `yew` | Yew | <i>Taxus baccata</i> | conical | evergreen | 6 m (1.5-15) | 4 seasons |  |
 
 </details>
 

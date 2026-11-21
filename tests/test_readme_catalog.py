@@ -24,7 +24,7 @@ def test_tables(root: Path):
     assert (
         '| <img src="trees/items/oak/thumb.webp" width="48" alt=""> | `oak` | Oak '
         "| <i>Quercus robur</i> | round | deciduous | 9 m (4-25) "
-        "| spring, summer, autumn, winter |"
+        "| 4 seasons |"
     ) in block
     assert "|  | `fir` | Fir \\| spruce |  | round | evergreen |" in block
     assert "<summary><b>Objects</b> (1)</summary>" in block

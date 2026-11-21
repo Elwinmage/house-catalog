@@ -89,10 +89,12 @@ def trees_table(root: Path) -> list[str]:
                 _cell(data["shape"]),
                 "evergreen" if data["evergreen"] else "deciduous",
                 f"{_metres(height['default'])} m ({_metres(height['min'])}-{_metres(height['max'])})",
-                _cell(", ".join(seasons)),
-                _cell(
-                    ", ".join(variety["id"] for variety in data.get("varieties", []))
-                ),
+                # short, like the other cells: a table wider than the page squeezes
+                # its narrowest column, the picture, down to nothing
+                "4 seasons"
+                if len(seasons) == len(SEASONS)
+                else _cell(", ".join(seasons)),
+                str(len(data.get("varieties", []))) if data.get("varieties") else "",
             ]
         )
     return _details(
