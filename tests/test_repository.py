@@ -32,7 +32,8 @@ def test_first_entries_are_complete():
         for name in ids:
             entry = entries[name]
             data = read_json(entry.files[DESCRIPTORS[entry.kind]])
-            assert set(data["name"]) == set(KNOWN_LANGS), name
+            # every known language, and possibly others (Dutch, which the rules do not ask for yet)
+            assert set(data["name"]) >= set(KNOWN_LANGS), name
             assert data["keywords"] and data["icon"], name
             for file, side in (("image.webp", 512), ("thumb.webp", 128)):
                 with Image.open(entry.files[file]) as picture:

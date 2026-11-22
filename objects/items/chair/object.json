@@ -6,7 +6,8 @@
     "es": "Silla",
     "it": "Sedia",
     "pl": "Krzesło",
-    "pt": "Cadeira"
+    "pt": "Cadeira",
+    "nl": "Stoel"
   },
   "category": "seating",
   "icon": "mdi:chair-school",

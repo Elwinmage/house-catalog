@@ -6,7 +6,8 @@
     "es": "Carpa koi",
     "it": "Carpa koi",
     "pl": "Karp koi",
-    "pt": "Carpa koi"
+    "pt": "Carpa koi",
+    "nl": "Koikarper"
   },
   "latin": "Cyprinus rubrofuscus",
   "icon": "mdi:fish",
@@ -36,7 +37,8 @@
         "es": "Kohaku (rojo y blanco)",
         "it": "Kohaku (rosso e bianco)",
         "pl": "Kohaku (czerwono-biały)",
-        "pt": "Kohaku (vermelho e branco)"
+        "pt": "Kohaku (vermelho e branco)",
+        "nl": "Kohaku (rood en wit)"
       },
       "base": "#f6f2ea",
       "patches": [
@@ -57,7 +59,8 @@
         "es": "Sanke (blanco, rojo, negro)",
         "it": "Sanke (bianco, rosso, nero)",
         "pl": "Sanke (biały, czerwony, czarny)",
-        "pt": "Sanke (branco, vermelho, preto)"
+        "pt": "Sanke (branco, vermelho, preto)",
+        "nl": "Sanke (wit, rood, zwart)"
       },
       "base": "#f6f2ea",
       "patches": [
@@ -84,7 +87,8 @@
         "es": "Showa (negro, rojo, blanco)",
         "it": "Showa (nero, rosso, bianco)",
         "pl": "Showa (czarny, czerwony, biały)",
-        "pt": "Showa (preto, vermelho, branco)"
+        "pt": "Showa (preto, vermelho, branco)",
+        "nl": "Showa (zwart, rood, wit)"
       },
       "base": "#1c1c1f",
       "patches": [
@@ -109,7 +113,8 @@
         "es": "Tancho (mancha roja en la cabeza)",
         "it": "Tancho (macchia rossa sulla testa)",
         "pl": "Tancho (czerwona plama na głowie)",
-        "pt": "Tancho (mancha vermelha na cabeça)"
+        "pt": "Tancho (mancha vermelha na cabeça)",
+        "nl": "Tancho (rode vlek op de kop)"
       },
       "base": "#f6f2ea",
       "patches": [
@@ -130,7 +135,8 @@
         "es": "Benigoi (rojo)",
         "it": "Benigoi (rosso)",
         "pl": "Benigoi (czerwony)",
-        "pt": "Benigoi (vermelho)"
+        "pt": "Benigoi (vermelho)",
+        "nl": "Benigoi (rood)"
       },
       "base": "#c9361f"
     },
@@ -143,7 +149,8 @@
         "es": "Yamabuki ogon (amarillo oro)",
         "it": "Yamabuki ogon (giallo oro)",
         "pl": "Yamabuki ogon (złotożółty)",
-        "pt": "Yamabuki ogon (amarelo dourado)"
+        "pt": "Yamabuki ogon (amarelo dourado)",
+        "nl": "Yamabuki ogon (goudgeel)"
       },
       "base": "#f0bf2c",
       "metallic": true
@@ -157,7 +164,8 @@
         "es": "Platinum ogon (blanco plateado)",
         "it": "Platinum ogon (bianco argento)",
         "pl": "Platinum ogon (srebrzystobiały)",
-        "pt": "Platinum ogon (branco prateado)"
+        "pt": "Platinum ogon (branco prateado)",
+        "nl": "Platinum ogon (zilverwit)"
       },
       "base": "#e9e8e2",
       "metallic": true
@@ -171,7 +179,8 @@
         "es": "Kigoi (amarillo limón)",
         "it": "Kigoi (giallo limone)",
         "pl": "Kigoi (cytrynowożółty)",
-        "pt": "Kigoi (amarelo-limão)"
+        "pt": "Kigoi (amarelo-limão)",
+        "nl": "Kigoi (citroengeel)"
       },
       "base": "#ecd54a"
     },
@@ -184,7 +193,8 @@
         "es": "Chagoi (marrón)",
         "it": "Chagoi (marrone)",
         "pl": "Chagoi (brązowy)",
-        "pt": "Chagoi (castanho)"
+        "pt": "Chagoi (castanho)",
+        "nl": "Chagoi (bruin)"
       },
       "base": "#8b6a43"
     },
@@ -197,7 +207,8 @@
         "es": "Asagi (gris azulado, flancos rojos)",
         "it": "Asagi (grigio azzurro, fianchi rossi)",
         "pl": "Asagi (niebieskoszary, czerwone boki)",
-        "pt": "Asagi (cinzento-azulado, flancos vermelhos)"
+        "pt": "Asagi (cinzento-azulado, flancos vermelhos)",
+        "nl": "Asagi (blauwgrijs, rode flanken)"
       },
       "base": "#6c8ba3",
       "belly": "#d0552e",
@@ -212,7 +223,8 @@
         "es": "Karasugoi (negro)",
         "it": "Karasugoi (nero)",
         "pl": "Karasugoi (czarny)",
-        "pt": "Karasugoi (preto)"
+        "pt": "Karasugoi (preto)",
+        "nl": "Karasugoi (zwart)"
       },
       "base": "#1c1c1f"
     }
