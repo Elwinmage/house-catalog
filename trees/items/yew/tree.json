@@ -21,14 +21,14 @@
     "teixo",
     "taxus"
   ],
-  "shape": "conical",
+  "shape": "columnar",
   "evergreen": true,
   "height": {
     "default": 6,
     "min": 1.5,
     "max": 15
   },
-  "crown_radius": 2.2,
+  "crown_radius": 0.9,
   "trunk": {
     "height": 0.4,
     "radius": 0.25,

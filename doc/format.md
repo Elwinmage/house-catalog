@@ -28,7 +28,11 @@ placing a tree of another height scales the whole tree by
   `crown_radius` wide on every side.
   - `round`: leafy clumps (rough ellipsoids) filling that box.
   - `conical`: stacked cones, the widest at the bottom (`crown_radius`), the
-    last one ending at the top.
+    last one ending at the top. Tapers all the way down (spruce, fir).
+  - `columnar`: a column of leafy clumps, as wide near the foot as in the
+    middle (`crown_radius`) and narrowing only over the last fifth, where it is
+    rounded off. The foliage comes down almost to the ground, so the trunk
+    hardly shows (yew, cypress, thuja, Italian poplar).
   - `weeping`: a low dome in the upper part of the box, and ten curtains of
     branches hanging from its rim (0.85 of `crown_radius`) down to the trunk,
     some longer than others (weeping willow). Thinner foliage shortens the

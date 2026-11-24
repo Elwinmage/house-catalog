@@ -331,6 +331,37 @@ def test_fish_pictures():
     assert wide.any(axis=1).sum() > narrow.any(axis=1).sum()  # long fins reach out
 
 
+def test_columnar_tree_is_a_column_down_to_the_ground():
+    yew = TREE | {
+        "shape": "columnar",
+        "latin": "Taxus baccata",
+        "evergreen": True,
+        "height": {"default": 6, "min": 1.5, "max": 15},
+        "crown_radius": 0.9,
+        "trunk": {"height": 0.4, "radius": 0.25, "color": "#6e4a3a"},
+        "seasons": {"summer": {"foliage": "#1f4a2c"}},
+    }
+    solids = rp._crown(yew, 1)
+    assert len(solids) == len(rp._COLUMN_TIERS)
+    assert {kind for kind, *_ in solids} == {
+        "blob"
+    }  # a column of foliage, not a stack of cones
+    width = [sizes[0] for _, _, sizes in solids]
+    assert max(width) == pytest.approx(yew["crown_radius"])
+    assert width[0] > 0.8 * max(width)  # as wide at the foot as in the middle
+    assert width[-1] < 0.4 * max(width)  # narrowing only at the top
+    # the foliage comes down under the top of the trunk, which hardly shows
+    assert (
+        min(centre[1] - sizes[1] for _, centre, sizes in solids)
+        < yew["trunk"]["height"]
+    )
+
+    low, high = extent(rp.tree_mesh(yew, "summer").arrays()[0])
+    assert low[1] == pytest.approx(0, abs=0.01)
+    assert high[1] == pytest.approx(yew["height"]["default"], rel=0.05)
+    assert high[0] == pytest.approx(yew["crown_radius"], rel=0.1)
+
+
 def test_weeping_tree_hangs_curtains_to_the_trunk():
     willow = TREE | {
         "shape": "weeping",

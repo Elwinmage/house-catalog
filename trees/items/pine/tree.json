@@ -1,37 +1,43 @@
 {
   "name": {
-    "en": "Pine",
-    "fr": "Pin",
-    "de": "Kiefer",
-    "es": "Pino",
-    "it": "Pino",
-    "pl": "Sosna",
-    "pt": "Pinheiro",
-    "nl": "Den"
+    "en": "Scots pine",
+    "fr": "Pin sylvestre",
+    "de": "Waldkiefer",
+    "es": "Pino silvestre",
+    "it": "Pino silvestre",
+    "pl": "Sosna zwyczajna",
+    "pt": "Pinheiro silvestre",
+    "nl": "Grove den"
   },
   "latin": "Pinus sylvestris",
   "icon": "mdi:pine-tree",
   "keywords": [
     "pine",
+    "scots pine",
     "pin",
+    "pin sylvestre",
     "kiefer",
+    "waldkiefer",
     "pino",
+    "pino silvestre",
     "sosna",
     "pinheiro",
-    "pinus"
+    "grove den",
+    "pinus",
+    "sylvestris"
   ],
-  "shape": "conical",
+  "shape": "round",
   "evergreen": true,
   "height": {
     "default": 10,
     "min": 3,
     "max": 25
   },
-  "crown_radius": 2.4,
+  "crown_radius": 3.0,
   "trunk": {
-    "height": 3,
-    "radius": 0.22,
-    "color": "#8a5a3c"
+    "height": 6,
+    "radius": 0.24,
+    "color": "#9a6239"
   },
   "seasons": {
     "spring": {

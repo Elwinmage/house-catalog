@@ -1,0 +1,66 @@
+{
+  "name": {
+    "en": "Stone pine",
+    "fr": "Pin parasol",
+    "de": "Pinie",
+    "es": "Pino piñonero",
+    "it": "Pino domestico",
+    "pl": "Pinia",
+    "pt": "Pinheiro-manso",
+    "nl": "Parasolden"
+  },
+  "latin": "Pinus pinea",
+  "icon": "mdi:pine-tree",
+  "keywords": [
+    "stone pine",
+    "umbrella pine",
+    "pin parasol",
+    "parasol",
+    "pinie",
+    "pino pinonero",
+    "pino domestico",
+    "pinia",
+    "pinheiro manso",
+    "parasolden",
+    "pinea"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 12,
+    "min": 4,
+    "max": 25
+  },
+  "crown_radius": 4.5,
+  "trunk": {
+    "height": 8,
+    "radius": 0.42,
+    "color": "#8a6a52"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f6f4a",
+      "flowers": {
+        "color": "#d8c468",
+        "amount": 0.1
+      }
+    },
+    "summer": {
+      "foliage": "#35654a"
+    },
+    "autumn": {
+      "foliage": "#35654a",
+      "fruits": {
+        "color": "#7a5230",
+        "amount": 0.14
+      }
+    },
+    "winter": {
+      "foliage": "#2f5c44",
+      "fruits": {
+        "color": "#6b4729",
+        "amount": 0.1
+      }
+    }
+  }
+}

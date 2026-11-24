@@ -246,6 +246,18 @@ _CLUMPS = (
 #: Tiers of a conical crown
 _TIERS = 4
 
+#: Tiers of a columnar crown: [height of the centre, width, height of the blob], as shares of the span the
+#: foliage covers. Barely narrower at the foot than at the middle, rounded off at the top (yew, cypress).
+_COLUMN_TIERS = (
+    (0.13, 0.86, 0.13),
+    (0.28, 1.0, 0.17),
+    (0.46, 1.0, 0.17),
+    (0.63, 0.95, 0.16),
+    (0.77, 0.82, 0.14),
+    (0.88, 0.6, 0.11),
+    (0.94, 0.3, 0.06),
+)
+
 
 #: Curtains of branches hanging from a weeping crown
 _CURTAINS = 10
@@ -359,6 +371,19 @@ def _crown(data: dict[str, Any], density: float) -> list[tuple[Any, ...]]:
         return _weeping(top, radius, bottom, thin)
     if data["shape"] == "palm":
         return _palm(top, radius, bottom, thin)
+    if data["shape"] == "columnar":
+        # the foliage of a column comes down almost to the ground, the trunk hardly showing
+        foot = min(bottom * 0.4, top * 0.06)
+        span = top - foot
+        for height, width, size in _COLUMN_TIERS:
+            solids.append(
+                (
+                    "blob",
+                    (0.0, foot + span * height, 0.0),
+                    (radius * width * thin, span * size * thin, radius * width * thin),
+                )
+            )
+        return solids
     if data["shape"] == "round":
         reach = max(abs(c[axis]) + c[3] for c in _CLUMPS for axis in range(3))
         for x, y, z, size in _CLUMPS:
