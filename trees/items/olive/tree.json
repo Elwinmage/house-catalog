@@ -1,0 +1,69 @@
+{
+  "name": {
+    "en": "Olive tree",
+    "fr": "Olivier",
+    "de": "Olivenbaum",
+    "es": "Olivo",
+    "it": "Olivo",
+    "pl": "Oliwka europejska",
+    "pt": "Oliveira",
+    "nl": "Olijfboom"
+  },
+  "latin": "Olea europaea",
+  "icon": "mdi:tree",
+  "keywords": [
+    "olive",
+    "olive tree",
+    "olivier",
+    "olivenbaum",
+    "olivo",
+    "oliwka",
+    "oliveira",
+    "olijfboom",
+    "olea",
+    "europaea"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 5,
+    "min": 2,
+    "max": 12
+  },
+  "crown_radius": 2.6,
+  "trunk": {
+    "height": 1.1,
+    "radius": 0.32,
+    "color": "#a79d8c"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8a9b74",
+      "flowers": {
+        "color": "#f0ead2",
+        "amount": 0.35
+      }
+    },
+    "summer": {
+      "foliage": "#7e9268",
+      "fruits": {
+        "color": "#7d8c4a",
+        "amount": 0.25
+      }
+    },
+    "autumn": {
+      "foliage": "#7a8f66",
+      "fruits": {
+        "color": "#5a4a6b",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#74885f",
+      "fruits": {
+        "color": "#2f2a38",
+        "amount": 0.25
+      }
+    }
+  }
+}
