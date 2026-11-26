@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import copy
 import math
 from pathlib import Path
 
 import pytest
 from conftest import REPO
 
+import house_catalog_rules as rules
 from house_catalog_rules import (
     ASSET_FILES,
     DESCRIPTOR_MAX,
@@ -40,7 +42,7 @@ def check(kind, data, validators, files=None, ctx=None) -> Report:
 
 
 def test_validators_cover_the_kinds_only(validators):
-    assert sorted(validators) == ["object", "pond_fish", "tree"]
+    assert sorted(validators) == ["object", "path", "pond_fish", "tree"]
     assert where_of("pond_fish", "koi") == "pond_fish/items/koi"
     assert where_of("tree", "oak") == "trees/items/oak"
     assert where_of("object", "chair") == "objects/items/chair"
@@ -296,3 +298,124 @@ def test_varieties_cannot_colour_what_no_season_shows(tree, validators):
     assert check("tree", tree, validators).errors == [
         "trees/items/draft: varieties colour the fruits, but no season shows any"
     ]
+
+
+# -- paths ------------------------------------------------------------------------
+
+
+def report_path(data, validators, files=None, ctx=None):
+    return rules.validate_draft(
+        "path",
+        "gravel",
+        data,
+        files if files is not None else {"path.json": 500, "image.webp": 900},
+        ctx or rules.Context(),
+        validators,
+    )
+
+
+def test_a_complete_path_passes(path, validators):
+    path["name"] |= {lang: "x" for lang in rules.KNOWN_LANGS}
+    report = report_path(path, validators)
+    assert (report.errors, report.warnings) == ([], [])
+
+
+def test_a_path_width_needs_its_bounds_in_order(path, validators):
+    path["width"] = {"default": 20, "min": 0.5, "max": 12}
+    assert report_path(path, validators).errors == [
+        "paths/items/gravel: width needs min <= default <= max, "
+        "got {'default': 20, 'min': 0.5, 'max': 12}"
+    ]
+
+
+def test_grains_cannot_cover_more_than_the_strip(path, validators):
+    path["surface"]["speckles"] = [
+        {"color": "#a99d86", "amount": 0.7, "size": 0.02},
+        {"color": "#d2c8b3", "amount": 0.6, "size": 0.02},
+    ]
+    assert report_path(path, validators).errors == [
+        "paths/items/gravel: the grains cover 1.30 of the strip, more than all of it"
+    ]
+
+
+def test_a_grain_covering_nothing_is_pointless(path, validators):
+    path["surface"]["speckles"] = [{"color": "#a99d86", "amount": 0, "size": 0.02}]
+    assert (
+        "paths/items/gravel: a grain of #a99d86 covers nothing"
+        in report_path(path, validators).warnings
+    )
+
+
+def test_joints_of_the_colour_of_the_units_do_not_show(path, validators):
+    path["surface"]["joints"] = {"color": path["surface"]["color"], "cell": [0.2, 0.1]}
+    assert (
+        "paths/items/gravel: the joints have the colour of the units: they do not show"
+        in report_path(path, validators).warnings
+    )
+
+
+def test_wheel_tracks_must_have_a_width_and_keep_apart(path, validators):
+    path["surface"]["wheels"] = {
+        "color": "#8d7150",
+        "bands": [[0.4, 0.4], [0.3, 0.8]],
+        "speckles": [{"color": "#76593b", "amount": 0, "size": 0.02}],
+    }
+    report = report_path(path, validators)
+    assert report.errors == [
+        "paths/items/gravel: wheel track [0.4, 0.4] has no width",
+        "paths/items/gravel: wheel tracks [0.4, 0.4] and [0.3, 0.8] overlap",
+    ]
+    assert (
+        "paths/items/gravel wheels: a grain of #76593b covers nothing"
+        in report.warnings
+    )
+
+
+MODULE = {
+    "name": {"en": "Stepping stones"},
+    "kind": "module",
+    "draft": "#b5b0a6",
+    "width": {"default": 0.5, "min": 0.3, "max": 1.2},
+    "module": {
+        "shapes": ["round", "half-moon"],
+        "size": [0.45, 0.45],
+        "thickness": 0.05,
+        "gap": 0.25,
+        "colors": ["#8d8a84", "#a39a8c"],
+    },
+}
+
+
+def test_a_complete_module_path_passes(validators):
+    data = copy.deepcopy(MODULE)
+    data["name"] |= {lang: "x" for lang in rules.KNOWN_LANGS}
+    report = report_path(data, validators)
+    assert (report.errors, report.warnings) == ([], [])
+
+
+def test_an_element_taller_than_it_is_wide_is_a_post(validators):
+    data = copy.deepcopy(MODULE)
+    data["module"]["thickness"] = 0.3
+    data["module"]["size"] = [0.2, 0.25]
+    assert (
+        "paths/items/gravel: an element 0.3 m thick and 0.2 m wide "
+        "is a post, not a step" in report_path(data, validators).warnings
+    )
+
+
+def test_a_colour_listed_twice_and_an_element_too_wide(validators):
+    data = copy.deepcopy(MODULE)
+    data["module"]["colors"] = ["#8d8a84", "#8d8a84"]
+    data["module"]["size"] = [0.45, 1.6]
+    assert report_path(data, validators).errors == [
+        "paths/items/gravel: colour #8d8a84 is listed twice",
+        "paths/items/gravel: an element 1.6 m across never fits a path "
+        "of at most 1.2 m",
+    ]
+
+
+def test_a_path_without_a_picture_is_a_warning(path, validators):
+    assert (
+        "paths/items/gravel: no picture, only the icon will be shown"
+        in report_path(path, validators, files={"path.json": 500}).warnings
+    )

@@ -1,0 +1,57 @@
+{
+  "name": {
+    "en": "Honeyberry",
+    "fr": "Baie de mai"
+  },
+  "latin": "Lonicera kamtschatica",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "honeyberry",
+    "baie",
+    "de",
+    "mai",
+    "lonicera"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 1.3,
+    "min": 0.59,
+    "max": 2.08
+  },
+  "crown_radius": 0.5,
+  "trunk": {
+    "height": 0.16,
+    "radius": 0.026,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8,
+      "flowers": {
+        "color": "#e6e6c8",
+        "amount": 0.55
+      }
+    },
+    "summer": {
+      "foliage": "#45803c"
+    },
+    "autumn": {
+      "foliage": "#c9a44a",
+      "density": 0.7,
+      "fruits": {
+        "color": "#3a4a86",
+        "amount": 0.3
+      },
+      "fallen": {
+        "color": "#c9a44a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#6b5a47",
+      "density": 0
+    }
+  }
+}

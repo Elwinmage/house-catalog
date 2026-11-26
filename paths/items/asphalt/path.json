@@ -1,0 +1,53 @@
+{
+  "name": {
+    "en": "Asphalt",
+    "fr": "Enrobé",
+    "de": "Asphalt",
+    "es": "Asfalto",
+    "it": "Asfalto",
+    "pl": "Asfalt",
+    "pt": "Asfalto",
+    "nl": "Asfalt"
+  },
+  "icon": "mdi:road",
+  "keywords": [
+    "asphalt",
+    "enrobe",
+    "asfalto",
+    "asfalt",
+    "tarmac",
+    "bitume",
+    "macadam",
+    "goudron"
+  ],
+  "kind": "surface",
+  "draft": "#7a7f88",
+  "width": {
+    "default": 3,
+    "min": 0.8,
+    "max": 12
+  },
+  "surface": {
+    "color": "#4b4e53",
+    "roughness": 0.75,
+    "tile": 2,
+    "grain": 0.35,
+    "speckles": [
+      {
+        "color": "#3e4146",
+        "amount": 0.09,
+        "size": 0.02
+      },
+      {
+        "color": "#5a5d63",
+        "amount": 0.07,
+        "size": 0.016
+      },
+      {
+        "color": "#64676c",
+        "amount": 0.04,
+        "size": 0.014
+      }
+    ]
+  }
+}

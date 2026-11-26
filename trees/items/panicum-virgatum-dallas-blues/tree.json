@@ -1,0 +1,53 @@
+{
+  "name": {
+    "en": "Switch grass 'Dallas Blues'",
+    "fr": "Panic érigé 'Dallas Blues'"
+  },
+  "latin": "Panicum virgatum 'Dallas Blues'",
+  "icon": "mdi:grass",
+  "keywords": [
+    "switch",
+    "grass",
+    "dallas",
+    "blues",
+    "panic",
+    "erige",
+    "panicum"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 1.7,
+    "min": 0.77,
+    "max": 2.72
+  },
+  "crown_radius": 0.5,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.085,
+    "color": "#7a6a4a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#7fa052"
+    },
+    "summer": {
+      "foliage": "#86a35c",
+      "flowers": {
+        "color": "#e3b7c0",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#c9ae74",
+      "flowers": {
+        "color": "#e3b7c0",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#b69c70",
+      "density": 0.55
+    }
+  }
+}

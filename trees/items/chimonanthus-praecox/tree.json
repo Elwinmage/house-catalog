@@ -1,0 +1,56 @@
+{
+  "name": {
+    "en": "Wintersweet",
+    "fr": "Chimonanthe précoce"
+  },
+  "latin": "Chimonanthus praecox",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "wintersweet",
+    "chimonanthe",
+    "precoce",
+    "chimonanthus"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 2.5,
+    "min": 1.12,
+    "max": 4.0
+  },
+  "crown_radius": 1.0,
+  "trunk": {
+    "height": 0.3,
+    "radius": 0.05,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8,
+      "flowers": {
+        "color": "#f3e07a",
+        "amount": 0.4
+      },
+      "fallen": {
+        "color": "#f3e07a",
+        "amount": 0.2
+      }
+    },
+    "summer": {
+      "foliage": "#45803c"
+    },
+    "autumn": {
+      "foliage": "#d8bb4a",
+      "density": 0.7,
+      "fallen": {
+        "color": "#d8bb4a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#6b5a47",
+      "density": 0
+    }
+  }
+}

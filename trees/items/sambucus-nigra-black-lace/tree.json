@@ -1,0 +1,66 @@
+{
+  "name": {
+    "en": "Black elder 'Black Lace'",
+    "fr": "Sureau noir 'Black Lace'"
+  },
+  "latin": "Sambucus nigra 'Black Lace'",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "black",
+    "elder",
+    "lace",
+    "sureau",
+    "noir",
+    "sambucus"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 2.5,
+    "min": 1.12,
+    "max": 4.0
+  },
+  "crown_radius": 1.5,
+  "trunk": {
+    "height": 0.3,
+    "radius": 0.05,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#4a2c3c",
+      "density": 0.8,
+      "flowers": {
+        "color": "#f7d6e8",
+        "amount": 0.4
+      },
+      "fallen": {
+        "color": "#f7d6e8",
+        "amount": 0.2
+      }
+    },
+    "summer": {
+      "foliage": "#4a2c3c",
+      "flowers": {
+        "color": "#f7d6e8",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#8a5a3a",
+      "density": 0.7,
+      "fallen": {
+        "color": "#8a5a3a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#4a2c3c",
+      "density": 0,
+      "fruits": {
+        "color": "#2a1f33",
+        "amount": 0.3
+      }
+    }
+  }
+}

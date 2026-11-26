@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "client"))
 
@@ -801,10 +801,255 @@ def fish_pictures(
     return sheet, fish_picture(data, varieties[0], thumb)
 
 
+# -- paths, seen from above --------------------------------------------------------
+
+#: Share of the picture a path covers across it
+PATH_STRIP = 0.78
+#: Width of a path on the picture when the entry offers none, in metres
+PATH_WIDTH = 1.5
+#: How strongly `grain` lightens and darkens the pixels of a surface
+GRAIN_SPREAD = 0.17
+#: Points drawn on the outline of a round, an oval or a stone element
+ROUND_STEPS = 36
+#: Corner radius of a slab, as a share of its smaller side
+SLAB_CORNER = 0.18
+#: Elements of a module path shown along the picture
+MODULE_RUN = 3.3
+#: Shadow of a module element: how far it falls, as a share of the thickness
+MODULE_DROP = 0.5
+
+
+def _shade(color: Color, factor: float) -> tuple[int, int, int, int]:
+    """A colour lightened (factor above 1) or darkened, as an opaque RGBA."""
+    r, g, b = (min(255.0, max(0.0, c * factor)) for c in color)
+    return int(r), int(g), int(b), 255
+
+
+def _speckle(
+    layer: Image.Image, speckles: Sequence[dict[str, Any]], px_per_m: float, rng
+) -> None:
+    """Scatter the grains of a surface over a layer, in the order given."""
+    draw = ImageDraw.Draw(layer)
+    width, height = layer.size
+    for grain in speckles:
+        stretch = grain.get("stretch", 1)
+        radius = max(0.6, grain["size"] * px_per_m / 2)
+        count = round(grain["amount"] * width * height / (math.pi * radius**2))
+        fill = _shade(rgb(grain["color"]), 1.0)
+        for _ in range(count):
+            x, y = rng.uniform(0, width), rng.uniform(0, height)
+            r = radius * rng.uniform(0.6, 1.4) / math.sqrt(stretch)
+            if stretch == 1:
+                draw.ellipse((x - r, y - r, x + r, y + r), fill=fill)
+                continue
+            # a chip or a shard: an ellipse laid down any way round
+            angle = rng.uniform(0, math.pi)
+            cos, sin = math.cos(angle), math.sin(angle)
+            draw.polygon(
+                [
+                    (
+                        x + r * stretch * math.cos(t) * cos - r * math.sin(t) * sin,
+                        y + r * stretch * math.cos(t) * sin + r * math.sin(t) * cos,
+                    )
+                    for t in (math.tau * k / 10 for k in range(10))
+                ],
+                fill=fill,
+            )
+
+
+def _paint_joints(
+    layer: Image.Image, joints: dict[str, Any], base: Color, px_per_m: float, rng
+) -> None:
+    """Lay the units of a surface over their bed of mortar: pavers, slabs, boards."""
+    draw = ImageDraw.Draw(layer)
+    width, height = layer.size
+    draw.rectangle((0, 0, width, height), fill=_shade(rgb(joints["color"]), 1.0))
+    along, across = (value * px_per_m for value in joints["cell"])
+    gap = max(1.0, joints.get("width", 0.015) * px_per_m)
+    stagger = joints.get("stagger", 0) * across
+    spread = joints.get("shade", 0.08)
+    row = 0
+    y = -along
+    while y < height:
+        start = -across + (row % 2) * stagger
+        x = start
+        while x < width:
+            draw.rectangle(
+                (x + gap / 2, y + gap / 2, x + across - gap / 2, y + along - gap / 2),
+                fill=_shade(base, 1 + rng.uniform(-spread, spread)),
+            )
+            x += across
+        y += along
+        row += 1
+
+
+def _paint_wheels(
+    layer: Image.Image, wheels: dict[str, Any], px_per_m: float, rng
+) -> None:
+    """Wear two tracks across the width of a surface, the rest left as it was."""
+    width, height = layer.size
+    draw = ImageDraw.Draw(layer)
+    for low, high in wheels["bands"]:
+        x0, x1 = round(low * width), round(high * width)
+        if x1 <= x0:
+            continue
+        draw.rectangle((x0, 0, x1 - 1, height), fill=_shade(rgb(wheels["color"]), 1.0))
+    for low, high in wheels["bands"]:
+        x0, x1 = round(low * width), round(high * width)
+        if x1 <= x0:
+            continue
+        band = Image.new("RGBA", (x1 - x0, height), (0, 0, 0, 0))
+        _speckle(band, wheels.get("speckles", []), px_per_m, rng)
+        layer.alpha_composite(band, (x0, 0))
+
+
+def surface_layer(
+    surface: dict[str, Any], width: int, height: int, px_per_m: float, rng
+) -> Image.Image:
+    """A strip of surface seen from above, painted from the numbers of the entry."""
+    base = rgb(surface["color"])
+    layer = Image.new("RGBA", (width, height), _shade(base, 1.0))
+    if "joints" in surface:
+        _paint_joints(layer, surface["joints"], base, px_per_m, rng)
+    _speckle(layer, surface.get("speckles", []), px_per_m, rng)
+    if "wheels" in surface:
+        _paint_wheels(layer, surface["wheels"], px_per_m, rng)
+    grain = surface.get("grain", 0.3)
+    if grain:
+        pixels = np.array(layer, dtype=float)
+        spread = np.random.default_rng(rng.randrange(1 << 30)).uniform(
+            1 - grain * GRAIN_SPREAD, 1 + grain * GRAIN_SPREAD, (height, width, 1)
+        )
+        pixels[:, :, :3] = np.clip(pixels[:, :, :3] * spread, 0, 255)
+        layer = Image.fromarray(pixels.astype(np.uint8), "RGBA")
+    return layer
+
+
+def element_outline(
+    shape: str, along: float, across: float, rng
+) -> list[tuple[float, float]]:
+    """Outline of one module element, centred on the origin: `along` by `across`."""
+    a, c = along / 2, across / 2
+    if shape == "half-moon":
+        # a disc of the width of the path, cut through the middle: the cut lies
+        # across the path, the round side ahead of it, so it is half as deep as wide
+        steps = ROUND_STEPS // 2
+        return [
+            (
+                c * (math.sin(math.pi * k / steps) - 0.5),
+                c * math.cos(math.pi * k / steps),
+            )
+            for k in range(steps + 1)
+        ]
+    if shape == "slab":
+        corner = min(along, across) * SLAB_CORNER
+        out = []
+        for sx, sy in ((1, 1), (-1, 1), (-1, -1), (1, -1)):
+            cx, cy = sx * (a - corner), sy * (c - corner)
+            start = math.atan2(sy, sx) - math.pi / 4
+            for k in range(5):
+                angle = start + math.pi / 2 * k / 4
+                out.append(
+                    (cx + corner * math.cos(angle), cy + corner * math.sin(angle))
+                )
+        return out
+    jitter = shape == "stone"
+    out = []
+    for k in range(ROUND_STEPS):
+        angle = 2 * math.pi * k / ROUND_STEPS
+        reach = rng.uniform(0.76, 1.1) if jitter else 1.0
+        out.append((a * reach * math.cos(angle), c * reach * math.sin(angle)))
+    return out
+
+
+def module_elements(
+    module: dict[str, Any], width: int, height: int, px_per_m: float, rng
+) -> list[tuple[list[tuple[float, float]], tuple[int, int, int, int]]]:
+    """The elements along the strip, as drawn: outline in pixels, and colour."""
+    along, across = module["size"]
+    gap = module.get("gap", 0.2)
+    vary = module.get("vary", {})
+    stretch = vary.get("size", 0.15)
+    turn = vary.get("angle", 0.08)
+    side = vary.get("side", 0.1)
+    spread = vary.get("shade", 0.08)
+    out = []
+    y = along / 2
+    while (y - along / 2) * px_per_m < height:
+        scale = 1 + rng.uniform(-stretch, stretch)
+        a, c = along * scale, min(across * scale, width / px_per_m)
+        angle = rng.uniform(-turn, turn) * 2 * math.pi
+        offset = rng.uniform(-side, side) * c
+        color = _shade(
+            rgb(rng.choice(module["colors"])), 1 + rng.uniform(-spread, spread)
+        )
+        shape = rng.choice(module["shapes"])
+        cos, sin = math.cos(angle), math.sin(angle)
+        points = [
+            (
+                width / 2 + (px * sin + py * cos + offset) * px_per_m,
+                (y + px * cos - py * sin) * px_per_m,
+            )
+            for px, py in element_outline(shape, a, c, rng)
+        ]
+        out.append((points, color))
+        y += a / 2 + gap + along / 2
+    return out
+
+
+def module_layer(
+    module: dict[str, Any], width: int, height: int, px_per_m: float, rng
+) -> Image.Image:
+    """Elements set one after another along the strip, the ground showing between."""
+    elements = module_elements(module, width, height, px_per_m, rng)
+    drop = module.get("thickness", 0.06) * px_per_m * MODULE_DROP
+    shadow = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    paint = ImageDraw.Draw(shadow)
+    for points, _ in elements:
+        paint.polygon(
+            [(x + drop * 0.6, y + drop) for x, y in points], fill=(0, 0, 0, 90)
+        )
+    layer = shadow.filter(ImageFilter.GaussianBlur(max(2.0, drop * 0.5)))
+    draw = ImageDraw.Draw(layer)
+    for points, color in elements:
+        draw.polygon(points, fill=color)
+    return layer
+
+
+def path_picture(data: dict[str, Any], size: int) -> Image.Image:
+    """A piece of path seen from straight above, running from top to bottom."""
+    big = size * SUPERSAMPLE
+    across = data.get("width", {}).get("default", PATH_WIDTH)
+    rng = random.Random(f"{data['kind']}:{data['name']['en']}")
+    if data["kind"] == "surface":
+        # a surface fills the picture: its texture is what there is to see
+        strip = round(big * PATH_STRIP)
+        px_per_m = strip / across
+        layer = surface_layer(data["surface"], strip, big, px_per_m, rng)
+    else:
+        # a module path is drawn far enough back for a few elements to show
+        module = data["module"]
+        pitch = module["size"][0] + module.get("gap", 0.2)
+        px_per_m = big / (MODULE_RUN * pitch)
+        strip = min(round(across * px_per_m), round(big * PATH_STRIP))
+        layer = module_layer(module, strip, big, px_per_m, rng)
+    picture = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+    picture.alpha_composite(layer, ((big - strip) // 2, 0))
+    return picture.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def path_pictures(
+    data: dict[str, Any], size: int = IMAGE_SIZE, thumb: int = THUMB_SIZE
+) -> tuple[Image.Image, Image.Image]:
+    """The same piece of path at both sizes: the texture reads at its real scale."""
+    return path_picture(data, size), path_picture(data, thumb)
+
+
 PICTURES = {
     "tree": tree_pictures,
     "object": object_pictures,
     "pond_fish": fish_pictures,
+    "path": path_pictures,
 }
 
 

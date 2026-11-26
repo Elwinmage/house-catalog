@@ -1,0 +1,52 @@
+{
+  "name": {
+    "en": "White agapanthus",
+    "fr": "Agapanthe blanche"
+  },
+  "latin": "Agapanthus 'Glacier Stream'",
+  "icon": "mdi:flower",
+  "keywords": [
+    "white",
+    "agapanthus",
+    "agapanthe",
+    "blanche"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 0.9,
+    "min": 0.41,
+    "max": 1.44
+  },
+  "crown_radius": 0.25,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.045,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8
+    },
+    "summer": {
+      "foliage": "#45803c",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.55
+      }
+    },
+    "autumn": {
+      "foliage": "#c9a44a",
+      "density": 0.7,
+      "fallen": {
+        "color": "#c9a44a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#8a7a5c",
+      "density": 0.22
+    }
+  }
+}

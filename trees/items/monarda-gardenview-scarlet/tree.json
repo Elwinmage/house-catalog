@@ -1,0 +1,58 @@
+{
+  "name": {
+    "en": "Bergamot 'Gardenview Scarlet'",
+    "fr": "Bergamote rouge"
+  },
+  "latin": "Monarda fistulosa 'Gardenview Scarlet'",
+  "icon": "mdi:flower",
+  "keywords": [
+    "bergamot",
+    "gardenview",
+    "scarlet",
+    "bergamote",
+    "rouge",
+    "monarda"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 0.8,
+    "min": 0.36,
+    "max": 1.28
+  },
+  "crown_radius": 0.25,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.04,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8
+    },
+    "summer": {
+      "foliage": "#45803c",
+      "flowers": {
+        "color": "#d21e38",
+        "amount": 0.55
+      }
+    },
+    "autumn": {
+      "foliage": "#c9a44a",
+      "density": 0.7,
+      "flowers": {
+        "color": "#d21e38",
+        "amount": 0.55
+      },
+      "fallen": {
+        "color": "#c9a44a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#8a7a5c",
+      "density": 0.22
+    }
+  }
+}

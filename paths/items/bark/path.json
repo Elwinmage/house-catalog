@@ -1,0 +1,67 @@
+{
+  "name": {
+    "en": "Bark chippings",
+    "fr": "Copeaux d'écorce",
+    "de": "Rindenmulch",
+    "es": "Corteza triturada",
+    "it": "Corteccia triturata",
+    "pl": "Kora",
+    "pt": "Casca triturada",
+    "nl": "Boomschors"
+  },
+  "icon": "mdi:leaf",
+  "keywords": [
+    "bark chippings",
+    "bark",
+    "chippings",
+    "copeaux d ecorce",
+    "copeaux",
+    "ecorce",
+    "rindenmulch",
+    "corteza triturada",
+    "corteza",
+    "triturada",
+    "corteccia triturata",
+    "corteccia",
+    "triturata",
+    "kora",
+    "casca triturada",
+    "casca",
+    "boomschors",
+    "paillage",
+    "mulch"
+  ],
+  "kind": "surface",
+  "draft": "#a07446",
+  "width": {
+    "default": 1.2,
+    "min": 0.4,
+    "max": 5
+  },
+  "surface": {
+    "color": "#6f4f2e",
+    "roughness": 1,
+    "tile": 1.6,
+    "grain": 0.4,
+    "speckles": [
+      {
+        "color": "#8b6a42",
+        "amount": 0.24,
+        "size": 0.08,
+        "stretch": 3.5
+      },
+      {
+        "color": "#a98855",
+        "amount": 0.2,
+        "size": 0.07,
+        "stretch": 3
+      },
+      {
+        "color": "#543b22",
+        "amount": 0.16,
+        "size": 0.06,
+        "stretch": 3
+      }
+    ]
+  }
+}

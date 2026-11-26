@@ -1,0 +1,57 @@
+{
+  "name": {
+    "en": "Shrubby sage 'La Siesta'",
+    "fr": "Sauge arbustive 'La Siesta'"
+  },
+  "latin": "Salvia microphylla 'La Siesta'",
+  "icon": "mdi:flower",
+  "keywords": [
+    "shrubby",
+    "sage",
+    "la",
+    "siesta",
+    "sauge",
+    "arbustive",
+    "salvia"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 0.7,
+    "min": 0.32,
+    "max": 1.12
+  },
+  "crown_radius": 0.35,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.035,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#5f8c45",
+      "flowers": {
+        "color": "#7b4fb5",
+        "amount": 0.55
+      }
+    },
+    "summer": {
+      "foliage": "#4e7f3c",
+      "flowers": {
+        "color": "#7b4fb5",
+        "amount": 0.55
+      }
+    },
+    "autumn": {
+      "foliage": "#71803f",
+      "flowers": {
+        "color": "#7b4fb5",
+        "amount": 0.55
+      }
+    },
+    "winter": {
+      "foliage": "#4a6b39",
+      "density": 0.45
+    }
+  }
+}

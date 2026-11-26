@@ -88,6 +88,21 @@ FISH = {
 }
 
 
+PATH = {
+    "name": {"en": "Gravel"},
+    "kind": "surface",
+    "draft": "#e0d3b4",
+    "width": {"default": 3, "min": 0.5, "max": 12},
+    "surface": {
+        "color": "#bdb29c",
+        "roughness": 1,
+        "tile": 2,
+        "grain": 0.4,
+        "speckles": [{"color": "#a99d86", "amount": 0.12, "size": 0.026}],
+    },
+}
+
+
 def dump(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data), encoding="utf-8")
@@ -109,10 +124,16 @@ def fish() -> dict:
 
 
 @pytest.fixture
+def path() -> dict:
+    return copy.deepcopy(PATH)
+
+
+@pytest.fixture
 def root(tmp_path: Path) -> Path:
-    """A minimal valid catalog: one tree, one object, one fish, no picture."""
+    """A minimal valid catalog: one tree, one object, one fish, one path, no picture."""
     shutil.copytree(REPO / "schema", tmp_path / "schema")
     dump(tmp_path / "trees/items/oak/tree.json", TREE)
     dump(tmp_path / "objects/items/stool/object.json", OBJECT)
     dump(tmp_path / "pond_fish/items/goldfish/pond_fish.json", FISH)
+    dump(tmp_path / "paths/items/gravel/path.json", PATH)
     return tmp_path

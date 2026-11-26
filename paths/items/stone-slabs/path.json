@@ -1,0 +1,73 @@
+{
+  "name": {
+    "en": "Spaced slabs",
+    "fr": "Dalles espacées",
+    "de": "Versetzte Platten",
+    "es": "Losas espaciadas",
+    "it": "Lastre distanziate",
+    "pl": "Płyty z przerwami",
+    "pt": "Lajes espaçadas",
+    "nl": "Losse tegels"
+  },
+  "icon": "mdi:dots-square",
+  "keywords": [
+    "spaced slabs",
+    "spaced",
+    "slabs",
+    "dalles espacees",
+    "dalles",
+    "espacees",
+    "versetzte platten",
+    "versetzte",
+    "platten",
+    "losas espaciadas",
+    "losas",
+    "espaciadas",
+    "lastre distanziate",
+    "lastre",
+    "distanziate",
+    "plyty z przerwami",
+    "plyty",
+    "przerwami",
+    "lajes espacadas",
+    "lajes",
+    "espacadas",
+    "losse tegels",
+    "losse",
+    "tegels",
+    "dalle espacee",
+    "opus incertum",
+    "pierre plate"
+  ],
+  "kind": "module",
+  "draft": "#cdc8bf",
+  "width": {
+    "default": 0.6,
+    "min": 0.4,
+    "max": 2.5
+  },
+  "module": {
+    "shapes": [
+      "slab",
+      "stone"
+    ],
+    "size": [
+      0.5,
+      0.5
+    ],
+    "thickness": 0.05,
+    "gap": 0.1,
+    "colors": [
+      "#b5b0a6",
+      "#a8a29a",
+      "#c2bcb2"
+    ],
+    "roughness": 0.85,
+    "vary": {
+      "size": 0.18,
+      "angle": 0.05,
+      "side": 0.06,
+      "shade": 0.08
+    }
+  }
+}

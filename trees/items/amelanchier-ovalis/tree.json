@@ -1,0 +1,64 @@
+{
+  "name": {
+    "en": "Snowy mespilus",
+    "fr": "Amélanchier commun"
+  },
+  "latin": "Amelanchier ovalis",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "snowy",
+    "mespilus",
+    "amelanchier",
+    "commun"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 3.0,
+    "min": 1.35,
+    "max": 4.8
+  },
+  "crown_radius": 1.5,
+  "trunk": {
+    "height": 0.36,
+    "radius": 0.06,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8,
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      },
+      "fallen": {
+        "color": "#ffffff",
+        "amount": 0.2
+      }
+    },
+    "summer": {
+      "foliage": "#45803c",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#c4442a",
+      "density": 0.7,
+      "fruits": {
+        "color": "#4a2b55",
+        "amount": 0.3
+      },
+      "fallen": {
+        "color": "#c4442a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#6b5a47",
+      "density": 0
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "name": {
+    "en": "Stepping stones",
+    "fr": "Pas japonais",
+    "de": "Trittsteine",
+    "es": "Pasaderas",
+    "it": "Passi giapponesi",
+    "pl": "Stopnie japońskie",
+    "pt": "Pedras de passagem",
+    "nl": "Stapstenen"
+  },
+  "icon": "mdi:shoe-print",
+  "keywords": [
+    "stepping stones",
+    "stepping",
+    "stones",
+    "pas japonais",
+    "pas",
+    "japonais",
+    "trittsteine",
+    "pasaderas",
+    "passi giapponesi",
+    "passi",
+    "giapponesi",
+    "stopnie japonskie",
+    "stopnie",
+    "japonskie",
+    "pedras de passagem",
+    "pedras",
+    "passagem",
+    "stapstenen",
+    "dalle de pas",
+    "pierre de pas"
+  ],
+  "kind": "module",
+  "draft": "#b5b0a6",
+  "width": {
+    "default": 0.5,
+    "min": 0.3,
+    "max": 1.2
+  },
+  "module": {
+    "shapes": [
+      "round",
+      "half-moon"
+    ],
+    "size": [
+      0.45,
+      0.45
+    ],
+    "thickness": 0.05,
+    "gap": 0.25,
+    "colors": [
+      "#8d8a84",
+      "#a39a8c",
+      "#6f7a72",
+      "#b0a89a",
+      "#7d7570"
+    ],
+    "roughness": 1,
+    "vary": {
+      "size": 0.25,
+      "angle": 0.5,
+      "side": 0.15,
+      "shade": 0.12
+    }
+  }
+}

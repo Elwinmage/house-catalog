@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from conftest import TREE, dump
+from conftest import PATH, TREE, dump
 
 import readme_catalog
 
@@ -32,6 +32,41 @@ def test_tables(root: Path):
         '| <img src="objects/items/stool/image.png" width="48" alt=""> | `stool` '
         "| Stool | seating | 0.3 x 0.3 x 0.45 m | 2 |"
     ) in block
+
+
+def test_the_paths_table_says_what_each_is_made_of(root: Path):
+    surface = PATH["surface"]
+    dump(
+        root / "paths/items/pavers/path.json",
+        PATH | {"name": {"en": "Pavers"}, "surface": surface | {"joints": {}}},
+    )
+    dump(
+        root / "paths/items/tracks/path.json",
+        PATH | {"name": {"en": "Grass track"}, "surface": surface | {"wheels": {}}},
+    )
+    dump(
+        root / "paths/items/sleepers/path.json",
+        {
+            "name": {"en": "Sleepers"},
+            "kind": "module",
+            "draft": "#8a6a45",
+            "module": {
+                "shapes": ["slab", "stone"],
+                "size": [0.22, 1.2],
+                "colors": ["#6b4f33"],
+            },
+        },
+    )
+    block = readme_catalog.render(root)
+    assert "<summary><b>Paths</b> (4)</summary>" in block
+    # modules first, then the surfaces, each in its own kind
+    assert "|  | Sleepers<br>`sleepers` | module | slab, stone |  |" in block
+    assert "|  | Gravel<br>`gravel` | surface | unbroken | 3 m (0.5-12) |" in block
+    assert "|  | Pavers<br>`pavers` | surface | laid units | 3 m (0.5-12) |" in block
+    assert (
+        "|  | Grass track<br>`tracks` | surface | wheel tracks | 3 m (0.5-12) |"
+        in block
+    )
 
 
 def test_name_falls_back_to_the_id(root: Path):

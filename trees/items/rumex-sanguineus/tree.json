@@ -1,0 +1,43 @@
+{
+  "name": {
+    "en": "Bloody dock",
+    "fr": "Oseille sanguine"
+  },
+  "latin": "Rumex sanguineus",
+  "icon": "mdi:sprout",
+  "keywords": [
+    "bloody",
+    "dock",
+    "oseille",
+    "sanguine",
+    "rumex"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 0.4,
+    "min": 0.18,
+    "max": 0.64
+  },
+  "crown_radius": 0.2,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.02,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#6a7a44"
+    },
+    "summer": {
+      "foliage": "#6a7a44"
+    },
+    "autumn": {
+      "foliage": "#8a5a3a"
+    },
+    "winter": {
+      "foliage": "#6a7a44",
+      "density": 0.45
+    }
+  }
+}

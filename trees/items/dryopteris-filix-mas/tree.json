@@ -1,0 +1,44 @@
+{
+  "name": {
+    "en": "Male fern",
+    "fr": "Fougère mâle"
+  },
+  "latin": "Dryopteris filix-mas",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "male",
+    "fern",
+    "fougere",
+    "dryopteris"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 1.0,
+    "min": 0.45,
+    "max": 1.6
+  },
+  "crown_radius": 0.3,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.05,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8
+    },
+    "summer": {
+      "foliage": "#45803c"
+    },
+    "autumn": {
+      "foliage": "#c9a44a",
+      "density": 0.7
+    },
+    "winter": {
+      "foliage": "#8a7a5c",
+      "density": 0.22
+    }
+  }
+}

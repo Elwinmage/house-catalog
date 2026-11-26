@@ -1,0 +1,70 @@
+{
+  "name": {
+    "en": "Large-format slabs",
+    "fr": "Dallage grand format",
+    "de": "Großformatplatten",
+    "es": "Losas de gran formato",
+    "it": "Lastre di grande formato",
+    "pl": "Płyty wielkoformatowe",
+    "pt": "Lajes de grande formato",
+    "nl": "Grootformaat tegels"
+  },
+  "icon": "mdi:view-grid-outline",
+  "keywords": [
+    "large format slabs",
+    "large",
+    "format",
+    "slabs",
+    "dallage grand format",
+    "dallage",
+    "grand",
+    "grossformatplatten",
+    "losas de gran formato",
+    "losas",
+    "gran",
+    "formato",
+    "lastre di grande formato",
+    "lastre",
+    "grande",
+    "plyty wielkoformatowe",
+    "plyty",
+    "wielkoformatowe",
+    "lajes de grande formato",
+    "lajes",
+    "grootformaat tegels",
+    "grootformaat",
+    "tegels",
+    "dalle",
+    "terrasse"
+  ],
+  "kind": "surface",
+  "draft": "#d4cfc5",
+  "width": {
+    "default": 1.4,
+    "min": 0.6,
+    "max": 8
+  },
+  "surface": {
+    "color": "#b9b3a8",
+    "roughness": 0.7,
+    "tile": 2.4,
+    "grain": 0.08,
+    "speckles": [
+      {
+        "color": "#aea89d",
+        "amount": 0.03,
+        "size": 0.005
+      }
+    ],
+    "joints": {
+      "color": "#8e897f",
+      "cell": [
+        1.2,
+        0.6
+      ],
+      "width": 0.008,
+      "stagger": 0.5,
+      "shade": 0.06
+    }
+  }
+}

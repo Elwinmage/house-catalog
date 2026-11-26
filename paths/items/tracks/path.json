@@ -1,0 +1,93 @@
+{
+  "name": {
+    "en": "Grass track",
+    "fr": "Chemin enherbé",
+    "de": "Grasweg",
+    "es": "Camino enherbado",
+    "it": "Strada inerbita",
+    "pl": "Droga trawiasta",
+    "pt": "Caminho de erva",
+    "nl": "Graspad"
+  },
+  "icon": "mdi:grass",
+  "keywords": [
+    "grass track",
+    "grass",
+    "track",
+    "chemin enherbe",
+    "chemin",
+    "enherbe",
+    "grasweg",
+    "camino enherbado",
+    "camino",
+    "enherbado",
+    "strada inerbita",
+    "strada",
+    "inerbita",
+    "droga trawiasta",
+    "droga",
+    "trawiasta",
+    "caminho de erva",
+    "caminho",
+    "erva",
+    "graspad",
+    "ornieres",
+    "bande de roulement",
+    "wheel tracks"
+  ],
+  "kind": "surface",
+  "draft": "#8fbf5a",
+  "width": {
+    "default": 3,
+    "min": 1.2,
+    "max": 10
+  },
+  "surface": {
+    "color": "#6f8f4a",
+    "roughness": 1,
+    "tile": 2,
+    "grain": 0.3,
+    "speckles": [
+      {
+        "color": "#5f7f3d",
+        "amount": 0.1,
+        "size": 0.024
+      },
+      {
+        "color": "#7fa055",
+        "amount": 0.1,
+        "size": 0.024
+      },
+      {
+        "color": "#668a43",
+        "amount": 0.08,
+        "size": 0.024
+      }
+    ],
+    "wheels": {
+      "color": "#8d7150",
+      "bands": [
+        [
+          0.12,
+          0.36
+        ],
+        [
+          0.64,
+          0.88
+        ]
+      ],
+      "speckles": [
+        {
+          "color": "#76593b",
+          "amount": 0.08,
+          "size": 0.022
+        },
+        {
+          "color": "#a3865f",
+          "amount": 0.08,
+          "size": 0.022
+        }
+      ]
+    }
+  }
+}

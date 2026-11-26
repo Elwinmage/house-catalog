@@ -1,0 +1,55 @@
+{
+  "name": {
+    "en": "Mastic tree",
+    "fr": "Pistachier lentisque"
+  },
+  "latin": "Pistacia lentiscus",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "mastic",
+    "tree",
+    "pistachier",
+    "lentisque",
+    "pistacia"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 2.0,
+    "min": 0.9,
+    "max": 3.2
+  },
+  "crown_radius": 1.0,
+  "trunk": {
+    "height": 0.24,
+    "radius": 0.04,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42",
+      "flowers": {
+        "color": "#c8b89a",
+        "amount": 0.4
+      },
+      "fruits": {
+        "color": "#8e2420",
+        "amount": 0.25
+      }
+    },
+    "summer": {
+      "foliage": "#356b38"
+    },
+    "autumn": {
+      "foliage": "#336635"
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95,
+      "fruits": {
+        "color": "#8e2420",
+        "amount": 0.25
+      }
+    }
+  }
+}

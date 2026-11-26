@@ -1,0 +1,56 @@
+{
+  "name": {
+    "en": "Marshmallow",
+    "fr": "Guimauve officinale"
+  },
+  "latin": "Althaea officinalis",
+  "icon": "mdi:flower",
+  "keywords": [
+    "marshmallow",
+    "guimauve",
+    "officinale",
+    "althaea"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 1.5,
+    "min": 0.68,
+    "max": 2.4
+  },
+  "crown_radius": 0.5,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.075,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8
+    },
+    "summer": {
+      "foliage": "#45803c",
+      "flowers": {
+        "color": "#fff0f5",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#c9a44a",
+      "density": 0.7,
+      "flowers": {
+        "color": "#fff0f5",
+        "amount": 0.4
+      },
+      "fallen": {
+        "color": "#c9a44a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#8a7a5c",
+      "density": 0.22
+    }
+  }
+}

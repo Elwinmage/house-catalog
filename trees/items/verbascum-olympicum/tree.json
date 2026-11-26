@@ -1,0 +1,52 @@
+{
+  "name": {
+    "en": "Olympian mullein",
+    "fr": "Molène de l'Olympe"
+  },
+  "latin": "Verbascum olympicum",
+  "icon": "mdi:flower",
+  "keywords": [
+    "olympian",
+    "mullein",
+    "molene",
+    "de",
+    "olympe",
+    "verbascum"
+  ],
+  "shape": "columnar",
+  "evergreen": true,
+  "height": {
+    "default": 1.8,
+    "min": 0.81,
+    "max": 2.88
+  },
+  "crown_radius": 0.25,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.087,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#a3b09a"
+    },
+    "summer": {
+      "foliage": "#9aa891",
+      "flowers": {
+        "color": "#ffd92e",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#9a9a84",
+      "flowers": {
+        "color": "#ffd92e",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#929e8c",
+      "density": 0.95
+    }
+  }
+}

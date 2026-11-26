@@ -1,0 +1,52 @@
+{
+  "name": {
+    "en": "Japanese banana",
+    "fr": "Bananier du Japon"
+  },
+  "latin": "Musa basjoo 'Dajiao'",
+  "icon": "mdi:palm-tree",
+  "keywords": [
+    "japanese",
+    "banana",
+    "bananier",
+    "du",
+    "japon",
+    "musa"
+  ],
+  "shape": "palm",
+  "evergreen": true,
+  "height": {
+    "default": 3.0,
+    "min": 1.35,
+    "max": 4.8
+  },
+  "crown_radius": 1.5,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.15,
+    "color": "#6d6a4a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42"
+    },
+    "summer": {
+      "foliage": "#356b38",
+      "flowers": {
+        "color": "#ffe680",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#336635",
+      "flowers": {
+        "color": "#ffe680",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95
+    }
+  }
+}

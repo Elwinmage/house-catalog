@@ -1,0 +1,360 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/path.schema.json",
+  "title": "Path (paths/items/<id>/path.json)",
+  "description": "What a drive, an alley or a garden path is made of, as the house view lays it along a centre line. Either a surface, an unbroken strip whose texture is drawn from a few numbers, or modules, elements set one after another with the ground showing between them (stepping stones, landscape sleepers, log rounds).",
+  "type": "object",
+  "required": [
+    "name",
+    "kind",
+    "draft"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "$ref": "common.schema.json#/$defs/i18n"
+    },
+    "icon": {
+      "$ref": "common.schema.json#/$defs/icon"
+    },
+    "keywords": {
+      "$ref": "common.schema.json#/$defs/keywords"
+    },
+    "kind": {
+      "description": "surface: one unbroken strip the width of the path. module: elements set one after another along its centre line, the ground showing between them.",
+      "enum": [
+        "surface",
+        "module"
+      ]
+    },
+    "draft": {
+      "description": "Colour of the path on the overlay of the editor, where it is drawn flat and bright rather than lit.",
+      "$ref": "common.schema.json#/$defs/color"
+    },
+    "width": {
+      "description": "Width of the path in metres: the one it is given when chosen, and the bounds offered. A line of stepping stones is narrow, a drive is wide.",
+      "$ref": "common.schema.json#/$defs/bounded_length"
+    },
+    "surface": {
+      "description": "An unbroken strip (kind: surface). Its texture is painted from these numbers alone, so a surface added to the catalog looks like itself without a line of code.",
+      "type": "object",
+      "required": [
+        "color"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "description": "Base colour of the strip.",
+          "$ref": "common.schema.json#/$defs/color"
+        },
+        "roughness": {
+          "description": "0 polished (wet asphalt), 1 matt (gravel, earth).",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.9
+        },
+        "tile": {
+          "description": "Metres of path covered by one tile of the texture.",
+          "type": "number",
+          "minimum": 0.2,
+          "maximum": 8,
+          "default": 2
+        },
+        "grain": {
+          "description": "Strength of the speckled noise over the base colour: 0 flat, 1 coarse.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.3
+        },
+        "speckles": {
+          "description": "Grains, chippings or pebbles scattered over the strip, drawn in the order given.",
+          "type": "array",
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "color",
+              "amount",
+              "size"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "color": {
+                "$ref": "common.schema.json#/$defs/color"
+              },
+              "amount": {
+                "description": "Share of the strip they cover.",
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "size": {
+                "description": "Size of one grain, in metres.",
+                "type": "number",
+                "minimum": 0.002,
+                "maximum": 0.4
+              },
+              "stretch": {
+                "description": "How many times longer than wide a grain is, turned any way: 1 a pebble, 4 a chip of bark or a shard of slate.",
+                "type": "number",
+                "minimum": 1,
+                "maximum": 8,
+                "default": 1
+              }
+            }
+          }
+        },
+        "joints": {
+          "description": "Lines of mortar or sand between the units of a laid surface: pavers, slabs, bricks, decking boards.",
+          "type": "object",
+          "required": [
+            "color",
+            "cell"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "common.schema.json#/$defs/color"
+            },
+            "cell": {
+              "description": "Size of one unit in metres: along the path, then across it. A decking board is long and narrow.",
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number",
+                "minimum": 0.03,
+                "maximum": 3
+              }
+            },
+            "width": {
+              "description": "Width of a joint, in metres.",
+              "type": "number",
+              "minimum": 0.002,
+              "maximum": 0.08,
+              "default": 0.015
+            },
+            "stagger": {
+              "description": "How far one row is set off from the next, as a share of a unit: 0 lines up, 0.5 is a running bond.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0
+            },
+            "shade": {
+              "description": "How much the units differ in colour from one another: 0 all alike, 1 a patchwork.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "default": 0.08
+            }
+          }
+        },
+        "wheels": {
+          "description": "Two tracks worn by wheels across the width, the surface colour showing between and beside them: a grass track with earth ruts. A surface that has them is painted across its whole width rather than repeated.",
+          "type": "object",
+          "required": [
+            "color",
+            "bands"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "color": {
+              "$ref": "common.schema.json#/$defs/color"
+            },
+            "bands": {
+              "description": "Each track as the share of the width it covers, from one edge: [0.12, 0.36] is a rut a quarter of the way in.",
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 2,
+              "items": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 2,
+                "items": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            },
+            "speckles": {
+              "description": "Grains scattered over the tracks alone.",
+              "type": "array",
+              "maxItems": 2,
+              "items": {
+                "type": "object",
+                "required": [
+                  "color",
+                  "amount",
+                  "size"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "color": {
+                    "$ref": "common.schema.json#/$defs/color"
+                  },
+                  "amount": {
+                    "description": "Share of the strip they cover.",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "size": {
+                    "description": "Size of one grain, in metres.",
+                    "type": "number",
+                    "minimum": 0.002,
+                    "maximum": 0.4
+                  },
+                  "stretch": {
+                    "description": "How many times longer than wide a grain is, turned any way: 1 a pebble, 4 a chip of bark or a shard of slate.",
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 8,
+                    "default": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "module": {
+      "description": "Elements set one after another along the centre line (kind: module), the ground showing between them. Their shape, size and colour are drawn at random between the bounds given, so no two elements of a path are quite alike.",
+      "type": "object",
+      "required": [
+        "shapes",
+        "size",
+        "colors"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "shapes": {
+          "description": "Shapes the elements are taken from, one per element. round: a disc. half-moon: a disc cut straight on one side. slab: a rectangle with rounded corners (a landscape sleeper is a long one). oval: an ellipse. stone: an irregular slab, as a broken paving stone.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "round",
+              "half-moon",
+              "slab",
+              "oval",
+              "stone"
+            ]
+          }
+        },
+        "size": {
+          "description": "Size of one element in metres: along the path, then across it.",
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number",
+            "minimum": 0.05,
+            "maximum": 4
+          }
+        },
+        "thickness": {
+          "description": "How far the element stands over the ground, in metres.",
+          "type": "number",
+          "minimum": 0.01,
+          "maximum": 0.4,
+          "default": 0.06
+        },
+        "gap": {
+          "description": "Ground left between two elements, in metres. A stride is about 0.6 m from one stepping stone to the next.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 0.2
+        },
+        "colors": {
+          "description": "Colours the elements are taken from, one per element.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 6,
+          "items": {
+            "$ref": "common.schema.json#/$defs/color"
+          }
+        },
+        "roughness": {
+          "description": "0 polished, 1 matt.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.9
+        },
+        "vary": {
+          "description": "How much the elements differ from one another.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "size": {
+              "description": "Share of the size an element may gain or lose.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.6,
+              "default": 0.15
+            },
+            "angle": {
+              "description": "How far an element may be turned off the line, in turns: 0.25 is a quarter turn either way.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.5,
+              "default": 0.08
+            },
+            "side": {
+              "description": "How far an element may be set off the centre line, as a share of its width.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.5,
+              "default": 0.1
+            },
+            "shade": {
+              "description": "How much an element may be lightened or darkened from the colour it was given.",
+              "type": "number",
+              "minimum": 0,
+              "maximum": 0.5,
+              "default": 0.08
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "surface"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "surface"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "module"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "module"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": {
+    "en": "Pavers",
+    "fr": "Pavés",
+    "de": "Pflastersteine",
+    "es": "Adoquines",
+    "it": "Autobloccanti",
+    "pl": "Kostka brukowa",
+    "pt": "Pavê",
+    "nl": "Klinkers"
+  },
+  "icon": "mdi:view-grid",
+  "keywords": [
+    "pavers",
+    "paves",
+    "pflastersteine",
+    "adoquines",
+    "autobloccanti",
+    "kostka brukowa",
+    "kostka",
+    "brukowa",
+    "pave",
+    "klinkers",
+    "pave autobloquant"
+  ],
+  "kind": "surface",
+  "draft": "#c99a7b",
+  "width": {
+    "default": 3,
+    "min": 0.6,
+    "max": 12
+  },
+  "surface": {
+    "color": "#a3816b",
+    "roughness": 0.9,
+    "tile": 2,
+    "grain": 0.1,
+    "joints": {
+      "color": "#5e4a3d",
+      "cell": [
+        0.2,
+        0.1
+      ],
+      "width": 0.016,
+      "stagger": 0.5,
+      "shade": 0.2
+    }
+  }
+}

@@ -1,6 +1,6 @@
 """Write the lists of the catalog into README.md.
 
-The trees, the objects and the fish of the catalog are listed, with their pictures,
+The trees, the objects, the fish and the paths of the catalog are listed, with their pictures,
 between two markers of the README; the rest of the file is left alone:
 
     <!-- catalog:begin -->
@@ -160,6 +160,38 @@ def fish_table(root: Path) -> list[str]:
     )
 
 
+def paths_table(root: Path) -> list[str]:
+    rows = []
+    entries = folders(root / "paths" / "items")
+    for folder in entries:
+        data = read_json(folder / "path.json")
+        width = data.get("width")
+        if data["kind"] == "surface":
+            made_of = data["surface"]
+            detail = "laid units" if "joints" in made_of else "unbroken"
+            if "wheels" in made_of:
+                detail = "wheel tracks"
+        else:
+            made_of = data["module"]
+            detail = _cell(", ".join(made_of["shapes"]))
+        rows.append(
+            [
+                _visual(root, folder),
+                f"{_cell(_name(data, folder.name))}<br>`{folder.name}`",
+                _cell(data["kind"]),
+                detail,
+                f"{_metres(width['default'])} m ({_metres(width['min'])}-{_metres(width['max'])})"
+                if width
+                else "",
+            ]
+        )
+    rows.sort(key=lambda row: (row[2], row[1].lower()))
+    return _details(
+        f"<b>Paths</b> ({len(entries)})",
+        _table(["", "Path", "Kind", "Made of", "Width"], rows),
+    )
+
+
 def render(root: Path) -> str:
     """The generated block, markers included."""
     lines = [
@@ -171,6 +203,8 @@ def render(root: Path) -> str:
         *objects_table(root),
         "",
         *fish_table(root),
+        "",
+        *paths_table(root),
         "",
         END,
     ]

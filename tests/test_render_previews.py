@@ -234,7 +234,9 @@ def quick(monkeypatch):
         return tiny, tiny
 
     monkeypatch.setattr(
-        rp, "PICTURES", {"tree": draw, "object": draw, "pond_fish": draw}
+        rp,
+        "PICTURES",
+        {"tree": draw, "object": draw, "pond_fish": draw, "path": draw},
     )
     return calls
 
@@ -243,6 +245,7 @@ def test_only_missing_pictures_are_drawn(root: Path, quick):
     (root / "objects/items/stool/image.png").write_bytes(b"a photo")
     (root / "trees/items/empty").mkdir()
     (root / "pond_fish/items/goldfish/image.webp").write_bytes(b"drawn")
+    (root / "paths/items/gravel/thumb.webp").write_bytes(b"drawn")
     assert rp.write_pictures(root) == ["trees/oak"]
     assert quick == ["Oak"]
     with Image.open(root / "trees/items/oak/image.webp") as image:
@@ -256,6 +259,7 @@ def test_only_missing_pictures_are_drawn(root: Path, quick):
         "trees/oak",
         "objects/stool",
         "pond_fish/goldfish",
+        "paths/gravel",
     ]
 
 
@@ -263,7 +267,8 @@ def test_command(root: Path, quick, capsys):
     args = ["--root", str(root)]
     assert rp.main(args) == 0
     assert (
-        "drawn: trees/oak\ndrawn: objects/stool\ndrawn: pond_fish/goldfish\n3 entries drawn"
+        "drawn: trees/oak\ndrawn: objects/stool\n"
+        "drawn: pond_fish/goldfish\ndrawn: paths/gravel\n4 entries drawn"
         in capsys.readouterr().out
     )
     assert rp.main([*args, "oak"]) == 0
@@ -278,6 +283,7 @@ def test_real_drawing_ends_in_a_file(root: Path, monkeypatch):
         "tree": lambda data: rp.tree_pictures(data, 32, 16),
         "object": lambda data: rp.object_pictures(data, 32, 16),
         "pond_fish": lambda data: rp.fish_pictures(data, 32, 16),
+        "path": lambda data: rp.path_pictures(data, 32, 16),
     }
     monkeypatch.setattr(rp, "PICTURES", small)
     dump(root / "trees/items/oak/tree.json", TREE)
@@ -285,6 +291,7 @@ def test_real_drawing_ends_in_a_file(root: Path, monkeypatch):
         "trees/oak",
         "objects/stool",
         "pond_fish/goldfish",
+        "paths/gravel",
     ]
     with Image.open(root / "objects/items/stool/thumb.webp") as thumb:
         assert thumb.size == (16, 16) and thumb.mode == "RGBA"
@@ -402,3 +409,178 @@ def test_palm_has_a_bare_trunk_and_a_tuft_of_turned_fronds():
     turned = rp.blob((0, 0, 0), (3, 0.2, 0.5), level=1, yaw=math.pi / 2)
     assert extent(flat)[1][0] == pytest.approx(3, rel=0.01)
     assert extent(turned)[1][2] == pytest.approx(3, rel=0.01)
+
+
+# -- paths ----------------------------------------------------------------------
+
+SURFACE = {
+    "name": {"en": "Pavers"},
+    "kind": "surface",
+    "draft": "#c99a7b",
+    "width": {"default": 2, "min": 0.6, "max": 8},
+    "surface": {
+        "color": "#a3816b",
+        "grain": 0.2,
+        "speckles": [
+            {"color": "#ffffff", "amount": 0.2, "size": 0.05},
+            {"color": "#000000", "amount": 0.1, "size": 0.05, "stretch": 3},
+        ],
+        "joints": {
+            "color": "#5e4a3d",
+            "cell": [0.4, 0.3],
+            "width": 0.02,
+            "stagger": 0.5,
+            "shade": 0.2,
+        },
+    },
+}
+
+MODULE = {
+    "name": {"en": "Stepping stones"},
+    "kind": "module",
+    "draft": "#b5b0a6",
+    "width": {"default": 0.6, "min": 0.3, "max": 1.2},
+    "module": {
+        "shapes": ["round"],
+        "size": [0.45, 0.45],
+        "thickness": 0.05,
+        "gap": 0.3,
+        "colors": ["#808080"],
+        "vary": {"size": 0, "angle": 0, "side": 0, "shade": 0},
+    },
+}
+
+
+def test_a_colour_is_lightened_and_clamped():
+    assert rp._shade((100.0, 200.0, 50.0), 1.5) == (150, 255, 75, 255)
+    assert rp._shade((100.0, 200.0, 50.0), -1) == (0, 0, 0, 255)
+
+
+def test_grains_are_scattered_round_or_stretched():
+    rng = random.Random(1)
+    layer = Image.new("RGBA", (120, 120), (0, 0, 0, 255))
+    rp._speckle(layer, [{"color": "#ffffff", "amount": 0.3, "size": 1.0}], 10, rng)
+    round_cover = pixels(layer, "#ffffff")
+    assert 0.1 * 120 * 120 < round_cover < 0.6 * 120 * 120
+    chips = Image.new("RGBA", (120, 120), (0, 0, 0, 255))
+    rp._speckle(
+        chips,
+        [{"color": "#ffffff", "amount": 0.3, "size": 1.0, "stretch": 4}],
+        10,
+        random.Random(1),
+    )
+    # the same share of the strip, as flakes instead of pebbles
+    assert pixels(chips, "#ffffff") == pytest.approx(round_cover, rel=0.5)
+    assert np.array(chips)[:, :, :3].any()
+
+
+def test_a_grain_is_never_smaller_than_a_pixel():
+    rng = random.Random(2)
+    layer = Image.new("RGBA", (40, 40), (0, 0, 0, 255))
+    rp._speckle(layer, [{"color": "#ffffff", "amount": 0.05, "size": 1e-6}], 1, rng)
+    assert pixels(layer, "#ffffff") > 0
+
+
+def test_units_are_laid_over_their_joints():
+    layer = rp.surface_layer(SURFACE["surface"], 100, 100, 100, random.Random(3))
+    assert layer.size == (100, 100)
+    # the joints show between the units, the units keep the base colour
+    assert pixels(layer, "#5e4a3d", tolerance=40) > 300
+    assert pixels(layer, "#a3816b", tolerance=60) > 2000
+
+
+def test_a_flat_surface_keeps_its_colour():
+    flat = {"color": "#102030", "grain": 0}
+    layer = rp.surface_layer(flat, 20, 20, 50, random.Random(4))
+    assert layer.getpixel((5, 5)) == (16, 32, 48, 255)
+
+
+def test_wheels_wear_two_tracks_and_skip_an_empty_one():
+    surface = {
+        "color": "#6f8f4a",
+        "grain": 0,
+        "wheels": {
+            "color": "#8d7150",
+            "bands": [[0.1, 0.3], [0.5, 0.5]],
+            "speckles": [{"color": "#ffffff", "amount": 0.2, "size": 0.02}],
+        },
+    }
+    layer = rp.surface_layer(surface, 100, 60, 100, random.Random(5))
+    assert layer.getpixel((20, 30))[:3] == (141, 113, 80)  # inside the first track
+    assert layer.getpixel((80, 30))[:3] == (111, 143, 74)  # grass beside it
+    assert pixels(layer, "#ffffff", tolerance=40) > 0  # grains, inside the track only
+    assert pixels(layer, "#ffffff", tolerance=40) < 20 * 60
+
+
+@pytest.mark.parametrize("shape", ["round", "oval", "half-moon", "slab", "stone"])
+def test_an_element_stays_inside_its_size(shape):
+    points = rp.element_outline(shape, 0.4, 0.6, random.Random(6))
+    assert len(points) >= 10
+    along = [x for x, _ in points]
+    across = [y for _, y in points]
+    if shape == "stone":
+        # a broken paving stone is cut where it broke, give or take a tenth
+        assert max(across) - min(across) == pytest.approx(0.6, rel=0.15)
+        assert max(along) - min(along) == pytest.approx(0.4, rel=0.15)
+        return
+    assert max(across) - min(across) == pytest.approx(0.6, abs=1e-6)
+    if shape == "half-moon":
+        # a disc of the width of the path cut in two: half as deep as it is wide
+        assert max(along) - min(along) == pytest.approx(0.3, abs=1e-6)
+        assert min(along) == pytest.approx(-0.15, abs=1e-6)
+    else:
+        assert max(along) - min(along) <= 0.4 + 1e-6
+
+
+def test_a_stone_is_not_a_perfect_ellipse():
+    reach = {
+        round(math.hypot(x / 0.2, y / 0.3), 3)
+        for x, y in rp.element_outline("stone", 0.4, 0.6, random.Random(7))
+    }
+    assert len(reach) > 10
+    assert all(0.7 < value < 1.15 for value in reach)
+
+
+def test_elements_follow_one_another_down_the_path():
+    elements = rp.module_elements(MODULE["module"], 60, 300, 100, random.Random(8))
+    middles = [sum(y for _, y in points) / len(points) for points, _ in elements]
+    assert len(elements) == 4
+    # one every size + gap, all of the same colour, all on the centre line
+    assert middles == pytest.approx([22.5, 97.5, 172.5, 247.5], abs=1.0)
+    assert {color for _, color in elements} == {(128, 128, 128, 255)}
+    for points, _ in elements:
+        assert sum(x for x, _ in points) / len(points) == pytest.approx(30, abs=1.0)
+
+
+def test_an_element_is_never_wider_than_the_path():
+    module = MODULE["module"] | {"size": [0.45, 4.0]}
+    elements = rp.module_elements(module, 60, 100, 100, random.Random(9))
+    for points, _ in elements:
+        assert max(x for x, _ in points) - min(x for x, _ in points) <= 60 + 1e-6
+
+
+def test_elements_are_drawn_over_their_shadow():
+    layer = rp.module_layer(MODULE["module"], 60, 200, 100, random.Random(10))
+    assert pixels(layer, "#808080", tolerance=30) > 2000
+    shaded = np.array(layer)
+    assert (shaded[:, :, 3] > 0).sum() > pixels(layer, "#808080", tolerance=30)
+
+
+@pytest.mark.parametrize("data", [SURFACE, MODULE])
+def test_path_pictures_show_a_piece_of_path(data):
+    image, thumb = rp.path_pictures(data, 48, 16)
+    assert (image.size, thumb.size) == ((48, 48), (16, 16))
+    for picture in (image, thumb):
+        alpha = np.array(picture)[:, :, 3]
+        assert alpha[:, 0].max() == 0  # the ground on both sides
+        assert alpha[:, -1].max() == 0
+        assert alpha[:, picture.width // 2].max() > 200  # the path down the middle
+
+
+def test_a_path_without_a_width_takes_the_usual_one():
+    narrow = rp.path_picture(SURFACE, 64)
+    wide = rp.path_picture({k: v for k, v in SURFACE.items() if k != "width"}, 64)
+    # fewer, so larger, units across the same strip
+    assert pixels(wide, "#5e4a3d", tolerance=40) < pixels(
+        narrow, "#5e4a3d", tolerance=40
+    )

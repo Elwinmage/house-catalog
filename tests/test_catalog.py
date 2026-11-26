@@ -45,12 +45,12 @@ def test_valid_catalog(root: Path, capsys):
     report = validate.validate(root)
     assert report.errors == []
     # translations and pictures of each entry, the names of the two varieties
-    assert len(report.warnings) == 8
+    assert len(report.warnings) == 10
     assert validate.main(["--root", str(root)]) == 0
     assert validate.main(["--root", str(root), "--strict"]) == 1
     out = capsys.readouterr().out
     assert "warning: trees/items/oak: missing translations" in out
-    assert "0 error(s), 8 warning(s)" in out
+    assert "0 error(s), 10 warning(s)" in out
 
 
 def test_broken_catalog(root: Path, capsys):

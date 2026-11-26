@@ -1,0 +1,49 @@
+{
+  "name": {
+    "en": "Oregano",
+    "fr": "Origan"
+  },
+  "latin": "Origanum vulgare",
+  "icon": "mdi:flower",
+  "keywords": [
+    "oregano",
+    "origan",
+    "origanum"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 0.4,
+    "min": 0.18,
+    "max": 0.64
+  },
+  "crown_radius": 0.2,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.02,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#5f8c45"
+    },
+    "summer": {
+      "foliage": "#4e7f3c",
+      "flowers": {
+        "color": "#e5a0c0",
+        "amount": 0.55
+      }
+    },
+    "autumn": {
+      "foliage": "#71803f",
+      "flowers": {
+        "color": "#e5a0c0",
+        "amount": 0.55
+      }
+    },
+    "winter": {
+      "foliage": "#4a6b39",
+      "density": 0.45
+    }
+  }
+}

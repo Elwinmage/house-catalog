@@ -1,0 +1,60 @@
+{
+  "name": {
+    "en": "Gravel",
+    "fr": "Gravier",
+    "de": "Kies",
+    "es": "Grava",
+    "it": "Ghiaia",
+    "pl": "Żwir",
+    "pt": "Gravilha",
+    "nl": "Grind"
+  },
+  "icon": "mdi:grain",
+  "keywords": [
+    "gravel",
+    "gravier",
+    "kies",
+    "grava",
+    "ghiaia",
+    "zwir",
+    "gravilha",
+    "grind",
+    "gravillon",
+    "chippings"
+  ],
+  "kind": "surface",
+  "draft": "#e0d3b4",
+  "width": {
+    "default": 3,
+    "min": 0.5,
+    "max": 12
+  },
+  "surface": {
+    "color": "#bdb29c",
+    "roughness": 1,
+    "tile": 2,
+    "grain": 0.4,
+    "speckles": [
+      {
+        "color": "#a99d86",
+        "amount": 0.12,
+        "size": 0.026
+      },
+      {
+        "color": "#d2c8b3",
+        "amount": 0.12,
+        "size": 0.026
+      },
+      {
+        "color": "#8f846f",
+        "amount": 0.1,
+        "size": 0.026
+      },
+      {
+        "color": "#e3dccb",
+        "amount": 0.08,
+        "size": 0.026
+      }
+    ]
+  }
+}

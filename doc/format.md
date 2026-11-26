@@ -136,6 +136,57 @@ Where the patches fall is left to the renderer, from a seed of its own for
 each fish, so that two fish of a variety are never alike but one fish keeps
 its robe; `scripts/render_previews.py` (`fish_patches`) is the reference.
 
+## Paths
+
+A path is laid along a centre line the house view draws, `width.default`
+metres wide (the user may change it between `width.min` and `width.max`).
+`draft` is the flat bright colour it is drawn in on the overlay of the editor,
+where the path is seen from above and is not lit.
+
+`kind` says which of the two families it belongs to, and the object of that
+name holds everything else.
+
+### Surfaces
+
+An unbroken strip. Its texture is painted from numbers alone, so adding a
+surface to the catalog never calls for a line of code in the card.
+
+| Field | Meaning |
+|---|---|
+| `color` | Base colour of the strip. |
+| `roughness` | 0 polished (wet asphalt), 1 matt (gravel, earth). |
+| `tile` | Metres of path covered by one tile of the texture. |
+| `grain` | Strength of the speckled noise over the base colour: 0 flat, 1 coarse. |
+| `speckles` | Up to four layers of grains, drawn in order: `color`, `amount` (share of the strip they cover), `size` (across, in metres) and `stretch` (1 a pebble, 4 a chip of bark or a shard of slate, laid any way round). |
+| `joints` | The units of a laid surface, over their bed of mortar: `color` of the joints, `cell` (one unit along the path, then across it), `width` of a joint, `stagger` (0 lines up, 0.5 a running bond) and `shade` (how much the units differ from one another). |
+| `wheels` | Two ruts worn across the width, the surface showing between and beside them: `color`, `bands` (each rut as the share of the width it covers, from one edge) and `speckles` of its own. A surface with ruts is painted across its whole width rather than repeated. |
+
+The number of grains of a layer follows from its `amount` and its `size`: a
+layer covering 0.12 of the strip with grains 2.6 cm across is about one grain
+per 50 cm². Where they fall is left to the renderer;
+`scripts/render_previews.py` (`surface_layer`) is the reference.
+
+### Modules
+
+Elements set one after another along the centre line, the ground showing
+between them: stepping stones, landscape sleepers, log rounds. They are the
+same family under different numbers -- a sleeper is a long `slab`, a log round
+a thick `round`.
+
+| Field | Meaning |
+|---|---|
+| `shapes` | Shapes an element is taken from: `round` a disc, `half-moon` a disc of the width of the path cut through the middle (so half as deep as it is wide), `slab` a rectangle with rounded corners, `oval` an ellipse, `stone` an irregular slab. |
+| `size` | One element in metres: along the path, then across it. |
+| `thickness` | How far it stands over the ground. |
+| `gap` | Ground left between two elements; a stride is about 0.6 m from one stepping stone to the next. |
+| `colors` | Colours an element is taken from. |
+| `vary` | How much the elements differ: `size` (share gained or lost), `angle` (turned off the line, in turns), `side` (set off the centre line, as a share of the width) and `shade` (lightened or darkened). |
+
+Which shape, colour and variation each element gets is left to the renderer,
+from a seed of its own, so a path keeps its look while no two elements are
+quite alike; `scripts/render_previews.py` (`module_elements`) is the
+reference.
+
 ## Shared fields
 
 | Field | Meaning |
@@ -143,6 +194,7 @@ its robe; `scripts/render_previews.py` (`fish_patches`) is the reference.
 | `name` | Name per language; English is mandatory and is the fallback. |
 | `icon` | Material Design Icon shown in lists when there is no picture. |
 | `latin` | Botanical or scientific name of a tree or a fish, unique in its section. |
+| `width` | A length in metres offered to the user: the usual one (`default`) and the bounds (`min`, `max`). |
 | `keywords` | Words naming the entry in a Sweet Home 3D plan, in any language, in lower case without accents. A plant or a piece of furniture whose name holds one of these words (whole word, case and accents ignored) is drawn with the entry. |
 
 ## Pictures

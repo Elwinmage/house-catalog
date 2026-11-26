@@ -1,0 +1,55 @@
+{
+  "name": {
+    "en": "Border privet 'Ilvomassi'",
+    "fr": "Troène 'Ilvomassi'"
+  },
+  "latin": "Ligustrum obtusifolium 'Ilvomassi'",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "border",
+    "privet",
+    "ilvomassi",
+    "troene",
+    "ligustrum"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 1.5,
+    "min": 0.68,
+    "max": 2.4
+  },
+  "crown_radius": 0.65,
+  "trunk": {
+    "height": 0.18,
+    "radius": 0.03,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#5f8c45",
+      "fruits": {
+        "color": "#232029",
+        "amount": 0.2
+      }
+    },
+    "summer": {
+      "foliage": "#4e7f3c",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#71803f"
+    },
+    "winter": {
+      "foliage": "#4a6b39",
+      "density": 0.45,
+      "fruits": {
+        "color": "#232029",
+        "amount": 0.2
+      }
+    }
+  }
+}

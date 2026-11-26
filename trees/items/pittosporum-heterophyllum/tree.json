@@ -1,0 +1,51 @@
+{
+  "name": {
+    "en": "Chinese pittosporum",
+    "fr": "Oranger de Chine"
+  },
+  "latin": "Pittosporum heterophyllum",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "chinese",
+    "pittosporum",
+    "oranger",
+    "de",
+    "chine"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 2.5,
+    "min": 1.12,
+    "max": 4.0
+  },
+  "crown_radius": 1.25,
+  "trunk": {
+    "height": 0.3,
+    "radius": 0.05,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42",
+      "flowers": {
+        "color": "#f5edb0",
+        "amount": 0.4
+      }
+    },
+    "summer": {
+      "foliage": "#356b38",
+      "flowers": {
+        "color": "#f5edb0",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#336635"
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95
+    }
+  }
+}

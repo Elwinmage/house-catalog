@@ -18,6 +18,7 @@ from house_catalog_rules import DESCRIPTORS, KNOWN_LANGS, SEASONS
 FIRST = {
     "trees": {"oak", "pine", "yew", "cherry-tree", "apricot-tree"},
     "objects": {"chair"},
+    "paths": {"gravel", "pavers", "stepping-stones"},
 }
 
 

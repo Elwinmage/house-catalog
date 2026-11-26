@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Southernwood",
+    "fr": "Aurone"
+  },
+  "latin": "Artemisia abrotanum",
+  "icon": "mdi:flower",
+  "keywords": [
+    "southernwood",
+    "aurone",
+    "artemisia"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 1.0,
+    "min": 0.45,
+    "max": 1.6
+  },
+  "crown_radius": 0.5,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.05,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#a3b09a"
+    },
+    "summer": {
+      "foliage": "#9aa891"
+    },
+    "autumn": {
+      "foliage": "#9a9a84"
+    },
+    "winter": {
+      "foliage": "#929e8c",
+      "density": 0.95
+    }
+  }
+}

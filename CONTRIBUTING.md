@@ -33,6 +33,21 @@ opens the pull request. By hand:
 3. Give the `name` in English at least, the scientific name in `latin`, and
    the names of the varieties.
 
+## Add a kind of path
+
+1. Create `paths/items/<id>/path.json`.
+2. Choose the family: `kind: surface` for an unbroken strip (asphalt, gravel,
+   decking), `kind: module` for elements set one after another with the ground
+   showing between them (stepping stones, sleepers, log rounds).
+3. For a surface, give its base `color`, then only what it needs: `grain`,
+   `speckles` (with `stretch` for chips and shards), `joints` for a laid
+   surface, `wheels` for a grass track. No code is added to the card: the
+   texture is painted from these numbers.
+4. For modules, give the `shapes` they are taken from, their `size` (along the
+   path, then across), `thickness`, `gap`, `colors` and how much they `vary`.
+5. Give a `width` (the usual one and the bounds the user may choose within)
+   and the `draft` colour the editor draws the path in.
+
 ## Pictures
 
 ```

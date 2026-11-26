@@ -1,0 +1,53 @@
+{
+  "name": {
+    "en": "Cherry laurel 'Otto Luyken'",
+    "fr": "Laurier-cerise 'Otto Luyken'"
+  },
+  "latin": "Prunus laurocerasus 'Otto Luyken'",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "cherry",
+    "laurel",
+    "otto",
+    "luyken",
+    "laurier",
+    "cerise",
+    "prunus"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 1.5,
+    "min": 0.68,
+    "max": 2.4
+  },
+  "crown_radius": 0.75,
+  "trunk": {
+    "height": 0.18,
+    "radius": 0.03,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "summer": {
+      "foliage": "#356b38"
+    },
+    "autumn": {
+      "foliage": "#336635"
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95,
+      "fruits": {
+        "color": "#241f2b",
+        "amount": 0.2
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "name": {
+    "en": "Variegated myrtle",
+    "fr": "Myrte panaché"
+  },
+  "latin": "Myrtus communis 'Variegata'",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "variegated",
+    "myrtle",
+    "myrte",
+    "panache",
+    "myrtus"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 1.5,
+    "min": 0.68,
+    "max": 2.4
+  },
+  "crown_radius": 0.65,
+  "trunk": {
+    "height": 0.18,
+    "radius": 0.03,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#a8c47e",
+      "fruits": {
+        "color": "#2b2440",
+        "amount": 0.2
+      }
+    },
+    "summer": {
+      "foliage": "#9ab87a",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#c0bb7a",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#93ab74",
+      "density": 0.95,
+      "fruits": {
+        "color": "#2b2440",
+        "amount": 0.2
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "name": {
+    "en": "Perennial wallflower 'Bowles Mauve'",
+    "fr": "Giroflée arbustive 'Bowles Mauve'"
+  },
+  "latin": "Erysimum 'Bowles Mauve'",
+  "icon": "mdi:flower",
+  "keywords": [
+    "perennial",
+    "wallflower",
+    "bowles",
+    "mauve",
+    "giroflee",
+    "arbustive",
+    "erysimum"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 0.9,
+    "min": 0.41,
+    "max": 1.44
+  },
+  "crown_radius": 0.5,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.045,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42",
+      "flowers": {
+        "color": "#a86fc0",
+        "amount": 0.55
+      }
+    },
+    "summer": {
+      "foliage": "#356b38",
+      "flowers": {
+        "color": "#a86fc0",
+        "amount": 0.55
+      }
+    },
+    "autumn": {
+      "foliage": "#336635",
+      "flowers": {
+        "color": "#a86fc0",
+        "amount": 0.55
+      }
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95
+    }
+  }
+}

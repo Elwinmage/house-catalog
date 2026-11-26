@@ -27,6 +27,7 @@ import json
 import math
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -61,12 +62,14 @@ DESCRIPTORS = {
     "tree": "tree.json",
     "object": "object.json",
     "pond_fish": "pond_fish.json",
+    "path": "path.json",
 }
 #: Folder of each kind, from the root of the repository
 FOLDERS = {
     "tree": "trees/items",
     "object": "objects/items",
     "pond_fish": "pond_fish/items",
+    "path": "paths/items",
 }
 
 
@@ -91,6 +94,7 @@ class Context:
     trees: dict[str, dict[str, Any]] = field(default_factory=dict)
     objects: dict[str, dict[str, Any]] = field(default_factory=dict)
     fish: dict[str, dict[str, Any]] = field(default_factory=dict)
+    paths: dict[str, dict[str, Any]] = field(default_factory=dict)
 
 
 def where_of(kind: str, entry_id: str) -> str:
@@ -353,16 +357,91 @@ def _check_fish(report, where, entry_id, data, files, ctx) -> None:
         report.warn(where, "no picture, only the icon will be shown")
 
 
+def _check_bounds(report, where, data) -> None:
+    """A width offered to the user: min <= default <= max."""
+    width = data.get("width")
+    if width is not None and not width["min"] <= width["default"] <= width["max"]:
+        report.error(where, f"width needs min <= default <= max, got {width}")
+
+
+def _check_speckles(report, where, speckles) -> None:
+    covered = sum(s["amount"] for s in speckles)
+    if covered > 1:
+        report.error(
+            where, f"the grains cover {covered:.2f} of the strip, more than all of it"
+        )
+    for speckle in speckles:
+        if speckle["amount"] == 0:
+            report.warn(where, f"a grain of {speckle['color']} covers nothing")
+
+
+def _check_surface(report, where, data) -> None:
+    surface = data["surface"]
+    _check_speckles(report, where, surface.get("speckles", []))
+    wheels = surface.get("wheels")
+    if wheels is not None:
+        _check_speckles(report, f"{where} wheels", wheels.get("speckles", []))
+        edges = []
+        for low, high in wheels["bands"]:
+            if low >= high:
+                report.error(where, f"wheel track [{low}, {high}] has no width")
+            edges.append((low, high))
+        for (a_low, a_high), (b_low, b_high) in pairwise(edges):
+            if b_low < a_high:
+                report.error(
+                    where,
+                    f"wheel tracks [{a_low}, {a_high}] and [{b_low}, {b_high}] overlap",
+                )
+    joints = surface.get("joints")
+    if joints is not None and joints["color"] == surface["color"]:
+        report.warn(where, "the joints have the colour of the units: they do not show")
+
+
+def _check_module(report, where, data) -> None:
+    module = data["module"]
+    along, across = module["size"]
+    thickness = module.get("thickness", 0.06)
+    if thickness > min(along, across):
+        report.warn(
+            where,
+            f"an element {thickness} m thick and {min(along, across)} m wide is a post, not a step",
+        )
+    seen = set()
+    for color in module["colors"]:
+        if color in seen:
+            report.error(where, f"colour {color} is listed twice")
+        seen.add(color)
+    width = data.get("width")
+    if width is not None and across > width["max"]:
+        report.error(
+            where,
+            f"an element {across} m across never fits a path of at most {width['max']} m",
+        )
+
+
+def _check_path(report, where, entry_id, data, files, ctx) -> None:
+    _check_i18n(report, where, data["name"])
+    _check_bounds(report, where, data)
+    if data["kind"] == "surface":
+        _check_surface(report, where, data)
+    else:
+        _check_module(report, where, data)
+    if not _has_image(files):
+        report.warn(where, "no picture, only the icon will be shown")
+
+
 _RULES = {
     "tree": _check_tree,
     "object": _check_object,
     "pond_fish": _check_fish,
+    "path": _check_path,
 }
 #: Group of `Context` the accepted entries of each kind join
 _GROUPS = {
     "tree": "trees",
     "object": "objects",
     "pond_fish": "fish",
+    "path": "paths",
 }
 
 
@@ -406,7 +485,10 @@ def validate_draft(
     report = Report()
     check_files(report, where_of(kind, entry_id), files, DESCRIPTORS[kind])
     scratch = Context(
-        trees=dict(ctx.trees), objects=dict(ctx.objects), fish=dict(ctx.fish)
+        trees=dict(ctx.trees),
+        objects=dict(ctx.objects),
+        fish=dict(ctx.fish),
+        paths=dict(ctx.paths),
     )
     validate_entry(report, kind, entry_id, data, files, scratch, validators)
     return report

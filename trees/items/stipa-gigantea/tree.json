@@ -1,0 +1,52 @@
+{
+  "name": {
+    "en": "Giant feather grass",
+    "fr": "Stipe géante"
+  },
+  "latin": "Stipa gigantea",
+  "icon": "mdi:grass",
+  "keywords": [
+    "giant",
+    "feather",
+    "grass",
+    "stipe",
+    "geante",
+    "stipa"
+  ],
+  "shape": "columnar",
+  "evergreen": true,
+  "height": {
+    "default": 2.0,
+    "min": 0.9,
+    "max": 3.2
+  },
+  "crown_radius": 0.5,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.1,
+    "color": "#7a6a4a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#7fa052",
+      "flowers": {
+        "color": "#e8d9a0",
+        "amount": 0.4
+      }
+    },
+    "summer": {
+      "foliage": "#86a35c",
+      "flowers": {
+        "color": "#e8d9a0",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#c9ae74"
+    },
+    "winter": {
+      "foliage": "#b69c70",
+      "density": 0.55
+    }
+  }
+}

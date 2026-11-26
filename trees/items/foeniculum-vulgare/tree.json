@@ -1,0 +1,50 @@
+{
+  "name": {
+    "en": "Fennel",
+    "fr": "Fenouil commun"
+  },
+  "latin": "Foeniculum vulgare",
+  "icon": "mdi:flower",
+  "keywords": [
+    "fennel",
+    "fenouil",
+    "commun",
+    "foeniculum"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 1.5,
+    "min": 0.68,
+    "max": 2.4
+  },
+  "crown_radius": 0.4,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.075,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#5f8c45"
+    },
+    "summer": {
+      "foliage": "#4e7f3c",
+      "flowers": {
+        "color": "#e8d87a",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#71803f",
+      "flowers": {
+        "color": "#e8d87a",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#4a6b39",
+      "density": 0.45
+    }
+  }
+}

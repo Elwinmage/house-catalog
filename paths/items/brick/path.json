@@ -1,0 +1,66 @@
+{
+  "name": {
+    "en": "Brick paving",
+    "fr": "Pavé de brique",
+    "de": "Klinkerpflaster",
+    "es": "Pavimento de ladrillo",
+    "it": "Pavimentazione in mattoni",
+    "pl": "Nawierzchnia z cegły",
+    "pt": "Pavimento de tijolo",
+    "nl": "Baksteenbestrating"
+  },
+  "icon": "mdi:wall",
+  "keywords": [
+    "brick paving",
+    "brick",
+    "paving",
+    "pave de brique",
+    "pave",
+    "brique",
+    "klinkerpflaster",
+    "pavimento de ladrillo",
+    "pavimento",
+    "ladrillo",
+    "pavimentazione in mattoni",
+    "pavimentazione",
+    "mattoni",
+    "nawierzchnia z cegly",
+    "nawierzchnia",
+    "cegly",
+    "pavimento de tijolo",
+    "tijolo",
+    "baksteenbestrating",
+    "clinker",
+    "terre cuite"
+  ],
+  "kind": "surface",
+  "draft": "#c06a4e",
+  "width": {
+    "default": 1.6,
+    "min": 0.5,
+    "max": 8
+  },
+  "surface": {
+    "color": "#9c5540",
+    "roughness": 0.85,
+    "tile": 2,
+    "grain": 0.12,
+    "speckles": [
+      {
+        "color": "#8a4736",
+        "amount": 0.04,
+        "size": 0.005
+      }
+    ],
+    "joints": {
+      "color": "#cfc4b2",
+      "cell": [
+        0.22,
+        0.105
+      ],
+      "width": 0.012,
+      "stagger": 0.5,
+      "shade": 0.18
+    }
+  }
+}

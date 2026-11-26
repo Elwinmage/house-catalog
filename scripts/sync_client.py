@@ -56,7 +56,7 @@ class Target:
 TARGETS: dict[str, Target] = {
     "catalog-editor": Target("catalog_editor", rules=True),
     "ha-house-view-component": Target(
-        "house_view", reads=("trees", "objects", "pond_fish")
+        "house_view", reads=("trees", "objects", "pond_fish", "paths")
     ),
 }
 

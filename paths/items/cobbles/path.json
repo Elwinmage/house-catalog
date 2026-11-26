@@ -1,0 +1,76 @@
+{
+  "name": {
+    "en": "Old cobbles",
+    "fr": "Pavé ancien",
+    "de": "Altes Kopfsteinpflaster",
+    "es": "Adoquinado antiguo",
+    "it": "Acciottolato antico",
+    "pl": "Stary bruk",
+    "pt": "Calçada antiga",
+    "nl": "Oude kasseien"
+  },
+  "icon": "mdi:checkerboard",
+  "keywords": [
+    "old cobbles",
+    "old",
+    "cobbles",
+    "pave ancien",
+    "pave",
+    "ancien",
+    "altes kopfsteinpflaster",
+    "altes",
+    "kopfsteinpflaster",
+    "adoquinado antiguo",
+    "adoquinado",
+    "antiguo",
+    "acciottolato antico",
+    "acciottolato",
+    "antico",
+    "stary bruk",
+    "stary",
+    "bruk",
+    "calcada antiga",
+    "calcada",
+    "antiga",
+    "oude kasseien",
+    "oude",
+    "kasseien",
+    "calade",
+    "kopfstein"
+  ],
+  "kind": "surface",
+  "draft": "#a8a39b",
+  "width": {
+    "default": 2.5,
+    "min": 0.6,
+    "max": 10
+  },
+  "surface": {
+    "color": "#8e8a84",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.3,
+    "speckles": [
+      {
+        "color": "#7a766f",
+        "amount": 0.1,
+        "size": 0.009
+      },
+      {
+        "color": "#a09b93",
+        "amount": 0.08,
+        "size": 0.009
+      }
+    ],
+    "joints": {
+      "color": "#5d5a55",
+      "cell": [
+        0.14,
+        0.14
+      ],
+      "width": 0.022,
+      "stagger": 0.5,
+      "shade": 0.22
+    }
+  }
+}

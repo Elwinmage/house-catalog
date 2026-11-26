@@ -1,0 +1,49 @@
+{
+  "name": {
+    "en": "Daylily 'Gentle Shepherd'",
+    "fr": "Lis d'un jour 'Gentle Shepherd'"
+  },
+  "latin": "Hemerocallis 'Gentle Shepherd'",
+  "icon": "mdi:flower",
+  "keywords": [
+    "daylily",
+    "gentle",
+    "shepherd",
+    "lis",
+    "un",
+    "jour",
+    "hemerocallis"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 0.8,
+    "min": 0.36,
+    "max": 1.28
+  },
+  "crown_radius": 0.2,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.04,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#5f8c45"
+    },
+    "summer": {
+      "foliage": "#4e7f3c",
+      "flowers": {
+        "color": "#fffbe0",
+        "amount": 0.55
+      }
+    },
+    "autumn": {
+      "foliage": "#71803f"
+    },
+    "winter": {
+      "foliage": "#4a6b39",
+      "density": 0.45
+    }
+  }
+}

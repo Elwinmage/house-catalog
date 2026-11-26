@@ -1,0 +1,65 @@
+{
+  "name": {
+    "en": "Purple filbert",
+    "fr": "Noisetier pourpre"
+  },
+  "latin": "Corylus maxima 'Purpurea'",
+  "icon": "mdi:tree",
+  "keywords": [
+    "purple",
+    "filbert",
+    "noisetier",
+    "pourpre",
+    "corylus"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 5.0,
+    "min": 2.25,
+    "max": 8.0
+  },
+  "crown_radius": 1.5,
+  "trunk": {
+    "height": 1.65,
+    "radius": 0.11,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#7d4a5c",
+      "density": 0.8,
+      "flowers": {
+        "color": "#caa6c8",
+        "amount": 0.4
+      },
+      "fallen": {
+        "color": "#caa6c8",
+        "amount": 0.2
+      }
+    },
+    "summer": {
+      "foliage": "#7d4a5c"
+    },
+    "autumn": {
+      "foliage": "#8a5a3a",
+      "density": 0.7,
+      "fruits": {
+        "color": "#a87a4a",
+        "amount": 0.2
+      },
+      "fallen": {
+        "color": "#8a5a3a",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#7d4a5c",
+      "density": 0,
+      "fruits": {
+        "color": "#a87a4a",
+        "amount": 0.2
+      }
+    }
+  }
+}

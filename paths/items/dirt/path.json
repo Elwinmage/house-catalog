@@ -1,0 +1,67 @@
+{
+  "name": {
+    "en": "Dirt track",
+    "fr": "Terre battue",
+    "de": "Erdweg",
+    "es": "Tierra batida",
+    "it": "Terra battuta",
+    "pl": "Droga gruntowa",
+    "pt": "Terra batida",
+    "nl": "Onverhard pad"
+  },
+  "icon": "mdi:terrain",
+  "keywords": [
+    "dirt track",
+    "dirt",
+    "track",
+    "terre battue",
+    "terre",
+    "battue",
+    "erdweg",
+    "tierra batida",
+    "tierra",
+    "batida",
+    "terra battuta",
+    "terra",
+    "battuta",
+    "droga gruntowa",
+    "droga",
+    "gruntowa",
+    "terra batida",
+    "onverhard pad",
+    "onverhard",
+    "pad",
+    "chemin de terre",
+    "piste"
+  ],
+  "kind": "surface",
+  "draft": "#b8915f",
+  "width": {
+    "default": 3,
+    "min": 0.6,
+    "max": 12
+  },
+  "surface": {
+    "color": "#957650",
+    "roughness": 1,
+    "tile": 2,
+    "grain": 0.45,
+    "speckles": [
+      {
+        "color": "#86684a",
+        "amount": 0.12,
+        "size": 0.034
+      },
+      {
+        "color": "#a5845c",
+        "amount": 0.12,
+        "size": 0.034
+      },
+      {
+        "color": "#7a5d40",
+        "amount": 0.1,
+        "size": 0.034
+      }
+    ]
+  }
+}

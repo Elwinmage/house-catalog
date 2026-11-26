@@ -1,0 +1,55 @@
+{
+  "name": {
+    "en": "Leatherleaf viburnum",
+    "fr": "Viorne à feuilles ridées"
+  },
+  "latin": "Viburnum rhytidophyllum",
+  "icon": "mdi:tree",
+  "keywords": [
+    "leatherleaf",
+    "viburnum",
+    "viorne",
+    "feuilles",
+    "ridees"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 3.5,
+    "min": 1.57,
+    "max": 5.6
+  },
+  "crown_radius": 1.75,
+  "trunk": {
+    "height": 1.16,
+    "radius": 0.077,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "summer": {
+      "foliage": "#356b38"
+    },
+    "autumn": {
+      "foliage": "#336635",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95,
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    }
+  }
+}

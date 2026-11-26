@@ -1,0 +1,55 @@
+{
+  "name": {
+    "en": "Wild privet",
+    "fr": "Troène d'Europe"
+  },
+  "latin": "Ligustrum vulgare",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "wild",
+    "privet",
+    "troene",
+    "europe",
+    "ligustrum"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 3.0,
+    "min": 1.35,
+    "max": 4.8
+  },
+  "crown_radius": 1.5,
+  "trunk": {
+    "height": 0.36,
+    "radius": 0.06,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#5f8c45",
+      "fruits": {
+        "color": "#232029",
+        "amount": 0.25
+      }
+    },
+    "summer": {
+      "foliage": "#4e7f3c",
+      "flowers": {
+        "color": "#fffff0",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#71803f"
+    },
+    "winter": {
+      "foliage": "#4a6b39",
+      "density": 0.45,
+      "fruits": {
+        "color": "#232029",
+        "amount": 0.25
+      }
+    }
+  }
+}

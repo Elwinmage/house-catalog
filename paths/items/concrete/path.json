@@ -1,0 +1,56 @@
+{
+  "name": {
+    "en": "Concrete",
+    "fr": "Béton",
+    "de": "Beton",
+    "es": "Hormigón",
+    "it": "Cemento",
+    "pl": "Beton",
+    "pt": "Betão",
+    "nl": "Beton"
+  },
+  "icon": "mdi:texture-box",
+  "keywords": [
+    "concrete",
+    "beton",
+    "hormigon",
+    "cemento",
+    "betao",
+    "ciment",
+    "dalle beton"
+  ],
+  "kind": "surface",
+  "draft": "#d8d5cf",
+  "width": {
+    "default": 3,
+    "min": 0.6,
+    "max": 12
+  },
+  "surface": {
+    "color": "#bfbbb2",
+    "roughness": 0.85,
+    "tile": 4,
+    "grain": 0.12,
+    "speckles": [
+      {
+        "color": "#b2aea5",
+        "amount": 0.03,
+        "size": 0.011
+      },
+      {
+        "color": "#cac6be",
+        "amount": 0.03,
+        "size": 0.011
+      }
+    ],
+    "joints": {
+      "color": "#9a968e",
+      "cell": [
+        2,
+        2
+      ],
+      "width": 0.01,
+      "shade": 0.02
+    }
+  }
+}

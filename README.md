@@ -2,15 +2,16 @@
 
 Data catalog of the [house view](https://github.com/Elwinmage/ha-house-view-component)
 for Home Assistant: the trees and the objects it draws around and inside the
-house, and the fish of its ponds. Adding a tree species, a piece of furniture
-or a fish is a pull request here, not a new release of the integration or of
-the card.
+house, the fish of its ponds and what its paths are made of. Adding a tree
+species, a piece of furniture, a fish or a kind of path is a pull request here,
+not a new release of the integration or of the card.
 
 | Section | Content | Downloaded by | Shown by |
 |---|---|---|---|
 | `trees` | trees and shrubs: a simple shape and up to four renderings, one per season | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `objects` | furniture and outdoor objects, made of a few simple solids | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `pond_fish` | pond fish: a body, its fins and its colour varieties | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `paths` | what a drive or a garden path is made of: a surface, or modules set one after another | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 
 The catalog follows the conventions of
 [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog): one folder
@@ -41,6 +42,10 @@ pond_fish/
   items/<fish_id>/
     pond_fish.json              name, sizes, swimming, colour varieties
     image.webp / thumb.webp     pictures (optional): every variety, the first one
+paths/
+  items/<path_id>/
+    path.json                   name, kind, width, surface or modules
+    image.webp / thumb.webp     pictures (optional): a piece of path from above
 scripts/                        validate.py, make_release.py, render_previews.py,
                                 readme_catalog.py, sync_client.py (description and
                                 rules into the editor, description and built-in
@@ -140,13 +145,46 @@ so an entry is never renamed, only removed.
   own from its variety; a pond can also give colours of its own.
 - `swim`: cruising speed, the depth kept in warm water, schooling.
 
+## Paths
+
+```json
+{
+  "name": { "en": "Stepping stones", "fr": "Pas japonais" },
+  "kind": "module",
+  "draft": "#b5b0a6",
+  "width": { "default": 0.5, "min": 0.3, "max": 1.2 },
+  "module": {
+    "shapes": ["round", "half-moon"],
+    "size": [0.45, 0.45], "thickness": 0.05, "gap": 0.25,
+    "colors": ["#8d8a84", "#a39a8c", "#6f7a72"],
+    "vary": { "size": 0.25, "angle": 0.5, "side": 0.15, "shade": 0.12 }
+  }
+}
+```
+
+- A path is laid along a centre line and is `width` metres wide; `draft` is
+  the colour it is drawn in on the overlay of the editor.
+- `kind: surface` is an unbroken strip. Its texture is painted from numbers
+  alone -- base colour, `grain`, `speckles` (coloured grains, `stretch` turning
+  a pebble into a chip of bark or a shard of slate), `joints` (the units of a
+  laid surface: pavers, slabs, boards) and `wheels` (two ruts worn across a
+  grass track) -- so a surface added here needs no line of code in the card.
+- `kind: module` sets elements one after another, the ground showing between
+  them: `shapes` (`round`, `half-moon`, `slab`, `oval`, `stone`), `size` along
+  then across, `thickness`, `gap`, and the `colors` they are taken from.
+  `vary` is how much they differ from one another, so no two are quite alike.
+- Stepping stones, landscape sleepers and log rounds are the same `module`
+  family under different numbers: a sleeper is a long `slab`, a log round a
+  thick `round`.
+
 ## Pictures
 
 `scripts/render_previews.py` draws `image.webp` and `thumb.webp` from the
 descriptor, with the same reading of the format as the card: the picture of a
 tree shows its four seasons (spring, summer / autumn, winter), the one of a
-fish every variety, seen from above. A photo or a
-drawing of your own may replace them.
+fish every variety, seen from above, and the one of a path a piece of it seen
+from straight above, at its real scale. A photo or a drawing of your own may
+replace them.
 
 ## Catalog content
 
@@ -158,23 +196,23 @@ drawing of your own may replace them.
 
 |  | Tree | Botanical name | Shape | Foliage | Height | Seasons |
 |---|---|---|---|---|---|---|
-| <img src="trees/items/apple-tree/thumb.webp" width="48" alt=""> | Apple tree<br>`apple-tree` | <i>Malus domestica</i> | round | deciduous | 5 m (2.5-9) | 4 seasons |
-| <img src="trees/items/apricot-tree/thumb.webp" width="48" alt=""> | Apricot tree<br>`apricot-tree` | <i>Prunus armeniaca</i> | round | deciduous | 4.5 m (2-8) | 4 seasons |
-| <img src="trees/items/canary-palm/thumb.webp" width="48" alt=""> | Canary Island date palm<br>`canary-palm` | <i>Phoenix canariensis</i> | palm | evergreen | 9 m (3-20) | 4 seasons |
-| <img src="trees/items/cherry-tree/thumb.webp" width="48" alt=""> | Cherry tree<br>`cherry-tree` | <i>Prunus avium</i> | round | deciduous | 7 m (3-15) | 4 seasons |
-| <img src="trees/items/coconut-palm/thumb.webp" width="48" alt=""> | Coconut palm<br>`coconut-palm` | <i>Cocos nucifera</i> | palm | evergreen | 13 m (4-28) | 4 seasons |
-| <img src="trees/items/date-palm/thumb.webp" width="48" alt=""> | Date palm<br>`date-palm` | <i>Phoenix dactylifera</i> | palm | evergreen | 12 m (4-25) | 4 seasons |
-| <img src="trees/items/elder/thumb.webp" width="48" alt=""> | Black elder<br>`elder` | <i>Sambucus nigra</i> | round | deciduous | 4 m (2-7) | 4 seasons |
-| <img src="trees/items/eucalyptus/thumb.webp" width="48" alt=""> | Eucalyptus<br>`eucalyptus` | <i>Eucalyptus globulus</i> | round | evergreen | 14 m (6-30) | summer |
-| <img src="trees/items/japanese-cherry/thumb.webp" width="48" alt=""> | Japanese flowering cherry<br>`japanese-cherry` | <i>Prunus serrulata</i> | round | deciduous | 6 m (3-10) | 4 seasons |
-| <img src="trees/items/norway-spruce/thumb.webp" width="48" alt=""> | Norway spruce<br>`norway-spruce` | <i>Picea abies</i> | conical | evergreen | 14 m (4-35) | 4 seasons |
-| <img src="trees/items/oak/thumb.webp" width="48" alt=""> | Oak<br>`oak` | <i>Quercus robur</i> | round | deciduous | 9 m (4-25) | 4 seasons |
+|  | Apple tree<br>`apple-tree` | <i>Malus domestica</i> | round | deciduous | 5 m (2.5-9) | 4 seasons |
+|  | Apricot tree<br>`apricot-tree` | <i>Prunus armeniaca</i> | round | deciduous | 4.5 m (2-8) | 4 seasons |
+|  | Canary Island date palm<br>`canary-palm` | <i>Phoenix canariensis</i> | palm | evergreen | 9 m (3-20) | 4 seasons |
+|  | Cherry tree<br>`cherry-tree` | <i>Prunus avium</i> | round | deciduous | 7 m (3-15) | 4 seasons |
+|  | Coconut palm<br>`coconut-palm` | <i>Cocos nucifera</i> | palm | evergreen | 13 m (4-28) | 4 seasons |
+|  | Date palm<br>`date-palm` | <i>Phoenix dactylifera</i> | palm | evergreen | 12 m (4-25) | 4 seasons |
+|  | Black elder<br>`elder` | <i>Sambucus nigra</i> | round | deciduous | 4 m (2-7) | 4 seasons |
+|  | Eucalyptus<br>`eucalyptus` | <i>Eucalyptus globulus</i> | round | evergreen | 14 m (6-30) | summer |
+|  | Japanese flowering cherry<br>`japanese-cherry` | <i>Prunus serrulata</i> | round | deciduous | 6 m (3-10) | 4 seasons |
+|  | Norway spruce<br>`norway-spruce` | <i>Picea abies</i> | conical | evergreen | 14 m (4-35) | 4 seasons |
+|  | Oak<br>`oak` | <i>Quercus robur</i> | round | deciduous | 9 m (4-25) | 4 seasons |
 | <img src="trees/items/olive/thumb.webp" width="48" alt=""> | Olive tree<br>`olive` | <i>Olea europaea</i> | round | evergreen | 5 m (2-12) | 4 seasons |
-| <img src="trees/items/pear-tree/thumb.webp" width="48" alt=""> | Pear tree<br>`pear-tree` | <i>Pyrus communis</i> | round | deciduous | 6 m (3-12) | 4 seasons |
+|  | Pear tree<br>`pear-tree` | <i>Pyrus communis</i> | round | deciduous | 6 m (3-12) | 4 seasons |
 | <img src="trees/items/pine/thumb.webp" width="48" alt=""> | Scots pine<br>`pine` | <i>Pinus sylvestris</i> | round | evergreen | 10 m (3-25) | 4 seasons |
-| <img src="trees/items/silver-fir/thumb.webp" width="48" alt=""> | Silver fir<br>`silver-fir` | <i>Abies alba</i> | conical | evergreen | 16 m (4-40) | 4 seasons |
+|  | Silver fir<br>`silver-fir` | <i>Abies alba</i> | conical | evergreen | 16 m (4-40) | 4 seasons |
 | <img src="trees/items/stone-pine/thumb.webp" width="48" alt=""> | Stone pine<br>`stone-pine` | <i>Pinus pinea</i> | round | evergreen | 12 m (4-25) | 4 seasons |
-| <img src="trees/items/weeping-willow/thumb.webp" width="48" alt=""> | Weeping willow<br>`weeping-willow` | <i>Salix babylonica</i> | weeping | deciduous | 10 m (5-18) | 4 seasons |
+|  | Weeping willow<br>`weeping-willow` | <i>Salix babylonica</i> | weeping | deciduous | 10 m (5-18) | 4 seasons |
 | <img src="trees/items/yew/thumb.webp" width="48" alt=""> | Yew<br>`yew` | <i>Taxus baccata</i> | columnar | evergreen | 6 m (1.5-15) | 4 seasons |
 
 </details>
@@ -184,7 +222,7 @@ drawing of your own may replace them.
 
 |  | Id | Object | Category | Width x depth x height | Parts |
 |---|---|---|---|---|---|
-| <img src="objects/items/chair/thumb.webp" width="48" alt=""> | `chair` | Chair | seating | 0.42 x 0.42 x 0.9 m | 7 |
+|  | `chair` | Chair | seating | 0.42 x 0.42 x 0.9 m | 7 |
 
 </details>
 
@@ -193,7 +231,33 @@ drawing of your own may replace them.
 
 |  | Id | Fish | Scientific name | Length | Varieties |
 |---|---|---|---|---|---|
-| <img src="pond_fish/items/koi/thumb.webp" width="48" alt=""> | `koi` | Koi carp | <i>Cyprinus rubrofuscus</i> | 0.5 m (0.15-0.9) | kohaku, sanke, showa, tancho, benigoi, yamabuki-ogon, platinum-ogon, kigoi, chagoi, asagi, karasugoi |
+|  | `koi` | Koi carp | <i>Cyprinus rubrofuscus</i> | 0.5 m (0.15-0.9) | kohaku, sanke, showa, tancho, benigoi, yamabuki-ogon, platinum-ogon, kigoi, chagoi, asagi, karasugoi |
+
+</details>
+
+<details>
+<summary><b>Paths</b> (18)</summary>
+
+|  | Path | Kind | Made of | Width |
+|---|---|---|---|---|
+| <img src="paths/items/sleepers/thumb.webp" width="48" alt=""> | Landscape sleepers<br>`sleepers` | module | slab | 1.2 m (0.5-3) |
+| <img src="paths/items/log-rounds/thumb.webp" width="48" alt=""> | Log rounds<br>`log-rounds` | module | round | 0.7 m (0.3-2) |
+| <img src="paths/items/stone-slabs/thumb.webp" width="48" alt=""> | Spaced slabs<br>`stone-slabs` | module | slab, stone | 0.6 m (0.4-2.5) |
+| <img src="paths/items/stepping-stones/thumb.webp" width="48" alt=""> | Stepping stones<br>`stepping-stones` | module | round, half-moon | 0.5 m (0.3-1.2) |
+| <img src="paths/items/asphalt/thumb.webp" width="48" alt=""> | Asphalt<br>`asphalt` | surface | unbroken | 3 m (0.8-12) |
+| <img src="paths/items/bark/thumb.webp" width="48" alt=""> | Bark chippings<br>`bark` | surface | unbroken | 1.2 m (0.4-5) |
+| <img src="paths/items/brick/thumb.webp" width="48" alt=""> | Brick paving<br>`brick` | surface | laid units | 1.6 m (0.5-8) |
+| <img src="paths/items/concrete/thumb.webp" width="48" alt=""> | Concrete<br>`concrete` | surface | laid units | 3 m (0.6-12) |
+| <img src="paths/items/slate/thumb.webp" width="48" alt=""> | Crushed slate<br>`slate` | surface | unbroken | 1.2 m (0.4-6) |
+| <img src="paths/items/dirt/thumb.webp" width="48" alt=""> | Dirt track<br>`dirt` | surface | unbroken | 3 m (0.6-12) |
+| <img src="paths/items/tracks/thumb.webp" width="48" alt=""> | Grass track<br>`tracks` | surface | wheel tracks | 3 m (1.2-10) |
+| <img src="paths/items/gravel/thumb.webp" width="48" alt=""> | Gravel<br>`gravel` | surface | unbroken | 3 m (0.5-12) |
+| <img src="paths/items/slabs/thumb.webp" width="48" alt=""> | Large-format slabs<br>`slabs` | surface | laid units | 1.4 m (0.6-8) |
+| <img src="paths/items/cobbles/thumb.webp" width="48" alt=""> | Old cobbles<br>`cobbles` | surface | laid units | 2.5 m (0.6-10) |
+| <img src="paths/items/pavers/thumb.webp" width="48" alt=""> | Pavers<br>`pavers` | surface | laid units | 3 m (0.6-12) |
+| <img src="paths/items/pebbles/thumb.webp" width="48" alt=""> | Rolled pebbles<br>`pebbles` | surface | unbroken | 1.2 m (0.4-6) |
+| <img src="paths/items/hoggin/thumb.webp" width="48" alt=""> | Self-binding gravel<br>`hoggin` | surface | unbroken | 2 m (0.6-10) |
+| <img src="paths/items/decking/thumb.webp" width="48" alt=""> | Wooden decking<br>`decking` | surface | laid units | 1.4 m (0.6-6) |
 
 </details>
 

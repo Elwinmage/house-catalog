@@ -1,0 +1,47 @@
+{
+  "name": {
+    "en": "Aubretia 'Mésange Bleue'",
+    "fr": "Aubriète 'Mésange Bleue'"
+  },
+  "latin": "Aubrieta 'Mésange Bleue'",
+  "icon": "mdi:flower",
+  "keywords": [
+    "aubretia",
+    "mesange",
+    "bleue",
+    "aubriete",
+    "aubrieta"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 0.15,
+    "min": 0.1,
+    "max": 0.24
+  },
+  "crown_radius": 0.15,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.008,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42",
+      "flowers": {
+        "color": "#8457c9",
+        "amount": 0.55
+      }
+    },
+    "summer": {
+      "foliage": "#356b38"
+    },
+    "autumn": {
+      "foliage": "#336635"
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95
+    }
+  }
+}

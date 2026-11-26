@@ -69,6 +69,8 @@ def _summary(entry: Entry) -> dict:
     elif entry.kind == "pond_fish":
         data = read_json(entry.files["pond_fish.json"])
         summary["varieties"] = [variety["id"] for variety in data["varieties"]]
+    elif entry.kind == "path":
+        summary["family"] = read_json(entry.files["path.json"])["kind"]
     else:
         summary["category"] = read_json(entry.files["object.json"])["category"]
     return summary

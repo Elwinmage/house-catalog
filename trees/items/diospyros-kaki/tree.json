@@ -1,0 +1,63 @@
+{
+  "name": {
+    "en": "Persimmon",
+    "fr": "Plaqueminier"
+  },
+  "latin": "Diospyros kaki 'Nikita's Gift'",
+  "icon": "mdi:tree",
+  "keywords": [
+    "persimmon",
+    "plaqueminier",
+    "diospyros"
+  ],
+  "shape": "round",
+  "evergreen": false,
+  "height": {
+    "default": 5.0,
+    "min": 2.25,
+    "max": 8.0
+  },
+  "crown_radius": 2.0,
+  "trunk": {
+    "height": 1.65,
+    "radius": 0.11,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8,
+      "flowers": {
+        "color": "#e8e4b0",
+        "amount": 0.4
+      },
+      "fallen": {
+        "color": "#e8e4b0",
+        "amount": 0.2
+      }
+    },
+    "summer": {
+      "foliage": "#45803c",
+      "flowers": {
+        "color": "#e8e4b0",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#d2561e",
+      "density": 0.7,
+      "fallen": {
+        "color": "#d2561e",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#6b5a47",
+      "density": 0,
+      "fruits": {
+        "color": "#e06a1e",
+        "amount": 0.35
+      }
+    }
+  }
+}

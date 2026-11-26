@@ -1,0 +1,71 @@
+{
+  "name": {
+    "en": "Rolled pebbles",
+    "fr": "Galets roulés",
+    "de": "Rollkies",
+    "es": "Canto rodado",
+    "it": "Ciottoli di fiume",
+    "pl": "Otoczaki",
+    "pt": "Seixo rolado",
+    "nl": "Rolkeien"
+  },
+  "icon": "mdi:circle-multiple",
+  "keywords": [
+    "rolled pebbles",
+    "rolled",
+    "pebbles",
+    "galets roules",
+    "galets",
+    "roules",
+    "rollkies",
+    "canto rodado",
+    "canto",
+    "rodado",
+    "ciottoli di fiume",
+    "ciottoli",
+    "fiume",
+    "otoczaki",
+    "seixo rolado",
+    "seixo",
+    "rolado",
+    "rolkeien",
+    "galet",
+    "caillou",
+    "riviere seche"
+  ],
+  "kind": "surface",
+  "draft": "#c8c2b8",
+  "width": {
+    "default": 1.2,
+    "min": 0.4,
+    "max": 6
+  },
+  "surface": {
+    "color": "#a9a39a",
+    "roughness": 0.8,
+    "tile": 1.2,
+    "grain": 0.25,
+    "speckles": [
+      {
+        "color": "#8e8780",
+        "amount": 0.18,
+        "size": 0.035
+      },
+      {
+        "color": "#c2bbb0",
+        "amount": 0.18,
+        "size": 0.035
+      },
+      {
+        "color": "#746d66",
+        "amount": 0.12,
+        "size": 0.03
+      },
+      {
+        "color": "#d8d2c7",
+        "amount": 0.1,
+        "size": 0.028
+      }
+    ]
+  }
+}

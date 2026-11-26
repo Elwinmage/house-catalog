@@ -1,0 +1,66 @@
+{
+  "name": {
+    "en": "Self-binding gravel",
+    "fr": "Stabilisé sablé",
+    "de": "Sandgebundene Decke",
+    "es": "Zahorra compactada",
+    "it": "Misto granulare stabilizzato",
+    "pl": "Nawierzchnia stabilizowana",
+    "pt": "Saibro compactado",
+    "nl": "Halfverharding"
+  },
+  "icon": "mdi:road-variant",
+  "keywords": [
+    "self binding gravel",
+    "self",
+    "binding",
+    "gravel",
+    "stabilise sable",
+    "stabilise",
+    "sable",
+    "sandgebundene decke",
+    "sandgebundene",
+    "decke",
+    "zahorra compactada",
+    "zahorra",
+    "compactada",
+    "misto granulare stabilizzato",
+    "misto",
+    "granulare",
+    "stabilizzato",
+    "nawierzchnia stabilizowana",
+    "nawierzchnia",
+    "stabilizowana",
+    "saibro compactado",
+    "saibro",
+    "compactado",
+    "halfverharding",
+    "sable stabilise",
+    "allee de parc"
+  ],
+  "kind": "surface",
+  "draft": "#dcc69a",
+  "width": {
+    "default": 2,
+    "min": 0.6,
+    "max": 10
+  },
+  "surface": {
+    "color": "#c0a97e",
+    "roughness": 1,
+    "tile": 2.5,
+    "grain": 0.3,
+    "speckles": [
+      {
+        "color": "#b09a71",
+        "amount": 0.08,
+        "size": 0.006
+      },
+      {
+        "color": "#d4bf93",
+        "amount": 0.08,
+        "size": 0.006
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "name": {
+    "en": "Zebra grass",
+    "fr": "Eulalie 'Zebrinus'"
+  },
+  "latin": "Miscanthus sinensis 'Zebrinus'",
+  "icon": "mdi:grass",
+  "keywords": [
+    "zebra",
+    "grass",
+    "eulalie",
+    "zebrinus",
+    "miscanthus"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 1.6,
+    "min": 0.72,
+    "max": 2.56
+  },
+  "crown_radius": 0.4,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.08,
+    "color": "#7a6a4a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#7fa052",
+      "density": 0.8
+    },
+    "summer": {
+      "foliage": "#86a35c",
+      "flowers": {
+        "color": "#e8dcc0",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#c9ae74",
+      "density": 0.7,
+      "flowers": {
+        "color": "#e8dcc0",
+        "amount": 0.4
+      }
+    },
+    "winter": {
+      "foliage": "#b69c70",
+      "density": 0.55
+    }
+  }
+}

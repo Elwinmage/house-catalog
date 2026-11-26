@@ -1,0 +1,48 @@
+{
+  "name": {
+    "en": "Orange mullein 'Spica'",
+    "fr": "Molène blanche"
+  },
+  "latin": "Verbascum phlomoides 'Spica'",
+  "icon": "mdi:flower",
+  "keywords": [
+    "orange",
+    "mullein",
+    "spica",
+    "molene",
+    "blanche",
+    "verbascum"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 1.5,
+    "min": 0.68,
+    "max": 2.4
+  },
+  "crown_radius": 0.25,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.075,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#a3b09a"
+    },
+    "summer": {
+      "foliage": "#9aa891",
+      "flowers": {
+        "color": "#fff3c4",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#9a9a84"
+    },
+    "winter": {
+      "foliage": "#929e8c",
+      "density": 0.45
+    }
+  }
+}

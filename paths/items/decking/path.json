@@ -1,0 +1,70 @@
+{
+  "name": {
+    "en": "Wooden decking",
+    "fr": "Platelage bois",
+    "de": "Holzdeck",
+    "es": "Entarimado de madera",
+    "it": "Pedana in legno",
+    "pl": "Taras drewniany",
+    "pt": "Deck de madeira",
+    "nl": "Houten vlonder"
+  },
+  "icon": "mdi:texture",
+  "keywords": [
+    "wooden decking",
+    "wooden",
+    "decking",
+    "platelage bois",
+    "platelage",
+    "bois",
+    "holzdeck",
+    "entarimado de madera",
+    "entarimado",
+    "madera",
+    "pedana in legno",
+    "pedana",
+    "legno",
+    "taras drewniany",
+    "taras",
+    "drewniany",
+    "deck de madeira",
+    "deck",
+    "madeira",
+    "houten vlonder",
+    "houten",
+    "vlonder",
+    "lame de terrasse",
+    "caillebotis",
+    "ponton"
+  ],
+  "kind": "surface",
+  "draft": "#c29660",
+  "width": {
+    "default": 1.4,
+    "min": 0.6,
+    "max": 6
+  },
+  "surface": {
+    "color": "#a07b4f",
+    "roughness": 0.8,
+    "tile": 2.4,
+    "grain": 0.18,
+    "speckles": [
+      {
+        "color": "#8d6b43",
+        "amount": 0.06,
+        "size": 0.004
+      }
+    ],
+    "joints": {
+      "color": "#6b5134",
+      "cell": [
+        0.145,
+        1.2
+      ],
+      "width": 0.007,
+      "stagger": 0.5,
+      "shade": 0.12
+    }
+  }
+}

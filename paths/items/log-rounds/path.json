@@ -1,0 +1,68 @@
+{
+  "name": {
+    "en": "Log rounds",
+    "fr": "Rondins de bois",
+    "de": "Holzscheiben",
+    "es": "Rodajas de madera",
+    "it": "Rondelle di legno",
+    "pl": "Krążki drewniane",
+    "pt": "Rodelas de madeira",
+    "nl": "Boomschijven"
+  },
+  "icon": "mdi:circle-slice-8",
+  "keywords": [
+    "log rounds",
+    "log",
+    "rounds",
+    "rondins de bois",
+    "rondins",
+    "bois",
+    "holzscheiben",
+    "rodajas de madera",
+    "rodajas",
+    "madera",
+    "rondelle di legno",
+    "rondelle",
+    "legno",
+    "krazki drewniane",
+    "krazki",
+    "drewniane",
+    "rodelas de madeira",
+    "rodelas",
+    "madeira",
+    "boomschijven",
+    "rondin",
+    "rondelle de bois",
+    "tranche de bois"
+  ],
+  "kind": "module",
+  "draft": "#c99c66",
+  "width": {
+    "default": 0.7,
+    "min": 0.3,
+    "max": 2
+  },
+  "module": {
+    "shapes": [
+      "round"
+    ],
+    "size": [
+      0.35,
+      0.35
+    ],
+    "thickness": 0.12,
+    "gap": 0.12,
+    "colors": [
+      "#b08b5a",
+      "#c49a65",
+      "#9c7a4e"
+    ],
+    "roughness": 1,
+    "vary": {
+      "size": 0.3,
+      "angle": 0.5,
+      "side": 0.2,
+      "shade": 0.15
+    }
+  }
+}

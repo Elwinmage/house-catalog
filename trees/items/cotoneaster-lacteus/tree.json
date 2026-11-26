@@ -1,0 +1,57 @@
+{
+  "name": {
+    "en": "Milkflower cotoneaster",
+    "fr": "Cotonéaster laiteux"
+  },
+  "latin": "Cotoneaster lacteus",
+  "icon": "mdi:leaf",
+  "keywords": [
+    "milkflower",
+    "cotoneaster",
+    "laiteux"
+  ],
+  "shape": "round",
+  "evergreen": true,
+  "height": {
+    "default": 3.0,
+    "min": 1.35,
+    "max": 4.8
+  },
+  "crown_radius": 1.5,
+  "trunk": {
+    "height": 0.36,
+    "radius": 0.06,
+    "color": "#5a4334"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#3f7a42",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      },
+      "fruits": {
+        "color": "#c23a2a",
+        "amount": 0.4
+      }
+    },
+    "summer": {
+      "foliage": "#356b38",
+      "flowers": {
+        "color": "#ffffff",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#336635"
+    },
+    "winter": {
+      "foliage": "#2f5e33",
+      "density": 0.95,
+      "fruits": {
+        "color": "#c23a2a",
+        "amount": 0.4
+      }
+    }
+  }
+}

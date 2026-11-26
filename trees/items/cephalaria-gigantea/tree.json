@@ -1,0 +1,53 @@
+{
+  "name": {
+    "en": "Giant scabious",
+    "fr": "Scabieuse géante"
+  },
+  "latin": "Cephalaria gigantea",
+  "icon": "mdi:flower",
+  "keywords": [
+    "giant",
+    "scabious",
+    "scabieuse",
+    "geante",
+    "cephalaria"
+  ],
+  "shape": "columnar",
+  "evergreen": false,
+  "height": {
+    "default": 2.0,
+    "min": 0.9,
+    "max": 3.2
+  },
+  "crown_radius": 0.3,
+  "trunk": {
+    "height": 0.0,
+    "radius": 0.1,
+    "color": "#4f5c3a"
+  },
+  "seasons": {
+    "spring": {
+      "foliage": "#8ebf5e",
+      "density": 0.8
+    },
+    "summer": {
+      "foliage": "#45803c",
+      "flowers": {
+        "color": "#f2e9a0",
+        "amount": 0.4
+      }
+    },
+    "autumn": {
+      "foliage": "#c4b476",
+      "density": 0.7,
+      "fallen": {
+        "color": "#c4b476",
+        "amount": 0.35
+      }
+    },
+    "winter": {
+      "foliage": "#8a7a5c",
+      "density": 0.22
+    }
+  }
+}
