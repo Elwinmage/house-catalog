@@ -1,0 +1,37 @@
+{
+  "name": {
+    "en": "Gabions",
+    "fr": "Gabions",
+    "de": "Gabionen",
+    "es": "Gaviones",
+    "it": "Gabbioni",
+    "pl": "Gabiony",
+    "pt": "Gabiões",
+    "nl": "Gabions"
+  },
+  "icon": "mdi:fence",
+  "draft": "#4fe0e0",
+  "height": {
+    "default": 1,
+    "min": 0.3,
+    "max": 3
+  },
+  "thickness": 0.3,
+  "surface": {
+    "color": "#8a8780",
+    "roughness": 1,
+    "tile": 1.6,
+    "grain": 0.3,
+    "joints": {
+      "color": "#4c4a45",
+      "cell": [
+        0.1,
+        0.14
+      ],
+      "width": 0.012,
+      "stagger": 0.5,
+      "shade": 0.3,
+      "vary": 0.5
+    }
+  }
+}

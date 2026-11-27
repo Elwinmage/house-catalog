@@ -13,7 +13,7 @@ needs `jsonschema` and `referencing`. Everything works on data already read
 
     validators = load_validators(schema_dir)        # schema/ of the repository,
                                                     # or schema.zip of a release
-    ctx = Context(trees=..., objects=..., fish=...)
+    ctx = Context(trees=..., objects=..., fish=..., fences=...)
     report = validate_draft("tree", "oak", data, {"tree.json": 900}, ctx, validators)
     report.errors, report.warnings
 
@@ -26,7 +26,7 @@ from __future__ import annotations
 import json
 import math
 from collections.abc import Iterable, Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from itertools import pairwise
 from pathlib import Path
 from typing import Any
@@ -56,6 +56,11 @@ GROUND_TOLERANCE = 0.01
 OBJECT_MAX = 20.0
 #: Longest fish, in metres
 FISH_MAX = 2.0
+#: Thickness of the walls a coping is laid on, and how far it juts out when it does not say, in metres
+COPING_WALL = 0.4
+COPING_OVERHANG = 0.03
+#: Thinnest fence a coping can be laid on (a wall), in metres
+COPING_MIN_THICKNESS = 0.1
 
 #: Descriptor file of each kind of entry
 DESCRIPTORS = {
@@ -63,6 +68,10 @@ DESCRIPTORS = {
     "object": "object.json",
     "pond_fish": "pond_fish.json",
     "path": "path.json",
+    "terrace": "terrace.json",
+    "wall": "wall.json",
+    "coping": "coping.json",
+    "fence": "fence.json",
 }
 #: Folder of each kind, from the root of the repository
 FOLDERS = {
@@ -70,6 +79,10 @@ FOLDERS = {
     "object": "objects/items",
     "pond_fish": "pond_fish/items",
     "path": "paths/items",
+    "terrace": "terraces/items",
+    "wall": "walls/items",
+    "coping": "copings/items",
+    "fence": "fences/items",
 }
 
 
@@ -95,6 +108,10 @@ class Context:
     objects: dict[str, dict[str, Any]] = field(default_factory=dict)
     fish: dict[str, dict[str, Any]] = field(default_factory=dict)
     paths: dict[str, dict[str, Any]] = field(default_factory=dict)
+    terraces: dict[str, dict[str, Any]] = field(default_factory=dict)
+    walls: dict[str, dict[str, Any]] = field(default_factory=dict)
+    copings: dict[str, dict[str, Any]] = field(default_factory=dict)
+    fences: dict[str, dict[str, Any]] = field(default_factory=dict)
 
 
 def where_of(kind: str, entry_id: str) -> str:
@@ -375,8 +392,8 @@ def _check_speckles(report, where, speckles) -> None:
             report.warn(where, f"a grain of {speckle['color']} covers nothing")
 
 
-def _check_surface(report, where, data) -> None:
-    surface = data["surface"]
+def _check_surface(report, where, surface) -> None:
+    """A painted surface: of a path, a terrace, a wall, a coping or a fence."""
     _check_speckles(report, where, surface.get("speckles", []))
     wheels = surface.get("wheels")
     if wheels is not None:
@@ -393,8 +410,45 @@ def _check_surface(report, where, data) -> None:
                     f"wheel tracks [{a_low}, {a_high}] and [{b_low}, {b_high}] overlap",
                 )
     joints = surface.get("joints")
-    if joints is not None and joints["color"] == surface["color"]:
-        report.warn(where, "the joints have the colour of the units: they do not show")
+    if joints is not None:
+        if joints["color"] == surface["color"]:
+            report.warn(
+                where, "the joints have the colour of the units: they do not show"
+            )
+        _check_joints(report, where, surface, joints)
+
+
+def _check_joints(report, where, surface, joints) -> None:
+    """The units a surface is laid in: their tints, and what an irregular pattern reads."""
+    seen = {surface["color"]}
+    share = 0.0
+    for tint in joints.get("tints", []):
+        if tint["color"] in seen:
+            report.error(
+                where, f"tint {tint['color']} is the base colour or is listed twice"
+            )
+        seen.add(tint["color"])
+        share += tint["amount"]
+    if share > 1 + 1e-9:
+        report.error(
+            where, f"the tints cover {share:g} of the units: more than all of them"
+        )
+    if joints.get("pattern", "rows") != "irregular":
+        if "relief" in joints:
+            report.warn(where, "`relief` is only drawn on irregular stones")
+        return
+    if joints.get("stagger"):
+        report.warn(
+            where, "irregular stones are not laid in rows: `stagger` is not read"
+        )
+    tile = surface.get("tile", 2)
+    largest = max(joints["cell"])
+    if tile < 2 * largest:
+        report.warn(
+            where,
+            f"a tile of {tile} m holds less than two stones of {largest} m: "
+            "the same ones repeat side by side",
+        )
 
 
 def _check_module(report, where, data) -> None:
@@ -423,9 +477,97 @@ def _check_path(report, where, entry_id, data, files, ctx) -> None:
     _check_i18n(report, where, data["name"])
     _check_bounds(report, where, data)
     if data["kind"] == "surface":
-        _check_surface(report, where, data)
+        _check_surface(report, where, data["surface"])
     else:
         _check_module(report, where, data)
+    if not _has_image(files):
+        report.warn(where, "no picture, only the icon will be shown")
+
+
+def _check_terrace(report, where, entry_id, data, files, ctx) -> None:
+    _check_i18n(report, where, data["name"])
+    _check_surface(report, where, data["surface"])
+    if not _has_image(files):
+        report.warn(where, "no picture, only the icon will be shown")
+
+
+def _check_wall(report, where, entry_id, data, files, ctx) -> None:
+    _check_i18n(report, where, data["name"])
+    surface = data["surface"]
+    _check_surface(report, where, surface)
+    joints = surface.get("joints")
+    if joints is not None and joints["cell"][0] > joints["cell"][1]:
+        report.warn(
+            where,
+            f"units {joints['cell'][0]} m high and {joints['cell'][1]} m long stand on end: "
+            "the height of a course comes first, then the length of a unit",
+        )
+    coping = data.get("coping")
+    if coping is not None and coping["color"] == surface["color"]:
+        report.warn(where, "the coping has the colour of the faces: it does not show")
+    if not _has_image(files):
+        report.warn(where, "no picture, only the icon will be shown")
+
+
+def _check_coping(report, where, entry_id, data, files, ctx) -> None:
+    _check_i18n(report, where, data["name"])
+    surface = data["surface"]
+    _check_surface(report, where, surface)
+    overhang = data.get("overhang", COPING_OVERHANG)
+    joints = surface.get("joints")
+    if joints is not None and joints.get("pattern", "rows") == "rows":
+        across = COPING_WALL + 2 * overhang
+        if joints["cell"][0] < across:
+            report.warn(
+                where,
+                f"rows {joints['cell'][0]} m deep on a coping {across:.2f} m wide: "
+                "a joint runs along the wall, in the middle of the coping",
+            )
+    if data.get("drop", 0) > 0 and overhang == 0:
+        report.warn(
+            where,
+            "edges that come down over the faces need an overhang: "
+            "without one they lie in the faces of the wall",
+        )
+    if not _has_image(files):
+        report.warn(where, "no picture, only the icon will be shown")
+
+
+def _check_fence(report, where, entry_id, data, files, ctx) -> None:
+    _check_i18n(report, where, data["name"])
+    height = data["height"]
+    if not height["min"] <= height["default"] <= height["max"]:
+        report.error(where, f"height needs min <= default <= max, got {height}")
+    # the sides of a fence are told apart by this colour while it is edited
+    for other_id, other in ctx.fences.items():
+        if other["draft"] == data["draft"]:
+            report.error(
+                where, f"draft colour {data['draft']} already used by {other_id!r}"
+            )
+            break
+    surface = data["surface"]
+    _check_surface(report, where, surface)
+    if "open" in data:
+        if data.get("foliage"):
+            report.error(where, "a hedge is not see-through: open and foliage together")
+        if "joints" in surface or surface.get("speckles"):
+            report.warn(
+                where,
+                "a see-through fence only shows the colour of its surface: "
+                "joints and grains are not drawn",
+            )
+    if data.get("coping"):
+        # a coping is laid on masonry: neither on wires, nor on leaves, nor on a sheet
+        if "open" in data or data.get("foliage"):
+            report.error(
+                where, "a coping is laid on a wall: not with open, not with foliage"
+            )
+        elif data.get("thickness", 0) < COPING_MIN_THICKNESS:
+            report.error(
+                where,
+                "a coping needs a wall at least "
+                f"{COPING_MIN_THICKNESS} m thick, got {data.get('thickness', 0)}",
+            )
     if not _has_image(files):
         report.warn(where, "no picture, only the icon will be shown")
 
@@ -435,6 +577,10 @@ _RULES = {
     "object": _check_object,
     "pond_fish": _check_fish,
     "path": _check_path,
+    "terrace": _check_terrace,
+    "wall": _check_wall,
+    "coping": _check_coping,
+    "fence": _check_fence,
 }
 #: Group of `Context` the accepted entries of each kind join
 _GROUPS = {
@@ -442,6 +588,10 @@ _GROUPS = {
     "object": "objects",
     "pond_fish": "fish",
     "path": "paths",
+    "terrace": "terraces",
+    "wall": "walls",
+    "coping": "copings",
+    "fence": "fences",
 }
 
 
@@ -484,11 +634,6 @@ def validate_draft(
     """
     report = Report()
     check_files(report, where_of(kind, entry_id), files, DESCRIPTORS[kind])
-    scratch = Context(
-        trees=dict(ctx.trees),
-        objects=dict(ctx.objects),
-        fish=dict(ctx.fish),
-        paths=dict(ctx.paths),
-    )
+    scratch = Context(**{f.name: dict(getattr(ctx, f.name)) for f in fields(ctx)})
     validate_entry(report, kind, entry_id, data, files, scratch, validators)
     return report

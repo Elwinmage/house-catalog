@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Aluminium coping",
+    "fr": "Couvertine aluminium",
+    "de": "Aluminium-Mauerabdeckung",
+    "es": "Albardilla de aluminio",
+    "it": "Copertina in alluminio",
+    "pl": "Obróbka aluminiowa",
+    "pt": "Capeamento de alumínio",
+    "nl": "Aluminium muurafdekker"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#4f5459",
+    "roughness": 0.35,
+    "tile": 2,
+    "grain": 0.02
+  },
+  "height": 0.015,
+  "overhang": 0.025,
+  "drop": 0.05
+}

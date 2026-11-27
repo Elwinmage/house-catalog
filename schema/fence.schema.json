@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/fence.schema.json",
+  "title": "Fence (fences/items/<id>/fence.json)",
+  "description": "A kind of fence the house view draws along the sides of a property: a wire mesh, a wooden palisade, a wall, a hedge. One side of a fence is one kind; the user chooses its height and may change its colour.",
+  "type": "object",
+  "required": [
+    "name",
+    "draft",
+    "height",
+    "surface"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "$ref": "common.schema.json#/$defs/i18n"
+    },
+    "icon": {
+      "$ref": "common.schema.json#/$defs/icon"
+    },
+    "draft": {
+      "description": "Colour of the side on the overlay of the editor: bright, and unlike the one of every other kind, since it is how the kinds of a fence are told apart while it is edited.",
+      "$ref": "common.schema.json#/$defs/color"
+    },
+    "height": {
+      "description": "Height of the fence in metres: the one it is given when chosen, and the bounds offered.",
+      "$ref": "common.schema.json#/$defs/bounded_length"
+    },
+    "thickness": {
+      "description": "Thickness in metres: 0 for a sheet (wire mesh, welded panel), a few centimetres for boards, more for a wall or a hedge.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1.5,
+      "default": 0
+    },
+    "surface": {
+      "description": "What the fence is made of: at least its colour, and the texture of a solid one (boards, render, stones, leaves). A row of its units is a course, as on a wall: the height of a unit comes first in `cell`, then its length along the fence.",
+      "$ref": "common.schema.json#/$defs/surface"
+    },
+    "open": {
+      "description": "A see-through fence: wires or bars of the colour of the surface, drawn on nothing. Without it the fence is solid.",
+      "type": "object",
+      "required": [
+        "pattern"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "pattern": {
+          "description": "mesh: wire netting in diamonds. grid: welded wires in upright rectangles (rigid panel). bars: upright bars between two rails (wrought iron, pickets).",
+          "enum": [
+            "mesh",
+            "grid",
+            "bars"
+          ]
+        },
+        "pitch": {
+          "description": "Distance between two wires or two bars, in metres.",
+          "type": "number",
+          "minimum": 0.02,
+          "maximum": 0.5,
+          "default": 0.1
+        },
+        "fill": {
+          "description": "Share of the sheet the wires or the bars cover, which is also how solid the fence looks from afar: 0.1 a thin wire, 0.6 wide pickets.",
+          "type": "number",
+          "minimum": 0.05,
+          "maximum": 0.9,
+          "default": 0.35
+        }
+      }
+    },
+    "posts": {
+      "description": "Posts standing along the fence. Without them the fence holds by itself (a wall, a hedge).",
+      "type": "object",
+      "required": [
+        "color"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "common.schema.json#/$defs/color"
+        },
+        "spacing": {
+          "description": "Distance between two posts, in metres.",
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 6,
+          "default": 2.5
+        },
+        "size": {
+          "description": "Side of a post, in metres.",
+          "type": "number",
+          "minimum": 0.03,
+          "maximum": 0.4,
+          "default": 0.07
+        }
+      }
+    },
+    "foliage": {
+      "description": "A hedge: its top and its faces are uneven, as clipped foliage is.",
+      "type": "boolean",
+      "default": false
+    },
+    "coping": {
+      "description": "A wall a coping can be laid on: the user caps its sides with an entry of the `copings` section, or leaves them bare. Only a solid fence at least 0.1 m thick, never a hedge.",
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

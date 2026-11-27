@@ -30,4 +30,8 @@ SECTIONS: dict[str, dict[str, tuple[str, str]]] = {
     "objects": {"object": ("items", "object.json")},
     "pond_fish": {"pond_fish": ("items", "pond_fish.json")},
     "paths": {"path": ("items", "path.json")},
+    "terraces": {"terrace": ("items", "terrace.json")},
+    "walls": {"wall": ("items", "wall.json")},
+    "copings": {"coping": ("items", "coping.json")},
+    "fences": {"fence": ("items", "fence.json")},
 }

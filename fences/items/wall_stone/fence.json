@@ -1,0 +1,37 @@
+{
+  "name": {
+    "en": "Stone wall",
+    "fr": "Mur en pierre",
+    "de": "Steinmauer",
+    "es": "Muro de piedra",
+    "it": "Muro in pietra",
+    "pl": "Mur kamienny",
+    "pt": "Muro de pedra",
+    "nl": "Stenen muur"
+  },
+  "icon": "mdi:wall",
+  "draft": "#1e5fd0",
+  "height": {
+    "default": 1.2,
+    "min": 0.3,
+    "max": 3
+  },
+  "thickness": 0.3,
+  "surface": {
+    "color": "#a89a80",
+    "roughness": 0.95,
+    "tile": 2.4,
+    "grain": 0.25,
+    "joints": {
+      "color": "#d0c6b2",
+      "cell": [
+        0.2,
+        0.3
+      ],
+      "width": 0.02,
+      "stagger": 0.5,
+      "shade": 0.2,
+      "vary": 0.45
+    }
+  }
+}

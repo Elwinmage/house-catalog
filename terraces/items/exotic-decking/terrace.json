@@ -1,0 +1,39 @@
+{
+  "name": {
+    "en": "Exotic wood decking",
+    "fr": "Lames de bois exotique",
+    "de": "Tropenholzdielen",
+    "es": "Tarima de madera tropical",
+    "it": "Doghe in legno esotico",
+    "pl": "Deski z drewna egzotycznego",
+    "pt": "Deck de madeira exótica",
+    "nl": "Hardhouten vlonderplanken"
+  },
+  "icon": "mdi:texture",
+  "draft": "#a8623a",
+  "thickness": 0.12,
+  "surface": {
+    "color": "#6f4a33",
+    "roughness": 0.7,
+    "tile": 2.4,
+    "grain": 0.16,
+    "speckles": [
+      {
+        "color": "#5c3c29",
+        "amount": 0.07,
+        "size": 0.004,
+        "stretch": 5
+      }
+    ],
+    "joints": {
+      "color": "#3d281b",
+      "cell": [
+        0.12,
+        2.4
+      ],
+      "width": 0.006,
+      "stagger": 0.5,
+      "shade": 0.14
+    }
+  }
+}

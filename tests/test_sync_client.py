@@ -73,6 +73,10 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
     objects = "ha-house-view-component/catalog_builtin_objects"
     fish = "ha-house-view-component/catalog_builtin_pond_fish"
     paths = "ha-house-view-component/catalog_builtin_paths"
+    terraces = "ha-house-view-component/catalog_builtin_terraces"
+    walls = "ha-house-view-component/catalog_builtin_walls"
+    copings = "ha-house-view-component/catalog_builtin_copings"
+    fences = "ha-house-view-component/catalog_builtin_fences"
 
     assert sync_client.sync(tmp_path, check=True, root=root) == [
         SECTIONS,
@@ -82,6 +86,10 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
         objects,
         fish,
         paths,
+        terraces,
+        walls,
+        copings,
+        fences,
     ]
     assert list(house.iterdir()) == []
     sync_client.sync(tmp_path, root=root)
@@ -92,9 +100,13 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
     assert sorted(p.relative_to(house).as_posix() for p in house.rglob("*.*")) == [
         "catalog_builtin/items/oak/thumb.webp",
         "catalog_builtin/items/oak/tree.json",
+        "catalog_builtin_copings/items/brick/coping.json",
+        "catalog_builtin_fences/items/mesh/fence.json",
         "catalog_builtin_objects/items/stool/object.json",
         "catalog_builtin_paths/items/gravel/path.json",
         "catalog_builtin_pond_fish/items/goldfish/pond_fish.json",
+        "catalog_builtin_terraces/items/wood-decking/terrace.json",
+        "catalog_builtin_walls/items/rubble-stone/wall.json",
         "house_catalog_sections.py",
     ]
     assert sync_client.sync(tmp_path, check=True, root=root) == []
@@ -137,6 +149,10 @@ def test_command(tmp_path: Path, capsys):
     assert (house / "catalog_builtin_objects/items/chair/image.webp").is_file()
     assert (house / "catalog_builtin_pond_fish/items/koi/pond_fish.json").is_file()
     assert (house / "catalog_builtin_paths/items/gravel/path.json").is_file()
+    assert (house / "catalog_builtin_terraces/items/painted/terrace.json").is_file()
+    assert (house / "catalog_builtin_walls/items/render/thumb.webp").is_file()
+    assert (house / "catalog_builtin_copings/items/aluminium/coping.json").is_file()
+    assert (house / "catalog_builtin_fences/items/mesh/fence.json").is_file()
     assert (editor / "house_catalog_rules.py").read_text().startswith("# Generated")
     # the copy of the description is the one the scripts of the catalog use
     copied = (house / "house_catalog_sections.py").read_text().split("\n", 1)[1]

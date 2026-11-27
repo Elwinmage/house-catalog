@@ -1,0 +1,37 @@
+{
+  "name": {
+    "en": "Porcelain tiles",
+    "fr": "Carrelage grès cérame",
+    "de": "Feinsteinzeugfliesen",
+    "es": "Baldosas de gres porcelánico",
+    "it": "Piastrelle in gres porcellanato",
+    "pl": "Płytki gresowe",
+    "pt": "Ladrilhos de grés porcelânico",
+    "nl": "Keramische tegels"
+  },
+  "icon": "mdi:view-grid-outline",
+  "draft": "#cfd3d6",
+  "thickness": 0.03,
+  "surface": {
+    "color": "#a9a9a4",
+    "roughness": 0.5,
+    "tile": 2.4,
+    "grain": 0.06,
+    "speckles": [
+      {
+        "color": "#9d9d98",
+        "amount": 0.03,
+        "size": 0.006
+      }
+    ],
+    "joints": {
+      "color": "#74746f",
+      "cell": [
+        0.6,
+        0.6
+      ],
+      "width": 0.006,
+      "shade": 0.04
+    }
+  }
+}

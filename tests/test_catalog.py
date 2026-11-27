@@ -7,7 +7,7 @@ import zipfile
 from pathlib import Path
 
 import pytest
-from conftest import OBJECT, TREE, dump
+from conftest import FENCE, OBJECT, TREE, dump
 
 import catalog
 import make_release
@@ -44,13 +44,13 @@ def test_content_hash_follows_the_content_only(root: Path):
 def test_valid_catalog(root: Path, capsys):
     report = validate.validate(root)
     assert report.errors == []
-    # translations and pictures of each entry, the names of the two varieties
-    assert len(report.warnings) == 10
+    # translations and pictures of each of the eight entries, the names of the two varieties
+    assert len(report.warnings) == 18
     assert validate.main(["--root", str(root)]) == 0
     assert validate.main(["--root", str(root), "--strict"]) == 1
     out = capsys.readouterr().out
     assert "warning: trees/items/oak: missing translations" in out
-    assert "0 error(s), 10 warning(s)" in out
+    assert "0 error(s), 18 warning(s)" in out
 
 
 def test_broken_catalog(root: Path, capsys):
@@ -118,6 +118,33 @@ def test_first_release(root: Path, tmp_path: Path):
         "red-white",
         "gold",
     ]
+    gravel = build(root, tmp_path / "paths", "paths")["entries"]["path.gravel"]
+    assert gravel == gravel | {"kind": "path", "family": "surface"}
+    # a terrace, a wall and a coping are told by their kind alone, a fence by its family
+    decking = build(root, tmp_path / "terraces", "terraces")["entries"]
+    assert set(decking["terrace.wood-decking"]) == {
+        "kind",
+        "content_hash",
+        "archive",
+        "sha256",
+        "size",
+        "since",
+    }
+    stone = build(root, tmp_path / "walls", "walls")["entries"]["wall.rubble-stone"]
+    assert stone["kind"] == "wall" and "family" not in stone
+    brick = build(root, tmp_path / "copings", "copings")["entries"]["coping.brick"]
+    assert brick["kind"] == "coping" and "family" not in brick
+    mesh = build(root, tmp_path / "fences", "fences")["entries"]["fence.mesh"]
+    assert mesh["family"] == "open"
+    solid = {key: value for key, value in FENCE.items() if key != "open"}
+    dump(root / "fences/items/wall/fence.json", solid | {"draft": "#2f8fff"})
+    dump(
+        root / "fences/items/hedge/fence.json",
+        solid | {"draft": "#b8ff3b", "foliage": True},
+    )
+    families = build(root, tmp_path / "fences2", "fences")["entries"]
+    assert families["fence.wall"]["family"] == "solid"
+    assert families["fence.hedge"]["family"] == "hedge"
 
 
 def test_archives_are_reproducible(root: Path, tmp_path: Path):
@@ -178,6 +205,11 @@ def test_min_integration_arguments(monkeypatch):
         "house_view": "0.2.0"
     }
     assert make_release._parse_min([], "objects") == {}
+    # every section of the catalog has its consumers, the latest ones included
+    assert set(make_release.CONSUMERS) == set(catalog.SECTIONS)
+    assert make_release._parse_min(["house_view=0.3.0"], "fences") == {
+        "house_view": "0.3.0"
+    }
     # one list for every section: the consumers of another section are skipped
     monkeypatch.setitem(make_release.CONSUMERS, "objects", ("furniture_tool",))
     both = ["house_view=0.2.0", "furniture_tool=1.0.0"]

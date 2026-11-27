@@ -1,0 +1,36 @@
+{
+  "name": {
+    "en": "Terracotta tiles",
+    "fr": "Tuiles de terre cuite",
+    "de": "Terrakottaziegel",
+    "es": "Tejas de barro cocido",
+    "it": "Tegole in cotto",
+    "pl": "Dachówki ceramiczne",
+    "pt": "Telhas de barro",
+    "nl": "Terracotta pannen"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#b5623f",
+    "roughness": 0.85,
+    "tile": 0.6,
+    "grain": 0.16,
+    "joints": {
+      "color": "#7d3f27",
+      "cell": [
+        0.6,
+        0.2
+      ],
+      "width": 0.012,
+      "shade": 0.1,
+      "tints": [
+        {
+          "color": "#c2704a",
+          "amount": 0.3
+        }
+      ]
+    }
+  },
+  "height": 0.04,
+  "overhang": 0.05
+}

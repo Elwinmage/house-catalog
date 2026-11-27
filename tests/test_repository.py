@@ -51,3 +51,49 @@ def test_first_trees_show_their_four_seasons():
 
 def test_every_section_has_entries():
     assert all(collect(REPO, section) for section in SECTIONS)
+
+
+#: The sections of what the house is surrounded with: every entry is complete
+SURROUNDINGS = ("terraces", "walls", "copings", "fences")
+
+
+def test_terraces_walls_copings_and_fences_are_complete():
+    for section in SURROUNDINGS:
+        for entry in collect(REPO, section):
+            name = f"{section}/{entry_id(entry)}"
+            data = read_json(entry.files[DESCRIPTORS[entry.kind]])
+            assert set(data["name"]) >= set(KNOWN_LANGS), name
+            assert data["icon"], name
+            for file, side in (("image.webp", 512), ("thumb.webp", 128)):
+                with Image.open(entry.files[file]) as picture:
+                    assert picture.format == "WEBP", name
+                    assert picture.size == (side, side), name
+                    corner = picture.convert("RGBA").getpixel((0, 0))
+                    assert isinstance(corner, tuple) and corner[3] == 0, name
+
+
+def test_the_card_finds_its_own_fences_in_the_catalog():
+    """The kinds of fence the card knew before the catalog keep their ids."""
+    fences = {entry_id(entry) for entry in collect(REPO, "fences")}
+    assert {"mesh", "wood", "wall", "hedge", "hedge_laurel", "iron", "gabion"} <= fences
+
+
+def test_painted_surfaces_join_up_from_one_tile_to_the_next():
+    """A whole number of rows in a tile (even when staggered), and of even units."""
+    for section in SURROUNDINGS:
+        for entry in collect(REPO, section):
+            data = read_json(entry.files[DESCRIPTORS[entry.kind]])
+            surface = data["surface"]
+            joints = surface.get("joints")
+            if joints is None or joints.get("pattern") == "irregular":
+                continue  # irregular stones are fitted to the tile, whatever its size
+            name = f"{section}/{entry_id(entry)}"
+            tile = surface.get("tile", 2)
+            depth, length = joints["cell"]
+            rows = tile / depth
+            assert abs(rows - round(rows)) < 1e-6, name
+            if joints.get("stagger"):
+                assert round(rows) % 2 == 0, name
+            if not joints.get("vary"):
+                units = tile / length
+                assert abs(units - round(units)) < 1e-6, name

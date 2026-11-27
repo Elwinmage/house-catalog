@@ -1,0 +1,21 @@
+{
+  "name": {
+    "en": "Plain colour",
+    "fr": "Couleur unie",
+    "de": "Einfarbig",
+    "es": "Color liso",
+    "it": "Tinta unita",
+    "pl": "Jednolity kolor",
+    "pt": "Cor lisa",
+    "nl": "Effen kleur"
+  },
+  "icon": "mdi:format-color-fill",
+  "draft": "#f2f2f2",
+  "thickness": 0.04,
+  "surface": {
+    "color": "#c8c4bb",
+    "roughness": 0.7,
+    "tile": 2,
+    "grain": 0.05
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": {
+    "en": "Flat stone slabs",
+    "fr": "Dalles de pierre",
+    "de": "Steinplatten",
+    "es": "Losas de piedra",
+    "it": "Lastre di pietra",
+    "pl": "Płyty kamienne",
+    "pt": "Lajes de pedra",
+    "nl": "Natuursteenplaten"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#c9c2b4",
+    "roughness": 0.9,
+    "tile": 1.2,
+    "grain": 0.18,
+    "joints": {
+      "color": "#8f887b",
+      "cell": [
+        0.6,
+        0.6
+      ],
+      "width": 0.008,
+      "shade": 0.1
+    }
+  },
+  "height": 0.05,
+  "overhang": 0.03
+}

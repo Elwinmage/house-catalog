@@ -1,0 +1,47 @@
+{
+  "name": {
+    "en": "Irregular stone, pointed",
+    "fr": "Pierres irrégulières jointoyées",
+    "de": "Unregelmäßiger Bruchstein, verfugt",
+    "es": "Piedra irregular rejuntada",
+    "it": "Pietra irregolare stuccata",
+    "pl": "Kamień nieregularny spoinowany",
+    "pt": "Pedra irregular rejuntada",
+    "nl": "Onregelmatige steen, gevoegd"
+  },
+  "icon": "mdi:wall",
+  "draft": "#e6c27a",
+  "surface": {
+    "color": "#a89a80",
+    "roughness": 0.95,
+    "tile": 2.4,
+    "grain": 0.25,
+    "joints": {
+      "pattern": "irregular",
+      "color": "#cfc5b1",
+      "cell": [
+        0.2,
+        0.3
+      ],
+      "width": 0.024,
+      "shade": 0.16,
+      "vary": 0.7,
+      "tints": [
+        {
+          "color": "#b89a6e",
+          "amount": 0.15
+        },
+        {
+          "color": "#8f8a80",
+          "amount": 0.2
+        }
+      ],
+      "relief": 0.35
+    }
+  },
+  "coping": {
+    "color": "#b9ad96",
+    "height": 0.06,
+    "overhang": 0.03
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": {
+    "en": "Crazy paving",
+    "fr": "Opus incertum",
+    "de": "Polygonalplatten",
+    "es": "Losas irregulares",
+    "it": "Opus incertum",
+    "pl": "Płyty nieregularne",
+    "pt": "Calçada irregular",
+    "nl": "Flagstones"
+  },
+  "icon": "mdi:vector-polygon",
+  "draft": "#d9c59a",
+  "thickness": 0.05,
+  "surface": {
+    "color": "#b8a88c",
+    "roughness": 0.9,
+    "tile": 2.7,
+    "grain": 0.2,
+    "speckles": [
+      {
+        "color": "#a89879",
+        "amount": 0.05,
+        "size": 0.02
+      }
+    ],
+    "joints": {
+      "color": "#8d8371",
+      "cell": [
+        0.45,
+        0.55
+      ],
+      "width": 0.02,
+      "stagger": 0.5,
+      "shade": 0.16,
+      "vary": 0.5
+    }
+  }
+}

@@ -48,6 +48,39 @@ opens the pull request. By hand:
 5. Give a `width` (the usual one and the bounds the user may choose within)
    and the `draft` colour the editor draws the path in.
 
+## Add a terrace surface, a wall facing or a fence
+
+1. Create `terraces/items/<id>/terrace.json`, `walls/items/<id>/wall.json` or
+   `fences/items/<id>/fence.json`.
+2. Describe its `surface` as for a path: a base `color`, then only what it
+   needs (`grain`, `speckles`, `joints`). In `joints`, `cell` is the depth of a
+   row, then the length of a unit: on a wall or a fence a row is a course, so
+   the height of a brick comes first. Choose a `tile` holding a whole number of
+   rows and of units (an even number of rows when they are staggered), so the
+   texture joins up; `vary` makes the units of a row uneven (coursed rubble).
+   For stones of uneven shapes fitted into one another, without rows, set
+   `"pattern": "irregular"`: `cell` is then their usual size, `vary` how uneven
+   they are, `relief` how much they bulge, and a tile of any size joins up
+   (see `doc/format.md`).
+3. A terrace takes its `thickness`; a wall may take a `coping`; a fence takes
+   its `height` (the usual one and its bounds), its `thickness`, its `posts`,
+   and either `open` (see-through: `mesh`, `grid` or `bars`) or `foliage` (a
+   hedge), or neither when it is a plain solid fence.
+4. Give the `draft` colour the editor draws it in: for a fence, a bright one no
+   other fence uses, since it is how the sides are told apart.
+
+## Add a coping
+
+1. Create `copings/items/<id>/coping.json`: what caps a wall, whatever it is
+   faced with.
+2. Describe its `surface` as above. A row runs along the wall: `cell` gives the
+   depth of a row across the wall first, then the length of a unit along the
+   wall. A coping is 0.4 m plus twice its `overhang` wide: give the rows at
+   least that depth for a single unit across (bricks on edge, slabs), or the
+   check warns that a joint runs along the wall.
+3. Give its `height` above the top of the wall, its `overhang` on each side
+   and, for a folded metal sheet, the `drop` of its edges over the faces.
+
 ## Pictures
 
 ```

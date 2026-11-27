@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Privet hedge",
+    "fr": "Haie de troène",
+    "de": "Ligusterhecke",
+    "es": "Seto de ligustro",
+    "it": "Siepe di ligustro",
+    "pl": "Żywopłot z ligustru",
+    "pt": "Sebe de alfeneiro",
+    "nl": "Liguster-haag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#a5d86e",
+  "height": {
+    "default": 1.5,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 0.5,
+  "surface": {
+    "color": "#4a7a3a",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#3a5f2d",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#5a9547",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

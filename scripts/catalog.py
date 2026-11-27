@@ -5,6 +5,7 @@ disagree with its location.
 
     trees/items/<tree_id>/tree.json       [+ image.webp, thumb.webp]
     objects/items/<object_id>/object.json [+ image.webp, thumb.webp]
+    ... and so on for every section of client/house_catalog_sections.py
 """
 
 from __future__ import annotations
@@ -36,7 +37,7 @@ class Entry:
     """One release unit: a set of files archived together."""
 
     name: str  # release entry name, e.g. "tree.oak"
-    kind: str  # tree | object
+    kind: str  # tree | object | pond_fish | path | terrace | wall | coping | fence
     files: dict[str, Path] = field(default_factory=dict)  # archive name -> path
 
     def content_hash(self) -> str:

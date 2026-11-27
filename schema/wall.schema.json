@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/wall.schema.json",
+  "title": "Wall (walls/items/<id>/wall.json)",
+  "description": "What a low wall or a retaining wall is faced with, as the house view draws it along the line given for it: render, stone, brick, concrete. Its texture is painted from a few numbers, like the surface of a path, and seen on the upright faces of the wall.",
+  "type": "object",
+  "required": [
+    "name",
+    "draft",
+    "surface"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "$ref": "common.schema.json#/$defs/i18n"
+    },
+    "icon": {
+      "$ref": "common.schema.json#/$defs/icon"
+    },
+    "draft": {
+      "description": "Colour of the wall on the overlay of the editor, where it is drawn flat and bright rather than lit.",
+      "$ref": "common.schema.json#/$defs/color"
+    },
+    "surface": {
+      "description": "What the faces are made of. A row of its units is a course: the height of a stone or of a brick comes first in `cell`, then its length along the wall.",
+      "$ref": "common.schema.json#/$defs/surface"
+    },
+    "coping": {
+      "description": "Capping laid on top of the wall, a little wider than it: a row of flat stones, a concrete cap, a tile course. Without it the top has the colour of the faces.",
+      "type": "object",
+      "required": [
+        "color"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "color": {
+          "$ref": "common.schema.json#/$defs/color"
+        },
+        "height": {
+          "description": "Height of the capping, in metres.",
+          "type": "number",
+          "minimum": 0.01,
+          "maximum": 0.3,
+          "default": 0.05
+        },
+        "overhang": {
+          "description": "How far it juts out on each side of the wall, in metres.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.2,
+          "default": 0.03
+        }
+      }
+    }
+  }
+}

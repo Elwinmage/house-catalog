@@ -4,11 +4,12 @@ Contract between this repository and what reads it: the house_view integration
 (which downloads the sections and serves them to its card) and the
 [catalog editor](https://github.com/Elwinmage/catalog-editor). It is the
 contract of [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog)
-(`doc/consumers.md` there), applied to two more sections.
+(`doc/consumers.md` there), applied to the sections of this catalog.
 
 ## Releases
 
-Each section (`trees`, `objects`, `pond_fish`, `paths`) has:
+Each section (`trees`, `objects`, `pond_fish`, `paths`, `terraces`, `walls`,
+`copings`, `fences`) has:
 
 - versioned releases `<section>-<version>` (`trees-2026.11.0`) holding the
   archives that changed in that version: `<kind>.<id>.zip` per entry (flat:
@@ -107,6 +108,10 @@ TREES = CatalogSpec(DOMAIN, "trees", "Trees", device_title="House view catalog")
 OBJECTS = CatalogSpec(DOMAIN, "objects", "Objects", by_section=True)
 FISH = CatalogSpec(DOMAIN, "pond_fish", "Pond fish", by_section=True)
 PATHS = CatalogSpec(DOMAIN, "paths", "Paths", by_section=True)
+TERRACES = CatalogSpec(DOMAIN, "terraces", "Terraces", by_section=True)
+WALLS = CatalogSpec(DOMAIN, "walls", "Walls", by_section=True)
+COPINGS = CatalogSpec(DOMAIN, "copings", "Copings", by_section=True)
+FENCES = CatalogSpec(DOMAIN, "fences", "Fences", by_section=True)
 ```
 
 (one `CatalogSpec` per section, the ones after the first with `by_section=True`: see
@@ -115,10 +120,10 @@ PATHS = CatalogSpec(DOMAIN, "paths", "Paths", by_section=True)
 `scripts/sync_client.py` of this repository writes `house_catalog_sections.py`
 and the built-in snapshots the integration ships, used before the first
 download and offline:
-`catalog_builtin/` (trees), `catalog_builtin_objects/` (objects),
-`catalog_builtin_pond_fish/` (pond fish) and `catalog_builtin_paths/`
-(paths), and its
-`--check` fails when one is out of date.
+`catalog_builtin/` (trees), then one `catalog_builtin_<section>/` per other
+section (`objects`, `pond_fish`, `paths`, `terraces`, `walls`, `copings`,
+`fences`), and
+its `--check` fails when one is out of date.
 
 The pack is shared (`<config>/reeftech_catalog/pack/<section>/`) with the
 editor, and the user layer written by the editor
@@ -126,4 +131,6 @@ editor, and the user layer written by the editor
 saved in the editor is usable at once. The card asks the integration
 (`house_view/catalog`, `house_view/catalog/subscribe`), never the network, and
 draws the entries as [format.md](format.md) says: `card/src/catalog-lib.js`
-reads the descriptors, `card/src/engine/catalog.js` draws them.
+reads the descriptors, `card/src/engine/catalog.js` draws them; the painted
+surfaces (paths, terraces, walls, copings, fences) are read by
+`card/src/surface-art.js`.

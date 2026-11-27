@@ -16,6 +16,10 @@ on:
       - "objects/**"
       - "pond_fish/**"
       - "paths/**"
+      - "terraces/**"
+      - "walls/**"
+      - "copings/**"
+      - "fences/**"
       - "scripts/catalog.py"
       - "scripts/readme_catalog.py"
   workflow_dispatch:

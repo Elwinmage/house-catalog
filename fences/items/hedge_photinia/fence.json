@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Photinia hedge",
+    "fr": "Haie de photinia",
+    "de": "Glanzmispelhecke",
+    "es": "Seto de fotinia",
+    "it": "Siepe di fotinia",
+    "pl": "Żywopłot z fotynii",
+    "pt": "Sebe de fotínia",
+    "nl": "Photinia-haag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#ff6f61",
+  "height": {
+    "default": 1.8,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 0.7,
+  "surface": {
+    "color": "#8a4a3c",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#6c3a2f",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#a85a49",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

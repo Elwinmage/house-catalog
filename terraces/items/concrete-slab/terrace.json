@@ -1,0 +1,42 @@
+{
+  "name": {
+    "en": "Concrete slab",
+    "fr": "Dalle béton",
+    "de": "Betonplatte",
+    "es": "Losa de hormigón",
+    "it": "Soletta in calcestruzzo",
+    "pl": "Płyta betonowa",
+    "pt": "Laje de betão",
+    "nl": "Betonplaat"
+  },
+  "icon": "mdi:texture-box",
+  "draft": "#d8d5cf",
+  "thickness": 0.05,
+  "surface": {
+    "color": "#bfbbb2",
+    "roughness": 0.85,
+    "tile": 3,
+    "grain": 0.12,
+    "speckles": [
+      {
+        "color": "#b2aea5",
+        "amount": 0.03,
+        "size": 0.011
+      },
+      {
+        "color": "#cac6be",
+        "amount": 0.03,
+        "size": 0.011
+      }
+    ],
+    "joints": {
+      "color": "#9a968e",
+      "cell": [
+        3,
+        3
+      ],
+      "width": 0.01,
+      "shade": 0.02
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": {
+    "en": "Rubble stone",
+    "fr": "Moellons",
+    "de": "Bruchstein",
+    "es": "Mampostería",
+    "it": "Pietrame",
+    "pl": "Kamień łamany",
+    "pt": "Alvenaria de pedra",
+    "nl": "Breuksteen"
+  },
+  "icon": "mdi:wall",
+  "draft": "#d6b77c",
+  "surface": {
+    "color": "#a89a80",
+    "roughness": 0.95,
+    "tile": 2.4,
+    "grain": 0.25,
+    "joints": {
+      "color": "#d0c6b2",
+      "cell": [
+        0.2,
+        0.3
+      ],
+      "width": 0.02,
+      "stagger": 0.5,
+      "shade": 0.2,
+      "vary": 0.45
+    }
+  },
+  "coping": {
+    "color": "#b9ad96",
+    "height": 0.06,
+    "overhang": 0.03
+  }
+}

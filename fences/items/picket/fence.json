@@ -1,0 +1,33 @@
+{
+  "name": {
+    "en": "Picket fence",
+    "fr": "Palissade ajourée",
+    "de": "Lattenzaun",
+    "es": "Valla de listones",
+    "it": "Staccionata",
+    "pl": "Płot sztachetowy",
+    "pt": "Cerca de ripas",
+    "nl": "Lattenhek"
+  },
+  "icon": "mdi:fence",
+  "draft": "#ff1744",
+  "height": {
+    "default": 1,
+    "min": 0.4,
+    "max": 2
+  },
+  "surface": {
+    "color": "#f1ede4",
+    "roughness": 0.8
+  },
+  "open": {
+    "pattern": "bars",
+    "pitch": 0.12,
+    "fill": 0.6
+  },
+  "posts": {
+    "color": "#d9d4c8",
+    "spacing": 2,
+    "size": 0.09
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Cherry laurel hedge",
+    "fr": "Haie de laurier-palme",
+    "de": "Kirschlorbeerhecke",
+    "es": "Seto de laurel cerezo",
+    "it": "Siepe di lauroceraso",
+    "pl": "Żywopłot z laurowiśni",
+    "pt": "Sebe de louro-cerejo",
+    "nl": "Laurierhaag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#7bd62a",
+  "height": {
+    "default": 1.8,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 0.7,
+  "surface": {
+    "color": "#2f6b2f",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#255325",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#398339",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

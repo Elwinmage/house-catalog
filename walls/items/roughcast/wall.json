@@ -1,0 +1,37 @@
+{
+  "name": {
+    "en": "Roughcast render",
+    "fr": "Crépi",
+    "de": "Rauputz",
+    "es": "Revoco rugoso",
+    "it": "Intonaco rustico",
+    "pl": "Tynk barankowy",
+    "pt": "Reboco rugoso",
+    "nl": "Grove pleister"
+  },
+  "icon": "mdi:wall",
+  "draft": "#f2c879",
+  "surface": {
+    "color": "#d7c7a8",
+    "roughness": 1,
+    "tile": 2,
+    "grain": 0.55,
+    "speckles": [
+      {
+        "color": "#c2b292",
+        "amount": 0.18,
+        "size": 0.012
+      },
+      {
+        "color": "#e6d9bf",
+        "amount": 0.12,
+        "size": 0.01
+      }
+    ]
+  },
+  "coping": {
+    "color": "#bfb7a6",
+    "height": 0.05,
+    "overhang": 0.03
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "name": {
+    "en": "Exotic wood decking",
+    "fr": "Platelage bois exotique",
+    "de": "Tropenholzdeck",
+    "es": "Entarimado de madera tropical",
+    "it": "Pedana in legno esotico",
+    "pl": "Taras z drewna egzotycznego",
+    "pt": "Deck de madeira exótica",
+    "nl": "Hardhouten vlonder"
+  },
+  "icon": "mdi:texture",
+  "keywords": [
+    "exotic wood decking",
+    "exotic wood",
+    "exotic",
+    "hardwood",
+    "ipe",
+    "teak",
+    "platelage bois exotique",
+    "bois exotique",
+    "exotique",
+    "teck",
+    "tropenholzdeck",
+    "tropenholz",
+    "entarimado de madera tropical",
+    "madera tropical",
+    "tropical",
+    "pedana in legno esotico",
+    "legno esotico",
+    "esotico",
+    "taras z drewna egzotycznego",
+    "drewno egzotyczne",
+    "egzotyczne",
+    "deck de madeira exotica",
+    "madeira exotica",
+    "exotica",
+    "hardhouten vlonder",
+    "hardhouten",
+    "hardhout"
+  ],
+  "kind": "surface",
+  "draft": "#a8623a",
+  "width": {
+    "default": 1.4,
+    "min": 0.6,
+    "max": 6
+  },
+  "surface": {
+    "color": "#6f4a33",
+    "roughness": 0.7,
+    "tile": 2.4,
+    "grain": 0.16,
+    "speckles": [
+      {
+        "color": "#5c3c29",
+        "amount": 0.07,
+        "size": 0.004,
+        "stretch": 5
+      }
+    ],
+    "joints": {
+      "color": "#3d281b",
+      "cell": [
+        0.12,
+        1.2
+      ],
+      "width": 0.006,
+      "stagger": 0.5,
+      "shade": 0.14
+    }
+  }
+}

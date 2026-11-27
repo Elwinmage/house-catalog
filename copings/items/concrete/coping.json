@@ -1,0 +1,30 @@
+{
+  "name": {
+    "en": "Concrete capping",
+    "fr": "Chaperon béton",
+    "de": "Betonabdeckung",
+    "es": "Albardilla de hormigón",
+    "it": "Copertina in calcestruzzo",
+    "pl": "Daszek betonowy",
+    "pt": "Capeamento de betão",
+    "nl": "Betonnen muurafdekker"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#b9b6ae",
+    "roughness": 0.95,
+    "tile": 1,
+    "grain": 0.2,
+    "joints": {
+      "color": "#8d8a83",
+      "cell": [
+        1,
+        1
+      ],
+      "width": 0.008,
+      "shade": 0.04
+    }
+  },
+  "height": 0.06,
+  "overhang": 0.04
+}

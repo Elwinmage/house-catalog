@@ -1,0 +1,33 @@
+{
+  "name": {
+    "en": "Wire mesh",
+    "fr": "Grillage",
+    "de": "Maschendraht",
+    "es": "Malla metálica",
+    "it": "Rete metallica",
+    "pl": "Siatka",
+    "pt": "Rede metálica",
+    "nl": "Gaas"
+  },
+  "icon": "mdi:fence",
+  "draft": "#ff2bd6",
+  "height": {
+    "default": 1.5,
+    "min": 0.5,
+    "max": 3
+  },
+  "surface": {
+    "color": "#5f7d5c",
+    "roughness": 0.6
+  },
+  "open": {
+    "pattern": "mesh",
+    "pitch": 0.1,
+    "fill": 0.38
+  },
+  "posts": {
+    "color": "#3d4a3c",
+    "spacing": 2.5,
+    "size": 0.07
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": {
+    "en": "Smooth render",
+    "fr": "Enduit lissé",
+    "de": "Glattputz",
+    "es": "Enlucido liso",
+    "it": "Intonaco liscio",
+    "pl": "Tynk gładki",
+    "pt": "Reboco liso",
+    "nl": "Gladde pleister"
+  },
+  "icon": "mdi:wall",
+  "draft": "#ffe9b8",
+  "surface": {
+    "color": "#e3d9c6",
+    "roughness": 0.9,
+    "tile": 2,
+    "grain": 0.1
+  },
+  "coping": {
+    "color": "#c9c2b4",
+    "height": 0.05,
+    "overhang": 0.03
+  }
+}

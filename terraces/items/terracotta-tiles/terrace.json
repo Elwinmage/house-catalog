@@ -1,0 +1,30 @@
+{
+  "name": {
+    "en": "Terracotta tiles",
+    "fr": "Carreaux de terre cuite",
+    "de": "Terrakottafliesen",
+    "es": "Baldosas de barro cocido",
+    "it": "Piastrelle in cotto",
+    "pl": "Płytki z terakoty",
+    "pt": "Ladrilhos de terracota",
+    "nl": "Terracotta tegels"
+  },
+  "icon": "mdi:view-grid-outline",
+  "draft": "#e07a45",
+  "thickness": 0.03,
+  "surface": {
+    "color": "#b5653f",
+    "roughness": 0.85,
+    "tile": 1.6,
+    "grain": 0.15,
+    "joints": {
+      "color": "#8f7a66",
+      "cell": [
+        0.2,
+        0.2
+      ],
+      "width": 0.008,
+      "shade": 0.14
+    }
+  }
+}

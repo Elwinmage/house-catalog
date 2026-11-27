@@ -1,0 +1,31 @@
+{
+  "name": {
+    "en": "Composite decking",
+    "fr": "Lames composites",
+    "de": "WPC-Dielen",
+    "es": "Tarima de composite",
+    "it": "Doghe in composito",
+    "pl": "Deski kompozytowe",
+    "pt": "Deck compósito",
+    "nl": "Composiet vlonderplanken"
+  },
+  "icon": "mdi:texture",
+  "draft": "#9aa4ad",
+  "thickness": 0.1,
+  "surface": {
+    "color": "#77716a",
+    "roughness": 0.75,
+    "tile": 2.4,
+    "grain": 0.08,
+    "joints": {
+      "color": "#4f4b46",
+      "cell": [
+        0.15,
+        2.4
+      ],
+      "width": 0.006,
+      "stagger": 0.5,
+      "shade": 0.04
+    }
+  }
+}

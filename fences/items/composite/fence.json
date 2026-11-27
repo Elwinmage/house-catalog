@@ -1,0 +1,40 @@
+{
+  "name": {
+    "en": "Composite slats",
+    "fr": "Lames composites",
+    "de": "WPC-Latten",
+    "es": "Lamas compuestas",
+    "it": "Doghe in composito",
+    "pl": "Deski kompozytowe",
+    "pt": "Réguas compósitas",
+    "nl": "Composiet latten"
+  },
+  "icon": "mdi:fence",
+  "draft": "#7fd1ff",
+  "height": {
+    "default": 1.8,
+    "min": 0.5,
+    "max": 3
+  },
+  "thickness": 0.04,
+  "surface": {
+    "color": "#6f6a63",
+    "roughness": 0.75,
+    "tile": 1.8,
+    "grain": 0.08,
+    "joints": {
+      "color": "#4a4640",
+      "cell": [
+        0.15,
+        1.8
+      ],
+      "width": 0.01,
+      "shade": 0.04
+    }
+  },
+  "posts": {
+    "color": "#4a4640",
+    "spacing": 1.8,
+    "size": 0.08
+  }
+}

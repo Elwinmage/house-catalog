@@ -1,0 +1,35 @@
+{
+  "name": {
+    "en": "Dressed stone",
+    "fr": "Pierre de taille",
+    "de": "Werkstein",
+    "es": "Sillería",
+    "it": "Pietra da taglio",
+    "pl": "Kamień ciosany",
+    "pt": "Cantaria",
+    "nl": "Natuursteenblokken"
+  },
+  "icon": "mdi:wall",
+  "draft": "#e8d7a8",
+  "surface": {
+    "color": "#cfc3aa",
+    "roughness": 0.85,
+    "tile": 2.4,
+    "grain": 0.12,
+    "joints": {
+      "color": "#a89c84",
+      "cell": [
+        0.3,
+        0.6
+      ],
+      "width": 0.008,
+      "stagger": 0.5,
+      "shade": 0.08
+    }
+  },
+  "coping": {
+    "color": "#bfb39a",
+    "height": 0.06,
+    "overhang": 0.04
+  }
+}

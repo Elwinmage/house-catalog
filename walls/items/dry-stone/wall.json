@@ -1,0 +1,31 @@
+{
+  "name": {
+    "en": "Dry stone",
+    "fr": "Pierre sèche",
+    "de": "Trockenmauer",
+    "es": "Piedra seca",
+    "it": "Pietra a secco",
+    "pl": "Kamień na sucho",
+    "pt": "Pedra seca",
+    "nl": "Stapelmuur"
+  },
+  "icon": "mdi:wall",
+  "draft": "#c7b99b",
+  "surface": {
+    "color": "#9c9382",
+    "roughness": 1,
+    "tile": 2.24,
+    "grain": 0.3,
+    "joints": {
+      "color": "#4d483f",
+      "cell": [
+        0.14,
+        0.34
+      ],
+      "width": 0.012,
+      "stagger": 0.5,
+      "shade": 0.22,
+      "vary": 0.5
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Zinc coping",
+    "fr": "Couvertine zinc",
+    "de": "Zink-Mauerabdeckung",
+    "es": "Albardilla de zinc",
+    "it": "Copertina in zinco",
+    "pl": "Obróbka cynkowa",
+    "pt": "Capeamento de zinco",
+    "nl": "Zinken muurafdekker"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#9aa1a6",
+    "roughness": 0.45,
+    "tile": 2,
+    "grain": 0.05
+  },
+  "height": 0.012,
+  "overhang": 0.02,
+  "drop": 0.04
+}

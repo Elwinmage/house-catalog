@@ -1,0 +1,33 @@
+{
+  "name": {
+    "en": "Rigid panels",
+    "fr": "Panneaux rigides",
+    "de": "Doppelstabmatten",
+    "es": "Paneles rígidos",
+    "it": "Pannelli rigidi",
+    "pl": "Panele sztywne",
+    "pt": "Painéis rígidos",
+    "nl": "Stijve panelen"
+  },
+  "icon": "mdi:fence",
+  "draft": "#ff4fa3",
+  "height": {
+    "default": 1.2,
+    "min": 0.5,
+    "max": 3
+  },
+  "surface": {
+    "color": "#3a3f44",
+    "roughness": 0.5
+  },
+  "open": {
+    "pattern": "grid",
+    "pitch": 0.05,
+    "fill": 0.3
+  },
+  "posts": {
+    "color": "#2b2f33",
+    "spacing": 2.5,
+    "size": 0.06
+  }
+}

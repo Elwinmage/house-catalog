@@ -1,0 +1,32 @@
+{
+  "name": {
+    "en": "Corten steel",
+    "fr": "Acier Corten",
+    "de": "Cortenstahl",
+    "es": "Acero corten",
+    "it": "Acciaio corten",
+    "pl": "Stal kortenowska",
+    "pt": "Aço corten",
+    "nl": "Cortenstaal"
+  },
+  "icon": "mdi:wall",
+  "draft": "#ff7043",
+  "surface": {
+    "color": "#8a4b2a",
+    "roughness": 0.8,
+    "tile": 2,
+    "grain": 0.35,
+    "speckles": [
+      {
+        "color": "#a05a30",
+        "amount": 0.12,
+        "size": 0.03
+      },
+      {
+        "color": "#6f3a20",
+        "amount": 0.1,
+        "size": 0.02
+      }
+    ]
+  }
+}

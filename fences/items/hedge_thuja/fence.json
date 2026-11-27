@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Thuja hedge",
+    "fr": "Haie de thuyas",
+    "de": "Thujahecke",
+    "es": "Seto de tuyas",
+    "it": "Siepe di tuia",
+    "pl": "Żywopłot z tui",
+    "pt": "Sebe de tuias",
+    "nl": "Thuja-haag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#3fbf6e",
+  "height": {
+    "default": 2,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 0.8,
+  "surface": {
+    "color": "#2d5a2e",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#234624",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#376e38",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

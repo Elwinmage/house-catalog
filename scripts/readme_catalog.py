@@ -1,7 +1,8 @@
 """Write the lists of the catalog into README.md.
 
-The trees, the objects, the fish and the paths of the catalog are listed, with their pictures,
-between two markers of the README; the rest of the file is left alone:
+The trees, the objects, the fish, the paths, the terraces, the walls, the copings and the
+fences of the catalog are listed, with their pictures, between two markers of the README; the rest of the
+file is left alone:
 
     <!-- catalog:begin -->
     ...generated...
@@ -192,6 +193,108 @@ def paths_table(root: Path) -> list[str]:
     )
 
 
+def _made_of(surface: dict) -> str:
+    """A painted surface in two words: laid in units, or one piece."""
+    joints = surface.get("joints")
+    if joints is None:
+        return "unbroken"
+    depth, length = joints["cell"]
+    if joints.get("pattern") == "irregular":
+        return f"irregular stones, about {_metres(length)} x {_metres(depth)} m"
+    units = f"units {_metres(length)} x {_metres(depth)} m"
+    return f"{units}, uneven" if joints.get("vary") else units
+
+
+def terraces_table(root: Path) -> list[str]:
+    rows = []
+    entries = folders(root / "terraces" / "items")
+    for folder in entries:
+        data = read_json(folder / "terrace.json")
+        rows.append(
+            [
+                _visual(root, folder),
+                f"{_cell(_name(data, folder.name))}<br>`{folder.name}`",
+                _made_of(data["surface"]),
+                f"{_metres(data.get('thickness', 0.05))} m",
+            ]
+        )
+    return _details(
+        f"<b>Terraces</b> ({len(entries)})",
+        _table(["", "Terrace", "Made of", "Thickness"], rows),
+    )
+
+
+def walls_table(root: Path) -> list[str]:
+    rows = []
+    entries = folders(root / "walls" / "items")
+    for folder in entries:
+        data = read_json(folder / "wall.json")
+        rows.append(
+            [
+                _visual(root, folder),
+                f"{_cell(_name(data, folder.name))}<br>`{folder.name}`",
+                _made_of(data["surface"]),
+                "yes" if "coping" in data else "",
+            ]
+        )
+    return _details(
+        f"<b>Walls</b> ({len(entries)})",
+        _table(["", "Wall", "Made of", "Coping"], rows),
+    )
+
+
+def copings_table(root: Path) -> list[str]:
+    rows = []
+    entries = folders(root / "copings" / "items")
+    for folder in entries:
+        data = read_json(folder / "coping.json")
+        drop = data.get("drop", 0)
+        rows.append(
+            [
+                _visual(root, folder),
+                f"{_cell(_name(data, folder.name))}<br>`{folder.name}`",
+                _made_of(data["surface"]),
+                f"{_metres(data.get('height', 0.05))} m",
+                f"{_metres(data.get('overhang', 0.03))} m",
+                f"{_metres(drop)} m" if drop else "",
+            ]
+        )
+    return _details(
+        f"<b>Copings</b> ({len(entries)})",
+        _table(["", "Coping", "Made of", "Height", "Overhang", "Folded edges"], rows),
+    )
+
+
+def fences_table(root: Path) -> list[str]:
+    rows = []
+    entries = folders(root / "fences" / "items")
+    for folder in entries:
+        data = read_json(folder / "fence.json")
+        height = data["height"]
+        if "open" in data:
+            family = f"see-through ({data['open']['pattern']})"
+        elif data.get("foliage"):
+            family = "hedge"
+        else:
+            family = "solid"
+        rows.append(
+            [
+                _visual(root, folder),
+                f"{_cell(_name(data, folder.name))}<br>`{folder.name}`",
+                family,
+                f"{_metres(height['default'])} m ({_metres(height['min'])}-{_metres(height['max'])})",
+                f"{_metres(data.get('thickness', 0))} m",
+                "yes" if "posts" in data else "",
+                "yes" if data.get("coping") else "",
+            ]
+        )
+    rows.sort(key=lambda row: (row[2], row[1].lower()))
+    return _details(
+        f"<b>Fences</b> ({len(entries)})",
+        _table(["", "Fence", "Family", "Height", "Thickness", "Posts", "Coping"], rows),
+    )
+
+
 def render(root: Path) -> str:
     """The generated block, markers included."""
     lines = [
@@ -205,6 +308,14 @@ def render(root: Path) -> str:
         *fish_table(root),
         "",
         *paths_table(root),
+        "",
+        *terraces_table(root),
+        "",
+        *walls_table(root),
+        "",
+        *copings_table(root),
+        "",
+        *fences_table(root),
         "",
         END,
     ]

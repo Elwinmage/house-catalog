@@ -103,6 +103,62 @@ PATH = {
 }
 
 
+TERRACE = {
+    "name": {"en": "Wooden decking"},
+    "draft": "#c29660",
+    "thickness": 0.12,
+    "surface": {
+        "color": "#a07b4f",
+        "tile": 2.4,
+        "grain": 0.18,
+        "joints": {
+            "color": "#6b5134",
+            "cell": [0.15, 2.4],
+            "width": 0.007,
+            "stagger": 0.5,
+        },
+    },
+}
+
+WALL = {
+    "name": {"en": "Rubble stone"},
+    "draft": "#d6b77c",
+    "surface": {
+        "color": "#a89a80",
+        "tile": 2.4,
+        "joints": {
+            "color": "#d0c6b2",
+            "cell": [0.2, 0.3],
+            "width": 0.02,
+            "stagger": 0.5,
+            "shade": 0.2,
+            "vary": 0.45,
+        },
+    },
+    "coping": {"color": "#b9ad96", "height": 0.06, "overhang": 0.03},
+}
+
+COPING = {
+    "name": {"en": "Bricks on edge"},
+    "surface": {
+        "color": "#a5553c",
+        "tile": 0.6,
+        "joints": {"color": "#c9c0b0", "cell": [0.6, 0.075], "width": 0.01},
+    },
+    "height": 0.07,
+    "overhang": 0.01,
+}
+
+FENCE = {
+    "name": {"en": "Wire mesh"},
+    "draft": "#ff2bd6",
+    "height": {"default": 1.5, "min": 0.5, "max": 3},
+    "surface": {"color": "#5f7d5c"},
+    "open": {"pattern": "mesh", "pitch": 0.1, "fill": 0.38},
+    "posts": {"color": "#3d4a3c", "spacing": 2.5, "size": 0.07},
+}
+
+
 def dump(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data), encoding="utf-8")
@@ -129,11 +185,35 @@ def path() -> dict:
 
 
 @pytest.fixture
+def terrace() -> dict:
+    return copy.deepcopy(TERRACE)
+
+
+@pytest.fixture
+def wall() -> dict:
+    return copy.deepcopy(WALL)
+
+
+@pytest.fixture
+def coping() -> dict:
+    return copy.deepcopy(COPING)
+
+
+@pytest.fixture
+def fence() -> dict:
+    return copy.deepcopy(FENCE)
+
+
+@pytest.fixture
 def root(tmp_path: Path) -> Path:
-    """A minimal valid catalog: one tree, one object, one fish, one path, no picture."""
+    """A minimal valid catalog: one entry of each kind, no picture."""
     shutil.copytree(REPO / "schema", tmp_path / "schema")
     dump(tmp_path / "trees/items/oak/tree.json", TREE)
     dump(tmp_path / "objects/items/stool/object.json", OBJECT)
     dump(tmp_path / "pond_fish/items/goldfish/pond_fish.json", FISH)
     dump(tmp_path / "paths/items/gravel/path.json", PATH)
+    dump(tmp_path / "terraces/items/wood-decking/terrace.json", TERRACE)
+    dump(tmp_path / "walls/items/rubble-stone/wall.json", WALL)
+    dump(tmp_path / "copings/items/brick/coping.json", COPING)
+    dump(tmp_path / "fences/items/mesh/fence.json", FENCE)
     return tmp_path

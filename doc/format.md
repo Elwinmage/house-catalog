@@ -187,6 +187,104 @@ from a seed of its own, so a path keeps its look while no two elements are
 quite alike; `scripts/render_previews.py` (`module_elements`) is the
 reference.
 
+## Painted surfaces
+
+Terraces, walls, copings and fences share one `surface`, the same painted texture as
+the `surface` of a path without its wheel ruts: no picture is shipped, the
+renderer paints a tile of it from these numbers.
+
+| Field | Meaning |
+|---|---|
+| `color` | Base colour. The user may give a terrace, a wall or a side of a fence a colour of his own: the grains then keep their contrast with it (each is shifted as the base colour was). |
+| `roughness` | 0 polished (glazed tiles), 1 matt (render, raw wood). |
+| `tile` | Metres covered by one tile of the texture. A whole number of rows and of units in it keeps the tiles joining up; an even number of rows when they are staggered. |
+| `grain` | Strength of the speckled noise over the base colour: 0 flat, 1 coarse. |
+| `speckles` | Up to four layers of grains, as on a path: `color`, `amount`, `size`, `stretch`. |
+| `joints` | The units the surface is laid in: `color` of the joints, `pattern` (`rows`, or `irregular` for stones of uneven shapes fitted into one another), `cell` (the depth of a row, then the length of a unit along it), `width` of a joint, `stagger` (0 lines up, 0.5 a running bond), `shade` (how much the units differ in colour), `vary` (how much the units of a row differ in length: 0 for tiles and bricks, 0.5 for the stones of a coursed rubble wall), `tints` (other colours a share of the units take: `color`, `amount`) and `relief` (how much an irregular stone bulges). |
+
+With `vary`, the lengths of the units of a row are drawn first, then fitted to
+the width of the tile, so the texture still joins up from one tile to the
+next. `scripts/render_previews.py` (`_paint_joints`) is the reference.
+
+With the `irregular` pattern there are no rows: the wall of a garden built of
+stones as they came, a crazy paving. `cell` is then the usual size of a stone
+(its height first on a wall, then its length) and `vary` how uneven the stones
+are, from much alike (0) to small ones wedged between large blocks (0.8);
+`stagger` is not read. The stones are drawn around middles scattered over the
+tile, each one taking all that lies nearer to its middle than to any other,
+less half a joint: they fit into one another whatever their shapes, and a tile
+of any size joins up with the next (it should hold at least two stones each
+way, or the same ones show side by side). `relief` leaves the lower right side
+of each stone in shade, as rough blocks are, and `tints` gives a share of the
+stones another colour: the ochre ones of a grey limestone wall. A dark `color`
+of joints with a narrow `width` is a dry stone wall, a pale one with a wider
+`width` a pointed one. The reference is `_paint_stones`.
+
+## Terraces
+
+A terrace is laid flat over the outline the house view draws for it (a
+rectangle or a free shape), at one altitude, the ground levelled under it.
+`thickness` is how far its top stands over that ground: a few centimetres for
+tiles, more for a deck on joists. The user may change it.
+
+The texture is laid in the frame of the terrace: a row of the `surface` runs
+along the laying direction the user gives it (the first side of the outline by
+default), so a decking board -- a long unit in a narrow row -- follows it.
+Where a pool is drawn inside the terrace, the terrace is cut out around it.
+
+## Walls
+
+A wall is the facing of a low wall or of a retaining wall, drawn along a line
+between two altitudes (its top and its foot, which may both differ from one
+end of the wall to the other).
+
+- The `surface` is seen on the upright faces. A row is a course: `cell` gives
+  the height of a stone or of a brick first, then its length along the wall.
+- `coping` is the capping laid on top: its `color`, its `height` and the
+  `overhang` by which it juts out on each side. Without it the top has the
+  colour of the faces.
+
+## Copings
+
+A coping caps a wall, whatever the wall is faced with: the user picks one for a
+wall in place of the capping of its facing (or on a facing that has none), and
+may give it a colour of his own.
+
+| Field | Meaning |
+|---|---|
+| `name`, `icon` | As for every entry. No `draft`: a coping is not drawn on the overlay of the editor. |
+| `surface` | What it is made of, seen on its top and on its edges. A row of its units runs along the wall: `cell` gives the depth of a row, across the wall, first, then the length of a unit along the wall. |
+| `height` | Height above the top of the wall (m, 0.05 by default). |
+| `overhang` | How far it juts out on each side of the wall (m, 0.03 by default). |
+| `drop` | How far its edges come down over the faces of the wall (m, 0 by default): the folded edges of a metal coping. |
+
+The walls of the house view are 0.4 m thick: a coping is 0.4 m plus twice its
+`overhang` wide. A row deeper than that gives one unit across the wall -- a
+brick laid on edge, a slab -- with no joint running along it: the texture
+starts at one edge of the coping, so the first row covers its whole width. A
+`drop` needs an `overhang`, or the edges would lie in the faces of the wall.
+`scripts/render_previews.py` (`coping_picture`) draws it on a piece of plain
+wall, seen from the front and a little from above.
+
+## Fences
+
+A fence follows a line on the ground, side by side; every side has a kind, a
+height and, if the user gives it one, a colour of its own. The side of a wall
+may carry a coping as well.
+
+| Field | Meaning |
+|---|---|
+| `height` | The height a side gets when the kind is chosen (`default`) and the bounds offered. |
+| `thickness` | 0 for a sheet (wire mesh, welded panel); otherwise a box that thick, sunk a little so that it leaves no gap on a slope. |
+| `surface` | What it is made of. A row of its units is a course, as on a wall: vertical boards are units as tall as the fence and as wide as a board. |
+| `open` | A see-through fence: only the colour of the surface is used, for wires or bars drawn on nothing. `pattern` is `mesh` (wire netting in diamonds, `pitch` being the side of a diamond), `grid` (upright wires every `pitch`, a level one every four of them: a rigid welded panel) or `bars` (upright bars every `pitch`, between two rails at 14 % and 86 % of the height). `fill` is the share of the sheet covered: a mesh and a grid have two sets of wires, each `pitch * fill / 2` wide; a bar is `pitch * fill` wide. |
+| `posts` | Posts along the fence, one every `spacing` and one at each end: their `color` and their `size` (they stand a little over the fence). |
+| `foliage` | A hedge: its top is uneven and its faces are faceted, as clipped foliage is. Never with `open`. |
+| `coping` | A wall a coping can be laid on: the user caps each of its sides with an entry of the [copings](#copings), in a colour of his own if he wishes, or leaves it bare. The coping is wider than the wall by its `overhang` on each side, goes past the free ends of the wall by as much, and covers the corner two capped sides share. Only a solid fence at least 0.1 m thick: never with `open` or `foliage`. |
+| `draft` | Colour of a side on the overlay of the editor. No two fences share it. |
+
+`scripts/render_previews.py` (`open_lines`, `fence_panel`) is the reference.
+
 ## Shared fields
 
 | Field | Meaning |

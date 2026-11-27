@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Mixed country hedge",
+    "fr": "Haie champêtre",
+    "de": "Gemischte Wildhecke",
+    "es": "Seto campestre mixto",
+    "it": "Siepe campestre mista",
+    "pl": "Mieszany żywopłot polny",
+    "pt": "Sebe campestre mista",
+    "nl": "Gemengde landschapshaag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#8fd13b",
+  "height": {
+    "default": 1.6,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 1,
+  "surface": {
+    "color": "#5f7f3a",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#4a632d",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#749b47",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

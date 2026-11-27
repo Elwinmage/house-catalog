@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Bamboo hedge",
+    "fr": "Haie de bambous",
+    "de": "Bambushecke",
+    "es": "Seto de bambú",
+    "it": "Siepe di bambù",
+    "pl": "Żywopłot z bambusa",
+    "pt": "Sebe de bambu",
+    "nl": "Bamboehaag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#c5e63a",
+  "height": {
+    "default": 2.5,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 0.5,
+  "surface": {
+    "color": "#8aa83a",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#6c832d",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#a8cd47",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

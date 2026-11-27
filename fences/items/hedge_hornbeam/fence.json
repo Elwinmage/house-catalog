@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Hornbeam hedge",
+    "fr": "Charmille",
+    "de": "Hainbuchenhecke",
+    "es": "Seto de carpe",
+    "it": "Siepe di carpino",
+    "pl": "Żywopłot z grabu",
+    "pt": "Sebe de carpino",
+    "nl": "Haagbeukhaag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#d6e83b",
+  "height": {
+    "default": 1.8,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 0.5,
+  "surface": {
+    "color": "#6f8f3a",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#57702d",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#87ae47",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

@@ -1,0 +1,37 @@
+{
+  "name": {
+    "en": "Brick wall",
+    "fr": "Mur en briques",
+    "de": "Ziegelmauer",
+    "es": "Muro de ladrillo",
+    "it": "Muro in mattoni",
+    "pl": "Mur ceglany",
+    "pt": "Muro de tijolo",
+    "nl": "Bakstenen muur"
+  },
+  "icon": "mdi:wall",
+  "draft": "#ff5a1f",
+  "height": {
+    "default": 1.2,
+    "min": 0.3,
+    "max": 3
+  },
+  "thickness": 0.22,
+  "coping": true,
+  "surface": {
+    "color": "#a5553c",
+    "roughness": 0.9,
+    "tile": 1.32,
+    "grain": 0.14,
+    "joints": {
+      "color": "#c9c0b0",
+      "cell": [
+        0.066,
+        0.22
+      ],
+      "width": 0.01,
+      "stagger": 0.5,
+      "shade": 0.14
+    }
+  }
+}

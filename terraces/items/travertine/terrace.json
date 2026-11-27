@@ -1,0 +1,39 @@
+{
+  "name": {
+    "en": "Travertine paving",
+    "fr": "Dallage en travertin",
+    "de": "Travertinplatten",
+    "es": "Pavimento de travertino",
+    "it": "Pavimento in travertino",
+    "pl": "Płyty trawertynowe",
+    "pt": "Pavimento de travertino",
+    "nl": "Travertin tegels"
+  },
+  "icon": "mdi:view-grid-outline",
+  "draft": "#f0e2c4",
+  "thickness": 0.04,
+  "surface": {
+    "color": "#d9ccb4",
+    "roughness": 0.7,
+    "tile": 2.4,
+    "grain": 0.1,
+    "speckles": [
+      {
+        "color": "#c4b59b",
+        "amount": 0.05,
+        "size": 0.012,
+        "stretch": 3
+      }
+    ],
+    "joints": {
+      "color": "#b7a98f",
+      "cell": [
+        0.4,
+        0.6
+      ],
+      "width": 0.005,
+      "stagger": 0.5,
+      "shade": 0.07
+    }
+  }
+}

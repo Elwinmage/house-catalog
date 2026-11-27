@@ -1,0 +1,53 @@
+{
+  "name": {
+    "en": "Irregular dry stone",
+    "fr": "Pierres sèches irrégulières",
+    "de": "Unregelmäßige Trockenmauer",
+    "es": "Piedra seca irregular",
+    "it": "Pietra a secco irregolare",
+    "pl": "Nieregularny kamień na sucho",
+    "pt": "Pedra seca irregular",
+    "nl": "Onregelmatige stapelmuur"
+  },
+  "icon": "mdi:wall",
+  "draft": "#efe3c2",
+  "surface": {
+    "color": "#b7b0a1",
+    "roughness": 1,
+    "tile": 2.4,
+    "grain": 0.3,
+    "speckles": [
+      {
+        "color": "#5f5b50",
+        "amount": 0.035,
+        "size": 0.009
+      }
+    ],
+    "joints": {
+      "pattern": "irregular",
+      "color": "#38332b",
+      "cell": [
+        0.2,
+        0.3
+      ],
+      "width": 0.016,
+      "shade": 0.14,
+      "vary": 0.8,
+      "tints": [
+        {
+          "color": "#c9a878",
+          "amount": 0.12
+        },
+        {
+          "color": "#948f85",
+          "amount": 0.2
+        },
+        {
+          "color": "#cdc6b6",
+          "amount": 0.2
+        }
+      ],
+      "relief": 0.5
+    }
+  }
+}

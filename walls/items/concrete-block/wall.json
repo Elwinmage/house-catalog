@@ -1,0 +1,30 @@
+{
+  "name": {
+    "en": "Concrete blocks",
+    "fr": "Parpaings",
+    "de": "Betonsteine",
+    "es": "Bloques de hormigón",
+    "it": "Blocchi di calcestruzzo",
+    "pl": "Bloczki betonowe",
+    "pt": "Blocos de betão",
+    "nl": "Betonblokken"
+  },
+  "icon": "mdi:wall",
+  "draft": "#c5ccd3",
+  "surface": {
+    "color": "#a9a79f",
+    "roughness": 0.95,
+    "tile": 2,
+    "grain": 0.2,
+    "joints": {
+      "color": "#8a8880",
+      "cell": [
+        0.2,
+        0.5
+      ],
+      "width": 0.01,
+      "stagger": 0.5,
+      "shade": 0.05
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/coping.schema.json",
+  "title": "Coping (copings/items/<id>/coping.json)",
+  "description": "What caps a low wall or a retaining wall, as the house view lays it along the top of the wall, whatever the wall is faced with: flat stones, a course of bricks on edge, tiles, a folded metal sheet. Its texture is painted from a few numbers, like the surface of a path, and seen on its top and on its edges.",
+  "type": "object",
+  "required": [
+    "name",
+    "surface"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "$ref": "common.schema.json#/$defs/i18n"
+    },
+    "icon": {
+      "$ref": "common.schema.json#/$defs/icon"
+    },
+    "surface": {
+      "description": "What the coping is made of. A row of its units runs along the wall: the depth of a row, across the wall, comes first in `cell`, then the length of a unit along the wall. A row deeper than the coping is wide gives one unit across the wall (a brick on edge, a slab), with no joint running along it.",
+      "$ref": "common.schema.json#/$defs/surface"
+    },
+    "height": {
+      "description": "Height of the coping above the top of the wall, in metres.",
+      "type": "number",
+      "minimum": 0.005,
+      "maximum": 0.3,
+      "default": 0.05
+    },
+    "overhang": {
+      "description": "How far it juts out on each side of the wall, in metres.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0.2,
+      "default": 0.03
+    },
+    "drop": {
+      "description": "How far its edges come down over the faces of the wall, in metres: the folded edges of a metal coping. 0 for a coping that is simply laid on top.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0.2,
+      "default": 0
+    }
+  }
+}

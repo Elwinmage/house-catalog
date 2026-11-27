@@ -1,0 +1,35 @@
+{
+  "name": {
+    "en": "Brick",
+    "fr": "Brique",
+    "de": "Ziegel",
+    "es": "Ladrillo",
+    "it": "Mattone",
+    "pl": "Cegła",
+    "pt": "Tijolo",
+    "nl": "Baksteen"
+  },
+  "icon": "mdi:wall",
+  "draft": "#ff8a65",
+  "surface": {
+    "color": "#a5553c",
+    "roughness": 0.9,
+    "tile": 1.32,
+    "grain": 0.14,
+    "joints": {
+      "color": "#c9c0b0",
+      "cell": [
+        0.066,
+        0.22
+      ],
+      "width": 0.01,
+      "stagger": 0.5,
+      "shade": 0.14
+    }
+  },
+  "coping": {
+    "color": "#8c8477",
+    "height": 0.05,
+    "overhang": 0.03
+  }
+}

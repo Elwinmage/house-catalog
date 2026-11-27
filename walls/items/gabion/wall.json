@@ -1,0 +1,31 @@
+{
+  "name": {
+    "en": "Gabions",
+    "fr": "Gabions",
+    "de": "Gabionen",
+    "es": "Gaviones",
+    "it": "Gabbioni",
+    "pl": "Gabiony",
+    "pt": "Gabiões",
+    "nl": "Schanskorven"
+  },
+  "icon": "mdi:wall",
+  "draft": "#4fe0e0",
+  "surface": {
+    "color": "#8a8780",
+    "roughness": 1,
+    "tile": 1.92,
+    "grain": 0.3,
+    "joints": {
+      "color": "#55534d",
+      "cell": [
+        0.12,
+        0.16
+      ],
+      "width": 0.014,
+      "stagger": 0.5,
+      "shade": 0.25,
+      "vary": 0.5
+    }
+  }
+}

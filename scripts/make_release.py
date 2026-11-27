@@ -31,11 +31,7 @@ from catalog import LAYOUT, SCHEMA_VERSION, SECTIONS, Entry, collect, read_json
 
 VERSION_RE = re.compile(r"^\d{4}\.\d{1,2}\.\d+$")
 # Integrations reading each section, for the min_integration table.
-CONSUMERS = {
-    "trees": ("house_view",),
-    "objects": ("house_view",),
-    "pond_fish": ("house_view",),
-}
+CONSUMERS = {section: ("house_view",) for section in SECTIONS}
 # JSON Schemas (schema/<kind>.schema.json) of the entries of each section. Data
 # only: a release never carries code, which integrations would have to run.
 SCHEMA_KINDS = {
@@ -71,8 +67,14 @@ def _summary(entry: Entry) -> dict:
         summary["varieties"] = [variety["id"] for variety in data["varieties"]]
     elif entry.kind == "path":
         summary["family"] = read_json(entry.files["path.json"])["kind"]
-    else:
+    elif entry.kind == "fence":
+        data = read_json(entry.files["fence.json"])
+        summary["family"] = (
+            "open" if "open" in data else "hedge" if data.get("foliage") else "solid"
+        )
+    elif entry.kind == "object":
         summary["category"] = read_json(entry.files["object.json"])["category"]
+    # a terrace, a wall and a coping: their kind says it all
     return summary
 
 

@@ -1,0 +1,38 @@
+{
+  "name": {
+    "en": "Timber sleepers",
+    "fr": "Traverses en bois",
+    "de": "Holzschwellen",
+    "es": "Traviesas de madera",
+    "it": "Traversine in legno",
+    "pl": "Podkłady drewniane",
+    "pt": "Travessas de madeira",
+    "nl": "Houten bielzen"
+  },
+  "icon": "mdi:wall",
+  "draft": "#b07a45",
+  "surface": {
+    "color": "#6b5238",
+    "roughness": 0.95,
+    "tile": 2.4,
+    "grain": 0.3,
+    "speckles": [
+      {
+        "color": "#5a442e",
+        "amount": 0.08,
+        "size": 0.02,
+        "stretch": 6
+      }
+    ],
+    "joints": {
+      "color": "#3b2e20",
+      "cell": [
+        0.2,
+        2.4
+      ],
+      "width": 0.012,
+      "stagger": 0.5,
+      "shade": 0.15
+    }
+  }
+}

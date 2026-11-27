@@ -1,0 +1,39 @@
+{
+  "name": {
+    "en": "Slate paving",
+    "fr": "Dallage en ardoise",
+    "de": "Schieferplatten",
+    "es": "Pavimento de pizarra",
+    "it": "Pavimento in ardesia",
+    "pl": "Płyty łupkowe",
+    "pt": "Pavimento de ardósia",
+    "nl": "Leisteen tegels"
+  },
+  "icon": "mdi:view-grid-outline",
+  "draft": "#7d8a99",
+  "thickness": 0.04,
+  "surface": {
+    "color": "#4c5157",
+    "roughness": 0.65,
+    "tile": 2.4,
+    "grain": 0.14,
+    "speckles": [
+      {
+        "color": "#5d636a",
+        "amount": 0.06,
+        "size": 0.02,
+        "stretch": 4
+      }
+    ],
+    "joints": {
+      "color": "#2f3236",
+      "cell": [
+        0.4,
+        0.8
+      ],
+      "width": 0.006,
+      "stagger": 0.5,
+      "shade": 0.1
+    }
+  }
+}

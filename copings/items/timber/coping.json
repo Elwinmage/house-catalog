@@ -1,0 +1,30 @@
+{
+  "name": {
+    "en": "Timber board",
+    "fr": "Planche de bois",
+    "de": "Holzbohle",
+    "es": "Tabla de madera",
+    "it": "Tavola di legno",
+    "pl": "Deska drewniana",
+    "pt": "Tábua de madeira",
+    "nl": "Houten plank"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#8b6b4a",
+    "roughness": 0.9,
+    "tile": 2.4,
+    "grain": 0.3,
+    "joints": {
+      "color": "#5f4631",
+      "cell": [
+        0.6,
+        2.4
+      ],
+      "width": 0.004,
+      "shade": 0.06
+    }
+  },
+  "height": 0.04,
+  "overhang": 0.02
+}

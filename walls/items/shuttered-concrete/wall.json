@@ -1,0 +1,36 @@
+{
+  "name": {
+    "en": "Shuttered concrete",
+    "fr": "Béton banché",
+    "de": "Schalbeton",
+    "es": "Hormigón encofrado",
+    "it": "Calcestruzzo a vista",
+    "pl": "Beton szalunkowy",
+    "pt": "Betão à vista",
+    "nl": "Bekistingsbeton"
+  },
+  "icon": "mdi:wall",
+  "draft": "#aab4bd",
+  "surface": {
+    "color": "#b3b0a8",
+    "roughness": 0.8,
+    "tile": 2.4,
+    "grain": 0.15,
+    "speckles": [
+      {
+        "color": "#9c9991",
+        "amount": 0.03,
+        "size": 0.012
+      }
+    ],
+    "joints": {
+      "color": "#a09d95",
+      "cell": [
+        0.6,
+        2.4
+      ],
+      "width": 0.006,
+      "shade": 0.03
+    }
+  }
+}

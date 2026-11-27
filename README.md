@@ -2,9 +2,10 @@
 
 Data catalog of the [house view](https://github.com/Elwinmage/ha-house-view-component)
 for Home Assistant: the trees and the objects it draws around and inside the
-house, the fish of its ponds and what its paths are made of. Adding a tree
-species, a piece of furniture, a fish or a kind of path is a pull request here,
-not a new release of the integration or of the card.
+house, the fish of its ponds, what its paths, its terraces and its low walls
+are made of and capped with, and its kinds of fences. Adding a tree species, a
+piece of furniture, a fish, a kind of path, a terrace surface, a wall facing, a
+coping or a fence is a pull request here, not a new release of the integration or of the card.
 
 | Section | Content | Downloaded by | Shown by |
 |---|---|---|---|
@@ -12,6 +13,10 @@ not a new release of the integration or of the card.
 | `objects` | furniture and outdoor objects, made of a few simple solids | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `pond_fish` | pond fish: a body, its fins and its colour varieties | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `paths` | what a drive or a garden path is made of: a surface, or modules set one after another | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `terraces` | what a terrace, a patio or a deck is covered with: decking, tiles, stone, concrete | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `walls` | what a low wall or a retaining wall is faced with: render, stone, brick, and its coping | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `copings` | what caps a low wall, whatever it is faced with: stone slabs, bricks on edge, tiles, a folded metal sheet | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `fences` | kinds of fences: height, thickness, posts, see-through or solid, hedges | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 
 The catalog follows the conventions of
 [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog): one folder
@@ -46,6 +51,22 @@ paths/
   items/<path_id>/
     path.json                   name, kind, width, surface or modules
     image.webp / thumb.webp     pictures (optional): a piece of path from above
+terraces/
+  items/<terrace_id>/
+    terrace.json                name, thickness, surface
+    image.webp / thumb.webp     pictures (optional): a square of terrace from above
+walls/
+  items/<wall_id>/
+    wall.json                   name, surface of the faces, coping
+    image.webp / thumb.webp     pictures (optional): a piece of wall from the front
+copings/
+  items/<coping_id>/
+    coping.json                 name, surface, height, overhang, folded edges
+    image.webp / thumb.webp     pictures (optional): the capped top of a wall from the front
+fences/
+  items/<fence_id>/
+    fence.json                  name, height, thickness, surface, wires, posts
+    image.webp / thumb.webp     pictures (optional): a run of fence from the front
 scripts/                        validate.py, make_release.py, render_previews.py,
                                 readme_catalog.py, sync_client.py (description and
                                 rules into the editor, description and built-in
@@ -177,14 +198,62 @@ so an entry is never renamed, only removed.
   family under different numbers: a sleeper is a long `slab`, a log round a
   thick `round`.
 
+## Terraces, walls, copings and fences
+
+```json
+{
+  "name": { "en": "Dry stone", "fr": "Pierre sèche" },
+  "draft": "#c7b99b",
+  "surface": {
+    "color": "#9c9382", "roughness": 1, "tile": 2.24, "grain": 0.3,
+    "joints": { "color": "#4d483f", "cell": [0.14, 0.34], "width": 0.012, "stagger": 0.5, "shade": 0.22, "vary": 0.5 }
+  }
+}
+```
+
+These sections share one `surface`: the painted texture of a path
+`surface`, without the wheel ruts, and with `vary` in its `joints` for units
+of uneven length (the stones of a coursed rubble wall). With
+`"pattern": "irregular"` the joints have no rows at all: stones of uneven
+shapes and sizes fitted into one another, some of them in other `tints`, each
+one bulging by its `relief` (a wall of stones as they came, a crazy paving).
+`draft` is the colour of the entry on the overlay of the editor.
+
+- A **terrace** (`terraces`) is laid flat over the outline the user draws, the
+  ground levelled under it: `thickness` is how far it stands over that ground,
+  and the rows of the `surface` run across the laying direction the user gives
+  it, so the boards of a deck follow that direction.
+- A **wall** (`walls`) is the facing of a low wall or of a retaining wall. The
+  `surface` is seen on its upright faces, a row being a course: `cell` gives
+  the height of a stone first, then its length. `coping` caps it (`color`,
+  `height`, `overhang`).
+- A **coping** (`copings`) is what the user caps a wall with in place of the
+  capping of its facing, or on a facing that has none: `surface`, `height`
+  above the top of the wall, `overhang` on each side and `drop`, how far its
+  edges come down over the faces (a folded metal sheet). A row of its
+  `surface` runs along the wall: `cell` gives the depth of a row across the
+  wall first -- deeper than the coping is wide for one unit across, a brick on
+  edge or a slab --, then the length of a unit along the wall. It has no
+  `draft`: it is not drawn on the overlay.
+- A **fence** (`fences`) is a kind of fence, one per side of a property:
+  `height` (the usual one and the bounds offered), `thickness` (0 for a
+  sheet), `surface`, and `posts` (`color`, `spacing`, `size`). `open` makes it
+  see-through -- `pattern` `mesh` (wire netting in diamonds), `grid` (welded
+  panel) or `bars` (bars between two rails), `pitch` between two wires and
+  `fill`, the share of the sheet they cover -- and `foliage` makes it a
+  hedge, with an uneven top. The `draft` colours of the fences all differ:
+  they tell the sides of a fence apart while it is edited.
+
 ## Pictures
 
 `scripts/render_previews.py` draws `image.webp` and `thumb.webp` from the
 descriptor, with the same reading of the format as the card: the picture of a
 tree shows its four seasons (spring, summer / autumn, winter), the one of a
 fish every variety, seen from above, and the one of a path a piece of it seen
-from straight above, at its real scale. A photo or a drawing of your own may
-replace them.
+from straight above, at its real scale. A terrace is a square of it seen from
+above, a wall a piece of it seen from the front with its coping, and a fence a
+run of it at its usual height, with its posts. A photo or a drawing of your
+own may replace them.
 
 ## Catalog content
 
@@ -328,7 +397,7 @@ replace them.
 </details>
 
 <details>
-<summary><b>Paths</b> (18)</summary>
+<summary><b>Paths</b> (19)</summary>
 
 |  | Path | Kind | Made of | Width |
 |---|---|---|---|---|
@@ -342,6 +411,7 @@ replace them.
 | <img src="paths/items/concrete/thumb.webp" width="48" alt=""> | Concrete<br>`concrete` | surface | laid units | 3 m (0.6-12) |
 | <img src="paths/items/slate/thumb.webp" width="48" alt=""> | Crushed slate<br>`slate` | surface | unbroken | 1.2 m (0.4-6) |
 | <img src="paths/items/dirt/thumb.webp" width="48" alt=""> | Dirt track<br>`dirt` | surface | unbroken | 3 m (0.6-12) |
+| <img src="paths/items/exotic-decking/thumb.webp" width="48" alt=""> | Exotic wood decking<br>`exotic-decking` | surface | laid units | 1.4 m (0.6-6) |
 | <img src="paths/items/tracks/thumb.webp" width="48" alt=""> | Grass track<br>`tracks` | surface | wheel tracks | 3 m (1.2-10) |
 | <img src="paths/items/gravel/thumb.webp" width="48" alt=""> | Gravel<br>`gravel` | surface | unbroken | 3 m (0.5-12) |
 | <img src="paths/items/slabs/thumb.webp" width="48" alt=""> | Large-format slabs<br>`slabs` | surface | laid units | 1.4 m (0.6-8) |
@@ -350,6 +420,93 @@ replace them.
 | <img src="paths/items/pebbles/thumb.webp" width="48" alt=""> | Rolled pebbles<br>`pebbles` | surface | unbroken | 1.2 m (0.4-6) |
 | <img src="paths/items/hoggin/thumb.webp" width="48" alt=""> | Self-binding gravel<br>`hoggin` | surface | unbroken | 2 m (0.6-10) |
 | <img src="paths/items/decking/thumb.webp" width="48" alt=""> | Wooden decking<br>`decking` | surface | laid units | 1.4 m (0.6-6) |
+
+</details>
+
+<details>
+<summary><b>Terraces</b> (12)</summary>
+
+|  | Terrace | Made of | Thickness |
+|---|---|---|---|
+| <img src="terraces/items/beige-tiles/thumb.webp" width="48" alt=""> | Beige tiles<br>`beige-tiles` | units 0.45 x 0.45 m | 0.03 m |
+| <img src="terraces/items/block-paving/thumb.webp" width="48" alt=""> | Block paving<br>`block-paving` | units 0.2 x 0.1 m | 0.06 m |
+| <img src="terraces/items/composite-decking/thumb.webp" width="48" alt=""> | Composite decking<br>`composite-decking` | units 2.4 x 0.15 m | 0.1 m |
+| <img src="terraces/items/concrete-slab/thumb.webp" width="48" alt=""> | Concrete slab<br>`concrete-slab` | units 3 x 3 m | 0.05 m |
+| <img src="terraces/items/crazy-paving/thumb.webp" width="48" alt=""> | Crazy paving<br>`crazy-paving` | units 0.55 x 0.45 m, uneven | 0.05 m |
+| <img src="terraces/items/exotic-decking/thumb.webp" width="48" alt=""> | Exotic wood decking<br>`exotic-decking` | units 2.4 x 0.12 m | 0.12 m |
+| <img src="terraces/items/painted/thumb.webp" width="48" alt=""> | Plain colour<br>`painted` | unbroken | 0.04 m |
+| <img src="terraces/items/porcelain-tiles/thumb.webp" width="48" alt=""> | Porcelain tiles<br>`porcelain-tiles` | units 0.6 x 0.6 m | 0.03 m |
+| <img src="terraces/items/slate-tiles/thumb.webp" width="48" alt=""> | Slate paving<br>`slate-tiles` | units 0.8 x 0.4 m | 0.04 m |
+| <img src="terraces/items/terracotta-tiles/thumb.webp" width="48" alt=""> | Terracotta tiles<br>`terracotta-tiles` | units 0.2 x 0.2 m | 0.03 m |
+| <img src="terraces/items/travertine/thumb.webp" width="48" alt=""> | Travertine paving<br>`travertine` | units 0.6 x 0.4 m | 0.04 m |
+| <img src="terraces/items/wood-decking/thumb.webp" width="48" alt=""> | Wooden decking<br>`wood-decking` | units 2.4 x 0.15 m | 0.12 m |
+
+</details>
+
+<details>
+<summary><b>Walls</b> (13)</summary>
+
+|  | Wall | Made of | Coping |
+|---|---|---|---|
+| <img src="walls/items/brick/thumb.webp" width="48" alt=""> | Brick<br>`brick` | units 0.22 x 0.07 m | yes |
+| <img src="walls/items/concrete-block/thumb.webp" width="48" alt=""> | Concrete blocks<br>`concrete-block` | units 0.5 x 0.2 m |  |
+| <img src="walls/items/corten/thumb.webp" width="48" alt=""> | Corten steel<br>`corten` | unbroken |  |
+| <img src="walls/items/cut-stone/thumb.webp" width="48" alt=""> | Dressed stone<br>`cut-stone` | units 0.6 x 0.3 m | yes |
+| <img src="walls/items/dry-stone/thumb.webp" width="48" alt=""> | Dry stone<br>`dry-stone` | units 0.34 x 0.14 m, uneven |  |
+| <img src="walls/items/gabion/thumb.webp" width="48" alt=""> | Gabions<br>`gabion` | units 0.16 x 0.12 m, uneven |  |
+| <img src="walls/items/irregular-stone/thumb.webp" width="48" alt=""> | Irregular dry stone<br>`irregular-stone` | irregular stones, about 0.3 x 0.2 m |  |
+| <img src="walls/items/irregular-stone-mortar/thumb.webp" width="48" alt=""> | Irregular stone, pointed<br>`irregular-stone-mortar` | irregular stones, about 0.3 x 0.2 m | yes |
+| <img src="walls/items/render/thumb.webp" width="48" alt=""> | Smooth render<br>`render` | unbroken | yes |
+| <img src="walls/items/roughcast/thumb.webp" width="48" alt=""> | Roughcast render<br>`roughcast` | unbroken | yes |
+| <img src="walls/items/rubble-stone/thumb.webp" width="48" alt=""> | Rubble stone<br>`rubble-stone` | units 0.3 x 0.2 m, uneven | yes |
+| <img src="walls/items/shuttered-concrete/thumb.webp" width="48" alt=""> | Shuttered concrete<br>`shuttered-concrete` | units 2.4 x 0.6 m |  |
+| <img src="walls/items/timber-sleepers/thumb.webp" width="48" alt=""> | Timber sleepers<br>`timber-sleepers` | units 2.4 x 0.2 m |  |
+
+</details>
+
+<details>
+<summary><b>Copings</b> (9)</summary>
+
+|  | Coping | Made of | Height | Overhang | Folded edges |
+|---|---|---|---|---|---|
+| <img src="copings/items/aluminium/thumb.webp" width="48" alt=""> | Aluminium coping<br>`aluminium` | unbroken | 0.01 m | 0.03 m | 0.05 m |
+| <img src="copings/items/brick/thumb.webp" width="48" alt=""> | Bricks on edge<br>`brick` | units 0.07 x 0.6 m | 0.07 m | 0.01 m |  |
+| <img src="copings/items/concrete/thumb.webp" width="48" alt=""> | Concrete capping<br>`concrete` | units 1 x 1 m | 0.06 m | 0.04 m |  |
+| <img src="copings/items/corten/thumb.webp" width="48" alt=""> | Corten steel coping<br>`corten` | unbroken | 0.01 m | 0.02 m | 0.05 m |
+| <img src="copings/items/flat-stone/thumb.webp" width="48" alt=""> | Flat stone slabs<br>`flat-stone` | units 0.6 x 0.6 m | 0.05 m | 0.03 m |  |
+| <img src="copings/items/slate/thumb.webp" width="48" alt=""> | Slate<br>`slate` | units 0.4 x 0.6 m | 0.02 m | 0.03 m |  |
+| <img src="copings/items/terracotta/thumb.webp" width="48" alt=""> | Terracotta tiles<br>`terracotta` | units 0.2 x 0.6 m | 0.04 m | 0.05 m |  |
+| <img src="copings/items/timber/thumb.webp" width="48" alt=""> | Timber board<br>`timber` | units 2.4 x 0.6 m | 0.04 m | 0.02 m |  |
+| <img src="copings/items/zinc/thumb.webp" width="48" alt=""> | Zinc coping<br>`zinc` | unbroken | 0.01 m | 0.02 m | 0.04 m |
+
+</details>
+
+<details>
+<summary><b>Fences</b> (21)</summary>
+
+|  | Fence | Family | Height | Thickness | Posts | Coping |
+|---|---|---|---|---|---|---|
+| <img src="fences/items/hedge_bamboo/thumb.webp" width="48" alt=""> | Bamboo hedge<br>`hedge_bamboo` | hedge | 2.5 m (0.3-4) | 0.5 m |  |  |
+| <img src="fences/items/hedge_box/thumb.webp" width="48" alt=""> | Box hedge<br>`hedge_box` | hedge | 0.6 m (0.3-4) | 0.4 m |  |  |
+| <img src="fences/items/hedge_laurel/thumb.webp" width="48" alt=""> | Cherry laurel hedge<br>`hedge_laurel` | hedge | 1.8 m (0.3-4) | 0.7 m |  |  |
+| <img src="fences/items/hedge/thumb.webp" width="48" alt=""> | Hedge<br>`hedge` | hedge | 1.8 m (0.3-4) | 0.6 m |  |  |
+| <img src="fences/items/hedge_hornbeam/thumb.webp" width="48" alt=""> | Hornbeam hedge<br>`hedge_hornbeam` | hedge | 1.8 m (0.3-4) | 0.5 m |  |  |
+| <img src="fences/items/hedge_leyland/thumb.webp" width="48" alt=""> | Leyland cypress hedge<br>`hedge_leyland` | hedge | 2.5 m (0.3-4) | 1 m |  |  |
+| <img src="fences/items/hedge_wild/thumb.webp" width="48" alt=""> | Mixed country hedge<br>`hedge_wild` | hedge | 1.6 m (0.3-4) | 1 m |  |  |
+| <img src="fences/items/hedge_photinia/thumb.webp" width="48" alt=""> | Photinia hedge<br>`hedge_photinia` | hedge | 1.8 m (0.3-4) | 0.7 m |  |  |
+| <img src="fences/items/hedge_privet/thumb.webp" width="48" alt=""> | Privet hedge<br>`hedge_privet` | hedge | 1.5 m (0.3-4) | 0.5 m |  |  |
+| <img src="fences/items/hedge_thuja/thumb.webp" width="48" alt=""> | Thuja hedge<br>`hedge_thuja` | hedge | 2 m (0.3-4) | 0.8 m |  |  |
+| <img src="fences/items/picket/thumb.webp" width="48" alt=""> | Picket fence<br>`picket` | see-through (bars) | 1 m (0.4-2) | 0 m | yes |  |
+| <img src="fences/items/iron/thumb.webp" width="48" alt=""> | Wrought iron<br>`iron` | see-through (bars) | 1.5 m (0.5-3) | 0 m | yes |  |
+| <img src="fences/items/panel/thumb.webp" width="48" alt=""> | Rigid panels<br>`panel` | see-through (grid) | 1.2 m (0.5-3) | 0 m | yes |  |
+| <img src="fences/items/mesh/thumb.webp" width="48" alt=""> | Wire mesh<br>`mesh` | see-through (mesh) | 1.5 m (0.5-3) | 0 m | yes |  |
+| <img src="fences/items/wall_brick/thumb.webp" width="48" alt=""> | Brick wall<br>`wall_brick` | solid | 1.2 m (0.3-3) | 0.22 m |  | yes |
+| <img src="fences/items/composite/thumb.webp" width="48" alt=""> | Composite slats<br>`composite` | solid | 1.8 m (0.5-3) | 0.04 m | yes |  |
+| <img src="fences/items/gabion/thumb.webp" width="48" alt=""> | Gabions<br>`gabion` | solid | 1 m (0.3-3) | 0.3 m |  |  |
+| <img src="fences/items/reed/thumb.webp" width="48" alt=""> | Reed screen<br>`reed` | solid | 1.5 m (0.5-3) | 0.02 m | yes |  |
+| <img src="fences/items/wall_stone/thumb.webp" width="48" alt=""> | Stone wall<br>`wall_stone` | solid | 1.2 m (0.3-3) | 0.3 m |  |  |
+| <img src="fences/items/wall/thumb.webp" width="48" alt=""> | Wall<br>`wall` | solid | 1.2 m (0.3-3) | 0.2 m |  | yes |
+| <img src="fences/items/wood/thumb.webp" width="48" alt=""> | Wood<br>`wood` | solid | 1.8 m (0.5-3) | 0.04 m | yes |  |
 
 </details>
 

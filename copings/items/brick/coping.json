@@ -1,0 +1,30 @@
+{
+  "name": {
+    "en": "Bricks on edge",
+    "fr": "Briques posées de chant",
+    "de": "Ziegel-Rollschicht",
+    "es": "Ladrillos a sardinel",
+    "it": "Mattoni di coltello",
+    "pl": "Cegły na rąb",
+    "pt": "Tijolos ao cutelo",
+    "nl": "Baksteen rollaag"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#a5553c",
+    "roughness": 0.9,
+    "tile": 0.6,
+    "grain": 0.14,
+    "joints": {
+      "color": "#c9c0b0",
+      "cell": [
+        0.6,
+        0.075
+      ],
+      "width": 0.01,
+      "shade": 0.16
+    }
+  },
+  "height": 0.07,
+  "overhang": 0.01
+}

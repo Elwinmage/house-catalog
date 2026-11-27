@@ -1,0 +1,22 @@
+{
+  "name": {
+    "en": "Corten steel coping",
+    "fr": "Couvertine acier Corten",
+    "de": "Cortenstahl-Abdeckung",
+    "es": "Albardilla de acero corten",
+    "it": "Copertina in acciaio corten",
+    "pl": "Obróbka ze stali corten",
+    "pt": "Capeamento de aço corten",
+    "nl": "Cortenstalen muurafdekker"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#8b4a2b",
+    "roughness": 0.8,
+    "tile": 2,
+    "grain": 0.22
+  },
+  "height": 0.012,
+  "overhang": 0.02,
+  "drop": 0.05
+}

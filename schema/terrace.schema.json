@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/terrace.schema.json",
+  "title": "Terrace (terraces/items/<id>/terrace.json)",
+  "description": "What a terrace, a patio or a deck is covered with, as the house view lays it flat over the outline drawn for it: decking, tiles, stone, concrete. Its texture is painted from a few numbers, like the surface of a path.",
+  "type": "object",
+  "required": [
+    "name",
+    "draft",
+    "surface"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "$ref": "common.schema.json#/$defs/i18n"
+    },
+    "icon": {
+      "$ref": "common.schema.json#/$defs/icon"
+    },
+    "draft": {
+      "description": "Colour of the terrace on the overlay of the editor, where it is drawn flat and bright rather than lit.",
+      "$ref": "common.schema.json#/$defs/color"
+    },
+    "thickness": {
+      "description": "How far the terrace stands over the ground levelled under it, in metres: a few centimetres for tiles on a slab, more for a deck on joists. The user may change it.",
+      "type": "number",
+      "minimum": 0.01,
+      "maximum": 1,
+      "default": 0.05
+    },
+    "surface": {
+      "description": "What is seen from above. The rows of its units run across the laying direction the user gives the terrace, so the boards of a deck follow that direction.",
+      "$ref": "common.schema.json#/$defs/surface"
+    }
+  }
+}

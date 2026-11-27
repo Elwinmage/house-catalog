@@ -1,0 +1,33 @@
+{
+  "name": {
+    "en": "Wrought iron",
+    "fr": "Fer forgé",
+    "de": "Schmiedeeisen",
+    "es": "Hierro forjado",
+    "it": "Ferro battuto",
+    "pl": "Kute żelazo",
+    "pt": "Ferro forjado",
+    "nl": "Smeedijzer"
+  },
+  "icon": "mdi:fence",
+  "draft": "#9b8cff",
+  "height": {
+    "default": 1.5,
+    "min": 0.5,
+    "max": 3
+  },
+  "surface": {
+    "color": "#26272a",
+    "roughness": 0.5
+  },
+  "open": {
+    "pattern": "bars",
+    "pitch": 0.11,
+    "fill": 0.3
+  },
+  "posts": {
+    "color": "#1c1c1e",
+    "spacing": 2.5,
+    "size": 0.06
+  }
+}

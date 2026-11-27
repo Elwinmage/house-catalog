@@ -7,7 +7,8 @@ that has no picture yet (`--force`: every entry, or the given ids). A tree gets
 its four seasons on the picture (spring, summer / autumn, winter) and its summer
 on the thumbnail; an object is seen from three quarters; a fish is seen from
 above, one fish per variety on the picture and the first variety on the
-thumbnail.
+thumbnail; a path and a terrace are seen from above, a wall and a fence from
+the front.
 
 The pictures are drawn exactly from what the descriptor says (see
 doc/format.md), with a small software renderer (flat shading, depth buffer):
@@ -817,6 +818,22 @@ SLAB_CORNER = 0.18
 MODULE_RUN = 3.3
 #: Shadow of a module element: how far it falls, as a share of the thickness
 MODULE_DROP = 0.5
+# Irregular stones: the share of them left out at `vary` 1 (their neighbours grow
+# into larger blocks), how far a corner is pulled towards the middle of its stone
+# at `vary` 1, how far along its sides a corner is rounded and in how many steps,
+# and the shortest side a stone keeps (as a share of its size: shorter ones would
+# show as a notch once their two ends are pulled apart).
+STONE_DROP = 0.3
+STONE_PULL = 0.14
+STONE_CORNER = 0.14
+STONE_CORNER_STEPS = 2
+STONE_SHORT = 0.35
+# A stone that bulges, at `relief` 1: how much darker its rim is, how wide that
+# rim is (as a share of the stone) and how far towards the upper left its lit face
+# sits (as a share of the room there is around its middle).
+RELIEF_SHADE = 0.4
+RELIEF_RIM = 0.24
+RELIEF_SHIFT = 0.6
 
 
 def _shade(color: Color, factor: float) -> tuple[int, int, int, int]:
@@ -857,28 +874,269 @@ def _speckle(
             )
 
 
+Point = tuple[float, float]
+
+
+def stone_sites(cols: int, rows: int, vary: float, rng) -> list[Point]:
+    """Middles of the stones of an irregular surface, as shares of its width and height.
+
+    One to a square of a grid `cols` by `rows`, every other row set off by half a
+    square so that no joint runs straight up the wall, each moved about by `vary`.
+    Some are left out, the more so as `vary` grows: their neighbours take their
+    place and make larger blocks. The middles wrap around, so the surface joins up
+    with itself on all four sides.
+    """
+    sites = []
+    for row in range(rows):
+        for col in range(cols):
+            x = (col + 0.5 + (row % 2) * 0.5 + rng.uniform(-0.5, 0.5) * vary) / cols
+            y = (row + 0.5 + rng.uniform(-0.5, 0.5) * vary) / rows
+            if rng.random() < vary * STONE_DROP:
+                continue
+            sites.append((x % 1, y % 1))
+    return sites or [(0.5, 0.5)]
+
+
+def clip_polygon(
+    polygon: list[Point], nx: float, ny: float, limit: float
+) -> list[Point]:
+    """The part of a convex polygon on the near side of a line: x * nx + y * ny <= limit."""
+    out = []
+    for index, a in enumerate(polygon):
+        b = polygon[(index + 1) % len(polygon)]
+        da = a[0] * nx + a[1] * ny - limit
+        db = b[0] * nx + b[1] * ny - limit
+        if da <= 0:
+            out.append(a)
+        if da * db < 0:
+            t = da / (da - db)
+            out.append((a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t))
+    return out
+
+
+def stone_cells(
+    sites: Sequence[Point], width: float, height: float, gap: float
+) -> list[tuple[Point, list[Point]]]:
+    """The stone around each middle: (middle, corners), in pixels.
+
+    A stone is all that lies nearer to its middle than to any other, less half a
+    joint on every side: the stones fit into one another like those of a wall,
+    whatever their shapes. The surface repeats on all sides, so the stones of an
+    edge are cut by those of the opposite one. A joint wider than a stone leaves
+    no stone at all.
+    """
+    points = [(x * width, y * height) for x, y in sites]
+    around = [
+        (x + dx * width, y + dy * height)
+        for x, y in points
+        for dx in (-1, 0, 1)
+        for dy in (-1, 0, 1)
+    ]
+    cells = []
+    for px, py in points:
+        reach = width + height
+        polygon = [
+            (px - reach, py - reach),
+            (px + reach, py - reach),
+            (px + reach, py + reach),
+            (px - reach, py + reach),
+        ]
+        others = sorted((math.hypot(qx - px, qy - py), qx, qy) for qx, qy in around)
+        for dist, qx, qy in others:
+            if dist < 1e-9:
+                continue  # the middle itself
+            if (dist - gap) / 2 > max(math.hypot(x - px, y - py) for x, y in polygon):
+                break  # too far away to cut anything off, and so are the next ones
+            nx, ny = (qx - px) / dist, (qy - py) / dist
+            polygon = clip_polygon(
+                polygon, nx, ny, px * nx + py * ny + (dist - gap) / 2
+            )
+            if len(polygon) < 3:
+                break
+        if len(polygon) >= 3:
+            cells.append(((px, py), polygon))
+    return cells
+
+
+def stone_outline(
+    corners: Sequence[Point], middle: Point, vary: float, rng
+) -> list[Point]:
+    """The outline of a stone, from the corners of its cell.
+
+    The sides too short to show are dropped, then each corner is pulled a little
+    towards the middle, by as much as `vary` says: the joints open unevenly, as
+    between stones that were not cut. The corners are then rounded.
+    """
+    cx, cy = middle
+    size = sum(math.hypot(x - cx, y - cy) for x, y in corners) / len(corners)
+    kept: list[Point] = []
+    for x, y in corners:
+        if kept and math.hypot(x - kept[-1][0], y - kept[-1][1]) < size * STONE_SHORT:
+            continue  # the end of a side too short to show
+        kept.append((x, y))
+    if (
+        len(kept) > 3
+        and math.hypot(kept[0][0] - kept[-1][0], kept[0][1] - kept[-1][1])
+        < size * STONE_SHORT
+    ):
+        kept.pop()
+    pulled = []
+    for x, y in kept:
+        k = rng.uniform(0, vary) * STONE_PULL
+        pulled.append((x + (cx - x) * k, y + (cy - y) * k))
+    out = []
+    for index, (vx, vy) in enumerate(pulled):
+        px, py = pulled[index - 1]
+        qx, qy = pulled[(index + 1) % len(pulled)]
+        ax, ay = vx + (px - vx) * STONE_CORNER, vy + (py - vy) * STONE_CORNER
+        bx, by = vx + (qx - vx) * STONE_CORNER, vy + (qy - vy) * STONE_CORNER
+        for step in range(STONE_CORNER_STEPS + 1):
+            t = step / STONE_CORNER_STEPS
+            u = 1 - t
+            out.append(
+                (
+                    u * u * ax + 2 * u * t * vx + t * t * bx,
+                    u * u * ay + 2 * u * t * vy + t * t * by,
+                )
+            )
+    return out
+
+
+def stone_face(outline: Sequence[Point], middle: Point, relief: float) -> list[Point]:
+    """The lit face of a stone that bulges out of the wall.
+
+    The outline drawn in towards a point up and left of the middle: what is left
+    around it, wider below and on the right, is the rim in shade.
+    """
+    cx, cy = middle
+    room = math.inf  # from the middle to the nearest side
+    for index, (ax, ay) in enumerate(outline):
+        bx, by = outline[(index + 1) % len(outline)]
+        length = math.hypot(bx - ax, by - ay)
+        if length > 1e-9:
+            room = min(
+                room, abs((bx - ax) * (cy - ay) - (by - ay) * (cx - ax)) / length
+            )
+    shift = room * RELIEF_SHIFT / math.sqrt(2) if math.isfinite(room) else 0.0
+    ox, oy = cx - shift, cy - shift
+    k = 1 - RELIEF_RIM * relief
+    return [(ox + (x - ox) * k, oy + (y - oy) * k) for x, y in outline]
+
+
+def _unit_colour(base: Color, tints: Sequence[dict[str, Any]], rng) -> Color:
+    """The colour of one unit: a tint for its share of the units, else the base colour."""
+    if not tints:
+        return base
+    pick = rng.random()
+    for tint in tints:
+        pick -= tint["amount"]
+        if pick < 0:
+            return rgb(tint["color"])
+    return base
+
+
+def _paint_stones(
+    layer: Image.Image, joints: dict[str, Any], base: Color, px_per_m: float, rng
+) -> None:
+    """Fit stones of uneven shapes and sizes into one another over their bed.
+
+    `cell` is their usual size (height, then length), `vary` how uneven they are,
+    `relief` how much they bulge. The layer joins up with itself on all sides.
+    """
+    draw = ImageDraw.Draw(layer)
+    width, height = layer.size
+    along, across = (value * px_per_m for value in joints["cell"])
+    gap = max(1.0, joints.get("width", 0.015) * px_per_m)
+    spread = joints.get("shade", 0.08)
+    vary = joints.get("vary", 0)
+    relief = joints.get("relief", 0)
+    tints = joints.get("tints", [])
+    cols = max(1, round(width / across))
+    rows = max(2, 2 * round(height / along / 2))  # even: the rows set off wrap around
+    sites = stone_sites(cols, rows, vary, rng)
+    for middle, corners in stone_cells(sites, width, height, gap):
+        colour = _unit_colour(base, tints, rng)
+        factor = 1 + rng.uniform(-spread, spread)
+        outline = stone_outline(corners, middle, vary, rng)
+        shapes = [(outline, factor)]
+        if relief:
+            shapes = [
+                (outline, factor * (1 - RELIEF_SHADE * relief)),
+                (stone_face(outline, middle, relief), factor),
+            ]
+        # a stone that goes over an edge comes back on the opposite one
+        for dx in (-width, 0, width):
+            for dy in (-height, 0, height):
+                for shape, light in shapes:
+                    draw.polygon(
+                        [(x + dx, y + dy) for x, y in shape],
+                        fill=_shade(colour, light),
+                    )
+
+
 def _paint_joints(
     layer: Image.Image, joints: dict[str, Any], base: Color, px_per_m: float, rng
 ) -> None:
-    """Lay the units of a surface over their bed of mortar: pavers, slabs, boards."""
+    """Lay the units of a surface over their bed of mortar: pavers, slabs, boards.
+
+    A row is `cell[0]` deep (down the picture) and its units `cell[1]` long (across
+    it). With `vary` the units of a row differ in length: their lengths are drawn,
+    then fitted to the row, so that a texture laid in tiles still joins up. Some
+    units take one of the `tints` instead of the base colour. With the `irregular`
+    pattern there are no rows: see `_paint_stones`.
+    """
     draw = ImageDraw.Draw(layer)
     width, height = layer.size
     draw.rectangle((0, 0, width, height), fill=_shade(rgb(joints["color"]), 1.0))
+    if joints.get("pattern", "rows") == "irregular":
+        _paint_stones(layer, joints, base, px_per_m, rng)
+        return
     along, across = (value * px_per_m for value in joints["cell"])
     gap = max(1.0, joints.get("width", 0.015) * px_per_m)
     stagger = joints.get("stagger", 0) * across
     spread = joints.get("shade", 0.08)
+    vary = joints.get("vary", 0)
+    tints = joints.get("tints", [])
     row = 0
     y = -along
     while y < height:
         start = -across + (row % 2) * stagger
-        x = start
-        while x < width:
-            draw.rectangle(
-                (x + gap / 2, y + gap / 2, x + across - gap / 2, y + along - gap / 2),
-                fill=_shade(base, 1 + rng.uniform(-spread, spread)),
-            )
-            x += across
+        if vary:
+            count = max(1, round(width / across))
+            lengths = [1 + rng.uniform(-vary, vary) for _ in range(count)]
+            fit = width / sum(lengths)
+            x = start
+            # twice over: the units pushed out on the right by the stagger come back on the left
+            for length in lengths * 2:
+                draw.rectangle(
+                    (
+                        x + gap / 2,
+                        y + gap / 2,
+                        x + length * fit - gap / 2,
+                        y + along - gap / 2,
+                    ),
+                    fill=_shade(
+                        _unit_colour(base, tints, rng),
+                        1 + rng.uniform(-spread, spread),
+                    ),
+                )
+                x += length * fit
+        else:
+            x = start
+            while x < width:
+                draw.rectangle(
+                    (
+                        x + gap / 2,
+                        y + gap / 2,
+                        x + across - gap / 2,
+                        y + along - gap / 2,
+                    ),
+                    fill=_shade(
+                        _unit_colour(base, tints, rng),
+                        1 + rng.uniform(-spread, spread),
+                    ),
+                )
+                x += across
         y += along
         row += 1
 
@@ -1045,11 +1303,311 @@ def path_pictures(
     return path_picture(data, size), path_picture(data, thumb)
 
 
+# -- terraces, seen from above -----------------------------------------------------
+
+#: Share of the picture a terrace covers, and the metres of it shown across
+TERRACE_SIDE = 0.84
+TERRACE_SPAN = 2.4
+#: Shadow of a slab: how far it falls, as a share of its thickness
+SLAB_DROP = 1.5
+
+
+def _shadow(
+    size: int, box: tuple[float, float, float, float], radius: float, blur: float
+) -> Image.Image:
+    """A soft shadow under a box of the picture."""
+    shadow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).rounded_rectangle(box, radius=radius, fill=(0, 0, 0, 100))
+    return shadow.filter(ImageFilter.GaussianBlur(max(2.0, blur)))
+
+
+def terrace_picture(data: dict[str, Any], size: int) -> Image.Image:
+    """A square of terrace seen from straight above, its rows running across."""
+    big = size * SUPERSAMPLE
+    side = round(big * TERRACE_SIDE)
+    px_per_m = side / TERRACE_SPAN
+    rng = random.Random(f"terrace:{data['name']['en']}")
+    layer = surface_layer(data["surface"], side, side, px_per_m, rng)
+    corner = round(side * 0.035)
+    mask = Image.new("L", (side, side), 0)
+    ImageDraw.Draw(mask).rounded_rectangle(
+        (0, 0, side - 1, side - 1), radius=corner, fill=255
+    )
+    layer.putalpha(mask)
+    at = (big - side) // 2
+    # the thicker the terrace, the further its shadow falls
+    drop = data.get("thickness", 0.05) * px_per_m * SLAB_DROP
+    picture = _shadow(
+        big,
+        (at + drop * 0.6, at + drop, at + side + drop * 0.6, at + side + drop),
+        corner,
+        drop * 0.6,
+    )
+    picture.alpha_composite(layer, (at, at))
+    return picture.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def terrace_pictures(
+    data: dict[str, Any], size: int = IMAGE_SIZE, thumb: int = THUMB_SIZE
+) -> tuple[Image.Image, Image.Image]:
+    """The same square of terrace at both sizes."""
+    return terrace_picture(data, size), terrace_picture(data, thumb)
+
+
+# -- walls, copings and fences, seen from the front --------------------------------
+
+#: Share of the picture a wall covers across it, and the wall shown: metres along, metres high
+WALL_STRIP = 0.92
+WALL_RUN = 2.0
+WALL_HEIGHT = 1.2
+#: Metres of fence shown, and the tallest fence the picture holds
+FENCE_RUN = 2.6
+FENCE_TALLEST = 2.6
+#: Bumps along the top of a hedge on the picture, and how deep they are (m)
+HEDGE_BUMPS = 9
+HEDGE_BUMP = 0.12
+#: Where the two rails of a fence of bars sit, as shares of its height
+RAILS = (0.14, 0.86)
+#: Upright wires between two level ones on a welded panel
+GRID_RATIO = 4
+
+
+def wall_picture(data: dict[str, Any], size: int) -> Image.Image:
+    """A piece of wall seen from the front, standing on the ground, capped if it is."""
+    big = size * SUPERSAMPLE
+    width = round(big * WALL_STRIP)
+    px_per_m = width / WALL_RUN
+    height = round(WALL_HEIGHT * px_per_m)
+    rng = random.Random(f"wall:{data['name']['en']}")
+    layer = surface_layer(data["surface"], width, height, px_per_m, rng)
+    left = (big - width) // 2
+    top = (big - height) // 2
+    foot = top + height
+    picture = _shadow(
+        big,
+        (left, foot - big * 0.01, left + width, foot + big * 0.035),
+        big * 0.02,
+        big * 0.012,
+    )
+    picture.alpha_composite(layer, (left, top))
+    coping = data.get("coping")
+    if coping is not None:
+        draw = ImageDraw.Draw(picture)
+        thick = max(2.0, coping.get("height", 0.05) * px_per_m)
+        out = min(left, coping.get("overhang", 0.03) * px_per_m)
+        colour = rgb(coping["color"])
+        draw.rectangle(
+            (left - out, top - thick, left + width + out, top),
+            fill=_shade(colour, 1.0),
+        )
+        # lit on top, in shade underneath: the capping juts out
+        draw.rectangle(
+            (left - out, top - thick, left + width + out, top - thick * 0.7),
+            fill=_shade(colour, 1.12),
+        )
+        draw.rectangle(
+            (left, top, left + width, top + max(1.0, thick * 0.25)),
+            fill=(0, 0, 0, 70),
+        )
+    return picture.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def wall_pictures(
+    data: dict[str, Any], size: int = IMAGE_SIZE, thumb: int = THUMB_SIZE
+) -> tuple[Image.Image, Image.Image]:
+    """The same piece of wall at both sizes."""
+    return wall_picture(data, size), wall_picture(data, thumb)
+
+
+#: Metres of wall shown under a coping, how thick that wall is and its colour, and how much of
+#: the top of the coping shows when the wall is seen from the front and a little from above
+COPING_RUN = 1.2
+COPING_ON = 0.4
+COPING_WALL = "#d8d1c3"
+COPING_TILT = 0.5
+#: Share of the picture the piece of wall under the coping takes, top to bottom
+COPING_FACE = 0.42
+
+
+def coping_picture(data: dict[str, Any], size: int) -> Image.Image:
+    """The top of a piece of wall seen from the front and a little from above, capped."""
+    big = size * SUPERSAMPLE
+    width = round(big * WALL_STRIP)
+    px_per_m = width / COPING_RUN
+    out = data.get("overhang", 0.03)
+    across = COPING_ON + 2 * out
+    rise = data.get("height", 0.05) + data.get("drop", 0.0)
+    depth = max(2, round(across * px_per_m))
+    edge = max(2, round(rise * px_per_m))
+    rng = random.Random(f"coping:{data['name']['en']}")
+    # laid flat it is `depth` deep; the edge towards us is the same surface, in shade
+    layer = surface_layer(data["surface"], width, depth + edge, px_per_m, rng)
+    top = layer.crop((0, 0, width, depth)).resize(
+        (width, max(2, round(depth * COPING_TILT))), Image.Resampling.LANCZOS
+    )
+    front = layer.crop((0, depth, width, depth + edge))
+    front.alpha_composite(Image.new("RGBA", front.size, (0, 0, 0, 52)))
+    face = round(big * COPING_FACE)
+    left = (big - width) // 2
+    upper = (big - (top.height + edge + face)) // 2
+    picture = Image.new("RGBA", (big, big), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(picture)
+    # the wall under it, narrower than the coping by what it juts out, the shade of the overhang on it
+    inset = min(width // 4, round(out * px_per_m))
+    foot = upper + top.height + edge
+    # (edges that come down over the faces hide the top of the wall: the face starts under them)
+    draw.rectangle(
+        (left + inset, foot, left + width - inset, foot + face),
+        fill=_shade(rgb(COPING_WALL), 1.0),
+    )
+    shade = max(2.0, (out + 0.02) * px_per_m)
+    draw.rectangle(
+        (left + inset, foot, left + width - inset, foot + shade),
+        fill=_shade(rgb(COPING_WALL), 0.76),
+    )
+    picture.alpha_composite(top, (left, upper))
+    picture.alpha_composite(front, (left, upper + top.height))
+    return picture.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def coping_pictures(
+    data: dict[str, Any], size: int = IMAGE_SIZE, thumb: int = THUMB_SIZE
+) -> tuple[Image.Image, Image.Image]:
+    """The same capped piece of wall at both sizes."""
+    return coping_picture(data, size), coping_picture(data, thumb)
+
+
+def open_lines(
+    spec: dict[str, Any], width: float, height: float, px_per_m: float
+) -> list[tuple[tuple[float, float, float, float], float]]:
+    """The wires or bars of a see-through fence: segments (x0, y0, x1, y1) and width.
+
+    `fill` is the share of the sheet they cover: a mesh and a grid are made of two
+    sets of wires, so each wire is half as wide as a bar would be.
+    """
+    pitch = spec.get("pitch", 0.1) * px_per_m
+    fill = spec.get("fill", 0.35)
+    pattern = spec["pattern"]
+    lines = []
+    if pattern == "mesh":
+        wire = pitch * fill / 2
+        reach = width + height
+        x = -height
+        while x < reach:
+            lines.append(((x, 0.0, x + height, height), wire))
+            lines.append(((x + height, 0.0, x, height), wire))
+            x += pitch * math.sqrt(2)
+        return lines
+    if pattern == "grid":
+        wire = pitch * fill / 2
+        x = 0.0
+        while x <= width:
+            lines.append(((x, 0.0, x, height), wire))
+            x += pitch
+        y = height
+        while y >= 0:
+            lines.append(((0.0, y, width, y), wire))
+            y -= pitch * GRID_RATIO
+        return lines
+    bar = pitch * fill
+    x = pitch / 2
+    while x < width:
+        lines.append(((x, 0.0, x, height), bar))
+        x += pitch
+    for share in RAILS:
+        lines.append(((0.0, height * share, width, height * share), bar))
+    return lines
+
+
+def fence_panel(
+    data: dict[str, Any], width: int, height: int, px_per_m: float, rng
+) -> Image.Image:
+    """What stands between two posts: wires, a solid sheet or clipped foliage."""
+    surface = data["surface"]
+    spec = data.get("open")
+    if spec is not None:
+        panel = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+        draw = ImageDraw.Draw(panel)
+        colour = _shade(rgb(surface["color"]), 1.0)
+        for box, wire in open_lines(spec, width, height, px_per_m):
+            draw.line(box, fill=colour, width=max(1, round(wire)))
+        return panel
+    panel = surface_layer(surface, width, height, px_per_m, rng)
+    if data.get("foliage"):
+        # clipped foliage: an uneven top, rounded at both ends
+        bump = HEDGE_BUMP * px_per_m
+        outline = [(0.0, float(height)), (0.0, bump)]
+        for k in range(HEDGE_BUMPS + 1):
+            outline.append((width * k / HEDGE_BUMPS, rng.uniform(0, bump)))
+        outline += [(float(width), bump), (float(width), float(height))]
+        mask = Image.new("L", (width, height), 0)
+        ImageDraw.Draw(mask).polygon(outline, fill=255)
+        panel.putalpha(mask)
+    return panel
+
+
+def fence_picture(data: dict[str, Any], size: int) -> Image.Image:
+    """A run of fence seen from the front, at its usual height, with its posts."""
+    big = size * SUPERSAMPLE
+    px_per_m = big * 0.9 / max(FENCE_RUN, FENCE_TALLEST)
+    width = round(FENCE_RUN * px_per_m)
+    tall = min(data["height"]["default"], FENCE_TALLEST)
+    height = max(2, round(tall * px_per_m))
+    rng = random.Random(f"fence:{data['name']['en']}")
+    left = (big - width) // 2
+    foot = round(big * 0.93)
+    top = foot - height
+    # the shadow of a thick hedge stays a line on the ground, not a second hedge
+    depth = min(max(data.get("thickness", 0), 0.05), 0.3) * px_per_m
+    picture = _shadow(
+        big,
+        (left, foot - depth * 0.2, left + width, foot + depth * 0.5 + big * 0.012),
+        big * 0.01,
+        big * 0.01,
+    )
+    picture.alpha_composite(
+        fence_panel(data, width, height, px_per_m, rng), (left, top)
+    )
+    posts = data.get("posts")
+    if posts is not None:
+        draw = ImageDraw.Draw(picture)
+        side = max(2.0, posts.get("size", 0.07) * px_per_m)
+        spacing = posts.get("spacing", 2.5) * px_per_m
+        colour = rgb(posts["color"])
+        x = float(left)
+        # a post at each end of the run, and one every `spacing` between them
+        stops = []
+        while x < left + width - side:
+            stops.append(x)
+            x += spacing
+        stops.append(left + width - side)
+        for at in stops:
+            draw.rectangle(
+                (at, top - side * 0.4, at + side, foot), fill=_shade(colour, 1.0)
+            )
+            draw.rectangle(
+                (at, top - side * 0.4, at + side * 0.35, foot),
+                fill=_shade(colour, 1.18),
+            )
+    return picture.resize((size, size), Image.Resampling.LANCZOS)
+
+
+def fence_pictures(
+    data: dict[str, Any], size: int = IMAGE_SIZE, thumb: int = THUMB_SIZE
+) -> tuple[Image.Image, Image.Image]:
+    """The same run of fence at both sizes."""
+    return fence_picture(data, size), fence_picture(data, thumb)
+
+
 PICTURES = {
     "tree": tree_pictures,
     "object": object_pictures,
     "pond_fish": fish_pictures,
     "path": path_pictures,
+    "terrace": terrace_pictures,
+    "wall": wall_pictures,
+    "coping": coping_pictures,
+    "fence": fence_pictures,
 }
 
 

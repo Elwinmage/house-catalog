@@ -1,0 +1,31 @@
+{
+  "name": {
+    "en": "Block paving",
+    "fr": "Pavés autobloquants",
+    "de": "Betonpflaster",
+    "es": "Adoquines",
+    "it": "Autobloccanti",
+    "pl": "Kostka brukowa",
+    "pt": "Pavê de betão",
+    "nl": "Betonklinkers"
+  },
+  "icon": "mdi:view-grid-outline",
+  "draft": "#c99a7b",
+  "thickness": 0.06,
+  "surface": {
+    "color": "#a3816b",
+    "roughness": 0.9,
+    "tile": 1.6,
+    "grain": 0.1,
+    "joints": {
+      "color": "#5e4a3d",
+      "cell": [
+        0.1,
+        0.2
+      ],
+      "width": 0.006,
+      "stagger": 0.5,
+      "shade": 0.2
+    }
+  }
+}

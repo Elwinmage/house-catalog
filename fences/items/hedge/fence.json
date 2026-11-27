@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Hedge",
+    "fr": "Haie",
+    "de": "Hecke",
+    "es": "Seto",
+    "it": "Siepe",
+    "pl": "Żywopłot",
+    "pt": "Sebe",
+    "nl": "Haag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#b8ff3b",
+  "height": {
+    "default": 1.8,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 0.6,
+  "surface": {
+    "color": "#3f6b35",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#315329",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#4d8341",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

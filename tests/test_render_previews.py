@@ -8,7 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from conftest import FISH, OBJECT, TREE, dump
+from conftest import COPING, FENCE, FISH, OBJECT, TERRACE, TREE, WALL, dump
 from PIL import Image
 
 import render_previews as rp
@@ -236,7 +236,7 @@ def quick(monkeypatch):
     monkeypatch.setattr(
         rp,
         "PICTURES",
-        {"tree": draw, "object": draw, "pond_fish": draw, "path": draw},
+        dict.fromkeys(rp.PICTURES, draw),
     )
     return calls
 
@@ -246,6 +246,13 @@ def test_only_missing_pictures_are_drawn(root: Path, quick):
     (root / "trees/items/empty").mkdir()
     (root / "pond_fish/items/goldfish/image.webp").write_bytes(b"drawn")
     (root / "paths/items/gravel/thumb.webp").write_bytes(b"drawn")
+    for folder in (
+        "terraces/items/wood-decking",
+        "walls/items/rubble-stone",
+        "copings/items/brick",
+    ):
+        (root / folder / "image.webp").write_bytes(b"drawn")
+    (root / "fences/items/mesh/thumb.webp").write_bytes(b"drawn")
     assert rp.write_pictures(root) == ["trees/oak"]
     assert quick == ["Oak"]
     with Image.open(root / "trees/items/oak/image.webp") as image:
@@ -255,20 +262,27 @@ def test_only_missing_pictures_are_drawn(root: Path, quick):
 
     assert rp.write_pictures(root) == []
     assert rp.write_pictures(root, only=["stool"]) == ["objects/stool"]
-    assert rp.write_pictures(root, force=True) == [
-        "trees/oak",
-        "objects/stool",
-        "pond_fish/goldfish",
-        "paths/gravel",
-    ]
+    assert rp.write_pictures(root, force=True) == EVERY_ENTRY
+
+
+#: The entries of the catalog of the tests, in the order of the sections
+EVERY_ENTRY = [
+    "trees/oak",
+    "objects/stool",
+    "pond_fish/goldfish",
+    "paths/gravel",
+    "terraces/wood-decking",
+    "walls/rubble-stone",
+    "copings/brick",
+    "fences/mesh",
+]
 
 
 def test_command(root: Path, quick, capsys):
     args = ["--root", str(root)]
     assert rp.main(args) == 0
     assert (
-        "drawn: trees/oak\ndrawn: objects/stool\n"
-        "drawn: pond_fish/goldfish\ndrawn: paths/gravel\n4 entries drawn"
+        "".join(f"drawn: {name}\n" for name in EVERY_ENTRY) + "8 entries drawn"
         in capsys.readouterr().out
     )
     assert rp.main([*args, "oak"]) == 0
@@ -284,15 +298,15 @@ def test_real_drawing_ends_in_a_file(root: Path, monkeypatch):
         "object": lambda data: rp.object_pictures(data, 32, 16),
         "pond_fish": lambda data: rp.fish_pictures(data, 32, 16),
         "path": lambda data: rp.path_pictures(data, 32, 16),
+        "terrace": lambda data: rp.terrace_pictures(data, 32, 16),
+        "wall": lambda data: rp.wall_pictures(data, 32, 16),
+        "coping": lambda data: rp.coping_pictures(data, 32, 16),
+        "fence": lambda data: rp.fence_pictures(data, 32, 16),
     }
+    assert set(small) == set(rp.PICTURES)
     monkeypatch.setattr(rp, "PICTURES", small)
     dump(root / "trees/items/oak/tree.json", TREE)
-    assert rp.write_pictures(root) == [
-        "trees/oak",
-        "objects/stool",
-        "pond_fish/goldfish",
-        "paths/gravel",
-    ]
+    assert rp.write_pictures(root) == EVERY_ENTRY
     with Image.open(root / "objects/items/stool/thumb.webp") as thumb:
         assert thumb.size == (16, 16) and thumb.mode == "RGBA"
 
@@ -584,3 +598,374 @@ def test_a_path_without_a_width_takes_the_usual_one():
     assert pixels(wide, "#5e4a3d", tolerance=40) < pixels(
         narrow, "#5e4a3d", tolerance=40
     )
+
+
+# -- terraces, walls, fences ------------------------------------------------------
+
+
+def test_uneven_units_fill_their_row_and_no_more():
+    surface = {
+        "color": "#a89a80",
+        "grain": 0,
+        "joints": {
+            "color": "#000000",
+            "cell": [0.5, 0.25],
+            "width": 0.02,
+            "stagger": 0.5,
+            "shade": 0,
+            "vary": 0.5,
+        },
+    }
+    layer = rp.surface_layer(surface, 200, 100, 100, random.Random(11))
+    stones = np.abs(np.array(layer)[:, :, :3].astype(int) - (168, 154, 128)).sum(axis=2)
+    row = stones[25] < 10  # through the middle of the first row
+    # the joints between the stones of a row: uneven lengths, the row filled to its end
+    cuts = [x for x in range(1, 200) if row[x] and not row[x - 1]]
+    lengths = np.diff(cuts)
+    assert len(cuts) >= 6 and lengths.max() > 1.3 * lengths.min()
+    assert row[-12:].any()
+    # the same numbers without `vary`: every stone as long as the next
+    even = rp.surface_layer(
+        surface | {"joints": surface["joints"] | {"vary": 0}},
+        200,
+        100,
+        100,
+        random.Random(11),
+    )
+    plain = np.abs(np.array(even)[:, :, :3].astype(int) - (168, 154, 128)).sum(axis=2)
+    starts = [x for x in range(1, 200) if plain[25, x] < 10 and plain[25, x - 1] >= 10]
+    assert set(np.diff(starts)) == {25}
+
+
+class Dice:
+    """A source of chance that always gives the same share of its range."""
+
+    def __init__(self, share: float) -> None:
+        self.share = share
+
+    def uniform(self, low: float, high: float) -> float:
+        return low + (high - low) * self.share
+
+    def random(self) -> float:
+        return self.share
+
+
+def area(polygon) -> float:
+    return abs(
+        sum(
+            a[0] * b[1] - b[0] * a[1]
+            for a, b in zip(polygon, polygon[1:] + polygon[:1], strict=True)
+        )
+        / 2
+    )
+
+
+def test_the_middles_of_irregular_stones_are_set_off_and_moved_about():
+    # nothing moved, nothing left out: one to a square, every other row half a square on
+    even = rp.stone_sites(4, 2, 0, Dice(0.5))
+    assert even[:4] == [(0.125, 0.25), (0.375, 0.25), (0.625, 0.25), (0.875, 0.25)]
+    assert even[4:] == [(0.25, 0.75), (0.5, 0.75), (0.75, 0.75), (0.0, 0.75)]
+    moved = rp.stone_sites(4, 2, 0.8, Dice(0.999))
+    assert moved[0] == pytest.approx((0.125 + 0.4 * 0.998 / 4, 0.25 + 0.4 * 0.998 / 2))
+    # the last one of the second row is pushed over the edge and comes back on the left
+    assert 0 < moved[-1][0] < 0.125
+    # the more uneven, the more stones are left out: their neighbours grow
+    rng = random.Random(4)
+    assert len(rp.stone_sites(20, 20, 0.8, rng)) < 360
+    assert len(rp.stone_sites(20, 20, 0, rng)) == 400
+    # never an empty wall
+    assert rp.stone_sites(3, 2, 0.8, Dice(0)) == [(0.5, 0.5)]
+
+
+def test_a_polygon_is_cut_along_a_line():
+    square = [(0, 0), (4, 0), (4, 4), (0, 4)]
+    assert rp.clip_polygon(square, 1, 0, 1) == [(0, 0), (1.0, 0.0), (1.0, 4.0), (0, 4)]
+    assert rp.clip_polygon(square, 1, 0, 9) == square
+    assert rp.clip_polygon(square, 1, 0, -1) == []
+    # a line through two corners keeps them, and adds none
+    assert rp.clip_polygon(square, 1, -1, 0) == [(0, 0), (4, 4), (0, 4)]
+
+
+def test_irregular_stones_fill_the_surface_less_their_joints():
+    sites = rp.stone_sites(5, 4, 0.8, random.Random(7))
+    cells = rp.stone_cells(sites, 100, 80, 0)
+    assert len(cells) == len(sites)
+    # without joints the stones share the whole surface, each around its middle
+    assert sum(area(corners) for _, corners in cells) == pytest.approx(8000)
+    sizes = sorted(area(corners) for _, corners in cells)
+    assert sizes[-1] > 2 * sizes[0]  # small stones wedged between large blocks
+    for (mx, my), corners in cells:
+        assert min(x for x, _ in corners) < mx < max(x for x, _ in corners)
+        assert min(y for _, y in corners) < my < max(y for _, y in corners)
+    # with joints each stone is that much smaller, and a joint too wide leaves none
+    jointed = rp.stone_cells(sites, 100, 80, 4)
+    assert len(jointed) == len(sites)
+    assert sum(area(corners) for _, corners in jointed) < 0.9 * 8000
+    assert rp.stone_cells(sites, 100, 80, 500) == []
+    # a single stone is cut by itself, a whole surface away on every side
+    ((middle, alone),) = rp.stone_cells([(0.5, 0.5)], 100, 80, 0)
+    assert middle == (50, 40)
+    assert area(alone) == pytest.approx(8000)
+    assert min(alone) == pytest.approx((0, 0)) and max(alone) == pytest.approx(
+        (100, 80)
+    )
+
+
+def test_the_outline_of_a_stone_is_pulled_in_and_rounded():
+    square = [(0, 0), (40, 0), (40, 40), (0, 40)]
+    sharp = rp.stone_outline(square, (20, 20), 0, random.Random(1))
+    assert len(sharp) == 4 * (rp.STONE_CORNER_STEPS + 1)
+    # each corner is cut off: the outline leaves a side and joins the next one a little way along
+    cut = 40 * rp.STONE_CORNER
+    assert sharp[0] == pytest.approx((0, cut))
+    assert sharp[rp.STONE_CORNER_STEPS] == pytest.approx((cut, 0))
+    assert 0.9 * 1600 < area(sharp) < 1600
+    # the more uneven, the more each corner is pulled towards the middle
+    rough = rp.stone_outline(square, (20, 20), 0.8, Dice(1))
+    assert area(rough) < 0.85 * area(sharp)
+    for x, y in rough:
+        assert 0 < x < 40 and 0 < y < 40
+
+
+def test_a_side_too_short_to_show_is_dropped():
+    corners = 4 * (rp.STONE_CORNER_STEPS + 1)
+    # two corners almost at the same place, in the middle of the outline, then at its ends
+    nicked = [(0, 0), (40, 0), (40, 1), (40, 40), (0, 40)]
+    assert len(rp.stone_outline(nicked, (20, 20), 0, random.Random(1))) == corners
+    closing = [(0, 1), (40, 0), (40, 40), (0, 40), (0, 0)]
+    assert len(rp.stone_outline(closing, (20, 20), 0, random.Random(1))) == corners
+    # but a stone keeps three sides
+    sliver = [(0, 0), (40, 0), (20, 30), (0, 1)]
+    assert len(rp.stone_outline(sliver, (20, 10), 0, random.Random(1))) == 3 * (
+        rp.STONE_CORNER_STEPS + 1
+    )
+
+
+def test_the_face_of_a_stone_sits_up_and_left_in_its_rim():
+    square = [(0.0, 0.0), (40.0, 0.0), (40.0, 40.0), (0.0, 40.0)]
+    face = rp.stone_face(square, (20, 20), 1)
+    assert area(face) == pytest.approx(1600 * (1 - rp.RELIEF_RIM) ** 2)
+    left, top = face[0]
+    right, bottom = face[2]
+    # the rim left in shade is wider below and on the right
+    assert 0 < left < 40 - right and 0 < top < 40 - bottom
+    # as arrays: approx() takes no list of points
+    flat = np.array(rp.stone_face(square, (20, 20), 0))
+    assert flat == pytest.approx(np.array(square))
+    # a stone without any room around its middle keeps its face on it
+    assert rp.stone_face([(5.0, 5.0), (5.0, 5.0)], (5, 5), 1) == [(5.0, 5.0)] * 2
+
+
+def test_a_unit_takes_a_tint_for_its_share_of_the_units():
+    tints = [{"color": "#ff0000", "amount": 0.25}, {"color": "#0000ff", "amount": 0.25}]
+    base = (10, 20, 30)
+    assert rp._unit_colour(base, tints, Dice(0.1)) == (255, 0, 0)
+    assert rp._unit_colour(base, tints, Dice(0.4)) == (0, 0, 255)
+    assert rp._unit_colour(base, tints, Dice(0.6)) == base
+    assert rp._unit_colour(base, [], None) == base  # no dice thrown without tints
+
+
+IRREGULAR = {
+    "color": "#b7b0a1",
+    "grain": 0,
+    "joints": {
+        "pattern": "irregular",
+        "color": "#000000",
+        "cell": [0.2, 0.3],
+        "width": 0.02,
+        "shade": 0,
+        "vary": 0.8,
+    },
+}
+
+
+def test_irregular_stones_are_fitted_into_one_another_without_rows():
+    layer = rp.surface_layer(IRREGULAR, 240, 160, 100, random.Random(5))
+    stone = np.abs(np.array(layer)[:, :, :3].astype(int) - (183, 176, 161)).sum(axis=2)
+    stones = stone < 10
+    # mostly stone, with joints all around
+    assert 0.7 < stones.mean() < 0.95
+    assert pixels(layer, "#000000", tolerance=10) > 2000
+    # no joint runs across the whole wall, as the bed of a course would
+    assert not (~stones).all(axis=1).any()
+    assert not (~stones).all(axis=0).any()
+    # the wall joins up with itself: what leaves on one side comes back on the other
+    assert (stones[:, 0] == stones[:, -1]).mean() > 0.85
+    assert (stones[0] == stones[-1]).mean() > 0.85
+    # the same numbers in rows: beds from side to side
+    rows = rp.surface_layer(
+        IRREGULAR | {"joints": IRREGULAR["joints"] | {"pattern": "rows"}},
+        240,
+        160,
+        100,
+        random.Random(5),
+    )
+    assert pixels(rows, "#000000", tolerance=10) > 0
+    assert (np.array(rows)[:, :, :3].sum(axis=2) == 0).all(axis=1).any()
+
+
+def test_stones_that_bulge_have_a_rim_in_shade_and_some_take_a_tint():
+    joints = IRREGULAR["joints"] | {
+        "relief": 1,
+        "tints": [{"color": "#c08040", "amount": 0.3}],
+    }
+    layer = rp.surface_layer(
+        IRREGULAR | {"joints": joints}, 240, 160, 100, random.Random(5)
+    )
+    lit = pixels(layer, "#b7b0a1", tolerance=10)
+    dark = tuple(int(c * (1 - rp.RELIEF_SHADE)) for c in rp.rgb("#b7b0a1"))
+    rim = pixels(layer, "#{:02x}{:02x}{:02x}".format(*dark), tolerance=10)
+    assert lit > 4000 and rim > 2000
+    assert pixels(layer, "#c08040", tolerance=10) > 1000
+    # in rows too, some units take the tint
+    rows = rp.surface_layer(
+        IRREGULAR | {"joints": joints | {"pattern": "rows", "vary": 0}},
+        240,
+        160,
+        100,
+        random.Random(5),
+    )
+    assert pixels(rows, "#c08040", tolerance=10) > 1000
+    uneven = rp.surface_layer(
+        IRREGULAR | {"joints": joints | {"pattern": "rows"}},
+        240,
+        160,
+        100,
+        random.Random(5),
+    )
+    assert pixels(uneven, "#c08040", tolerance=10) > 1000
+
+
+def test_terrace_pictures_show_a_square_of_it():
+    image, thumb = rp.terrace_pictures(TERRACE, 64, 24)
+    assert (image.size, thumb.size) == ((64, 64), (24, 24))
+    alpha = np.array(image)[:, :, 3]
+    assert alpha[0, 0] == 0 and alpha[32, 32] == 255
+    assert pixels(image, "#a07b4f", tolerance=90) > 1500  # the boards
+    # a thicker terrace throws a longer shadow, under and to the right of it
+    thin = np.array(rp.terrace_picture(TERRACE | {"thickness": 0.02}, 64))[:, :, 3]
+    thick = np.array(rp.terrace_picture(TERRACE | {"thickness": 0.6}, 64))[:, :, 3]
+    assert (thick > 0).sum() > (thin > 0).sum()
+    # no thickness given: the usual one
+    plain = {key: value for key, value in TERRACE.items() if key != "thickness"}
+    assert rp.terrace_picture(plain, 32).size == (32, 32)
+
+
+def test_wall_pictures_show_its_face_and_its_coping():
+    image, thumb = rp.wall_pictures(WALL, 96, 24)
+    assert (image.size, thumb.size) == ((96, 96), (24, 24))
+    data = np.array(image)
+    assert data[0, 0, 3] == 0 and data[48, 48, 3] == 255
+    covered = np.nonzero(data[:, 48, 3] == 255)[0]
+    capped_top = covered.min()
+    bare = np.array(
+        rp.wall_picture({k: v for k, v in WALL.items() if k != "coping"}, 96)
+    )
+    bare_top = np.nonzero(bare[:, 48, 3] == 255)[0].min()
+    assert capped_top < bare_top  # the coping stands on the wall
+    assert pixels(image, "#b9ad96", tolerance=50) > pixels(
+        Image.fromarray(bare), "#b9ad96", tolerance=50
+    )
+    # a coping given by its colour alone takes the usual height and overhang
+    short = rp.wall_picture(WALL | {"coping": {"color": "#ff0000"}}, 96)
+    assert pixels(short, "#ff0000", tolerance=60) > 20
+
+
+def test_coping_pictures_show_its_top_its_edge_and_the_wall_under_it():
+    image, thumb = rp.coping_pictures(COPING, 96, 24)
+    assert (image.size, thumb.size) == ((96, 96), (24, 24))
+    data = np.array(image)
+    assert data[0, 0, 3] == 0 and data[48, 48, 3] == 255
+    covered = np.nonzero(data[:, 48, 3] == 255)[0]
+    # from the top: the bricks, then the wall under them, in its own colour
+    assert pixels(image, COPING["surface"]["color"], tolerance=70) > 200
+    assert pixels(image, rp.COPING_WALL, tolerance=12) > 1500
+    wall = np.array(rp.rgb(rp.COPING_WALL))
+    wall_rows = [
+        y for y in covered if np.abs(data[y, 48, :3].astype(int) - wall).sum() < 12
+    ]
+    assert covered.min() < min(wall_rows)
+    # the wall is narrower than what caps it, by what the coping juts out
+    wide = np.array(rp.coping_picture(COPING | {"overhang": 0.15}, 96))
+    top_row, wall_row = covered.min() + 1, max(wall_rows) - 1
+    assert (wide[top_row, :, 3] == 255).sum() > (wide[wall_row, :, 3] == 255).sum()
+    # edges that come down over the faces make it taller, a coping given by its surface
+    # alone takes the usual sizes
+    plain = {"name": COPING["name"], "surface": {"color": "#4f5459"}}
+    flat = np.array(rp.coping_picture(plain, 96))
+    folded = np.array(rp.coping_picture(plain | {"drop": 0.15}, 96))
+    greys = [
+        pixels(Image.fromarray(picture), "#4f5459", tolerance=40)
+        for picture in (flat, folded)
+    ]
+    assert greys[1] > greys[0] > 0
+
+
+def test_wires_and_bars_of_a_see_through_fence():
+    mesh = rp.open_lines({"pattern": "mesh", "pitch": 0.1, "fill": 0.4}, 100, 50, 100)
+    assert len(mesh) % 2 == 0 and {round(w, 6) for _, w in mesh} == {2.0}
+    # two sets of wires leaning opposite ways
+    (ax0, ay0, ax1, ay1), _ = mesh[0]
+    (bx0, by0, bx1, by1), _ = mesh[1]
+    assert (ay0, ay1, by0, by1) == (0.0, 50, 0.0, 50)
+    assert (ax1 - ax0) == -(bx1 - bx0) == 50
+
+    grid = rp.open_lines({"pattern": "grid", "pitch": 0.1, "fill": 0.4}, 100, 50, 100)
+    upright = [box for box, _ in grid if box[0] == box[2]]
+    level = [box for box, _ in grid if box[1] == box[3]]
+    assert len(upright) == 11 and len(level) == 2  # one level wire every four
+    assert level[0][1] == 50  # the lowest one is on the ground
+
+    bars = rp.open_lines({"pattern": "bars"}, 100, 50, 100)  # usual pitch and fill
+    rails = [(box, w) for box, w in bars if box[1] == box[3]]
+    assert len(bars) - len(rails) == 10 and len(rails) == 2
+    assert [box[1] for box, _ in rails] == pytest.approx([7, 43])
+    assert {round(w, 6) for _, w in bars} == {3.5}
+
+
+@pytest.mark.parametrize("pattern", ["mesh", "grid", "bars"])
+def test_a_see_through_fence_shows_what_is_behind(pattern):
+    data = FENCE | {"open": {"pattern": pattern, "pitch": 0.2, "fill": 0.3}}
+    panel = rp.fence_panel(data, 120, 60, 60, random.Random(12))
+    alpha = np.array(panel)[:, :, 3]
+    assert 0.05 < (alpha > 0).mean() < 0.7
+    assert pixels(panel, "#5f7d5c", tolerance=30) > 100  # wires of the surface colour
+
+
+def test_a_solid_fence_is_painted_and_a_hedge_has_an_uneven_top():
+    solid = {key: value for key, value in FENCE.items() if key != "open"}
+    solid["surface"] = {"color": "#3f6b35", "grain": 0}
+    panel = np.array(rp.fence_panel(solid, 90, 60, 60, random.Random(13)))
+    assert (panel[:, :, 3] == 255).all()
+    hedge = np.array(
+        rp.fence_panel(solid | {"foliage": True}, 90, 60, 60, random.Random(13))
+    )
+    top = [np.nonzero(hedge[:, x, 3] > 128)[0].min() for x in range(5, 85)]
+    assert len(set(top)) > 3 and max(top) <= rp.HEDGE_BUMP * 60 + 1
+    assert (hedge[-1, 5:85, 3] == 255).all()  # full down to the ground
+
+
+def test_fence_pictures_stand_on_the_ground_with_their_posts():
+    image, thumb = rp.fence_pictures(FENCE, 96, 24)
+    assert (image.size, thumb.size) == ((96, 96), (24, 24))
+    assert np.array(image)[0, 0, 3] == 0
+    assert pixels(image, "#3d4a3c", tolerance=60) > 30  # the posts
+    bare = rp.fence_picture({k: v for k, v in FENCE.items() if k != "posts"}, 96)
+    assert pixels(bare, "#3d4a3c", tolerance=60) < pixels(
+        image, "#3d4a3c", tolerance=60
+    )
+    # posts given by their colour alone: the usual size and spacing
+    plain = rp.fence_picture(FENCE | {"posts": {"color": "#ff0000"}}, 96)
+    assert pixels(plain, "#ff0000", tolerance=90) > 10
+    # a low fence leaves the top of the picture empty, a tall one is cut to what fits
+    low = np.array(rp.fence_picture(FENCE | {"height": {"default": 0.5}}, 96))
+    tall = np.array(rp.fence_picture(FENCE | {"height": {"default": 6}}, 96))
+
+    def first(picture) -> int:
+        """Topmost row of the picture that is not empty."""
+        return int(np.nonzero(picture[:, :, 3].max(axis=1) > 0)[0].min())
+
+    assert first(low) > first(tall) >= 0
+    # a thick fence throws a wider shadow on the ground
+    thick = np.array(rp.fence_picture(FENCE | {"thickness": 0.3}, 96))[:, :, 3]
+    assert (thick > 0).sum() > (np.array(image)[:, :, 3] > 0).sum()

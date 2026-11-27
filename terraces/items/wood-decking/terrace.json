@@ -1,0 +1,39 @@
+{
+  "name": {
+    "en": "Wooden decking",
+    "fr": "Lames de bois",
+    "de": "Holzdielen",
+    "es": "Tarima de madera",
+    "it": "Doghe in legno",
+    "pl": "Deski drewniane",
+    "pt": "Deck de madeira",
+    "nl": "Houten vlonderplanken"
+  },
+  "icon": "mdi:texture",
+  "draft": "#c29660",
+  "thickness": 0.12,
+  "surface": {
+    "color": "#a07b4f",
+    "roughness": 0.8,
+    "tile": 2.4,
+    "grain": 0.18,
+    "speckles": [
+      {
+        "color": "#8d6b43",
+        "amount": 0.06,
+        "size": 0.004,
+        "stretch": 4
+      }
+    ],
+    "joints": {
+      "color": "#6b5134",
+      "cell": [
+        0.15,
+        2.4
+      ],
+      "width": 0.007,
+      "stagger": 0.5,
+      "shade": 0.12
+    }
+  }
+}

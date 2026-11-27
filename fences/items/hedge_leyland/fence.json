@@ -1,0 +1,41 @@
+{
+  "name": {
+    "en": "Leyland cypress hedge",
+    "fr": "Haie de cyprès de Leyland",
+    "de": "Leyland-Zypressenhecke",
+    "es": "Seto de ciprés de Leyland",
+    "it": "Siepe di cipresso di Leyland",
+    "pl": "Żywopłot z cyprysika Leylanda",
+    "pt": "Sebe de cipreste-de-Leyland",
+    "nl": "Leylandcipres-haag"
+  },
+  "icon": "mdi:tree",
+  "draft": "#2fa68f",
+  "height": {
+    "default": 2.5,
+    "min": 0.3,
+    "max": 4
+  },
+  "thickness": 1,
+  "surface": {
+    "color": "#35603a",
+    "roughness": 1,
+    "tile": 1.5,
+    "grain": 0.5,
+    "speckles": [
+      {
+        "color": "#294b2d",
+        "amount": 0.2,
+        "size": 0.03,
+        "stretch": 2
+      },
+      {
+        "color": "#417547",
+        "amount": 0.12,
+        "size": 0.025,
+        "stretch": 2
+      }
+    ]
+  },
+  "foliage": true
+}

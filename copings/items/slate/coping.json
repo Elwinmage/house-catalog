@@ -1,0 +1,30 @@
+{
+  "name": {
+    "en": "Slate",
+    "fr": "Ardoise",
+    "de": "Schiefer",
+    "es": "Pizarra",
+    "it": "Ardesia",
+    "pl": "Łupek",
+    "pt": "Ardósia",
+    "nl": "Leisteen"
+  },
+  "icon": "mdi:wall",
+  "surface": {
+    "color": "#4b5159",
+    "roughness": 0.6,
+    "tile": 1.2,
+    "grain": 0.1,
+    "joints": {
+      "color": "#2f3338",
+      "cell": [
+        0.6,
+        0.4
+      ],
+      "width": 0.004,
+      "shade": 0.08
+    }
+  },
+  "height": 0.02,
+  "overhang": 0.03
+}

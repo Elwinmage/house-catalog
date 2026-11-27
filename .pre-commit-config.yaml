@@ -20,7 +20,7 @@ repos:
         language: python
         additional_dependencies: [jsonschema>=4.23, referencing>=0.35]
         pass_filenames: false
-        files: ^(trees|objects|pond_fish|paths|schema|scripts|client)/
+        files: ^(trees|objects|pond_fish|paths|terraces|walls|copings|fences|schema|scripts|client)/
 
       - id: pyright
         name: Pyright
@@ -47,4 +47,4 @@ repos:
           - numpy>=2
           - pillow>=11
         pass_filenames: false
-        files: ^(client|scripts|schema|trees|objects|tests|README\.md|pyproject\.toml)
+        files: ^(client|scripts|schema|trees|objects|pond_fish|paths|terraces|walls|copings|fences|tests|README\.md|pyproject\.toml)
