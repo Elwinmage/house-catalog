@@ -1,8 +1,8 @@
 """Write the lists of the catalog into README.md.
 
 The trees, the objects, the fish, the paths, the terraces, the walls, the copings and the
-fences of the catalog are listed, with their pictures, between two markers of the README; the rest of the
-file is left alone:
+fences and the sprinklers of the catalog are listed, with their pictures, between two markers of the
+README; the rest of the file is left alone:
 
     <!-- catalog:begin -->
     ...generated...
@@ -295,6 +295,29 @@ def fences_table(root: Path) -> list[str]:
     )
 
 
+def sprinklers_table(root: Path) -> list[str]:
+    rows = []
+    entries = folders(root / "sprinklers" / "items")
+    for folder in entries:
+        data = read_json(folder / "sprinkler.json")
+        radius = data["radius"]
+        arc = data["arc"]
+        rows.append(
+            [
+                f"{_cell(_name(data, folder.name))}<br>`{folder.name}`",
+                _cell(data.get("brand", "")),
+                data["kind"],
+                f"{_metres(radius['default'])} m ({_metres(radius['min'])}-{_metres(radius['max'])})",
+                f"{arc['min']}-{arc['max']}°",
+            ]
+        )
+    rows.sort(key=lambda row: (row[1].lower(), row[2], row[0].lower()))
+    return _details(
+        f"<b>Sprinklers</b> ({len(entries)})",
+        _table(["Sprinkler", "Brand", "Throw", "Reach", "Arc"], rows),
+    )
+
+
 def render(root: Path) -> str:
     """The generated block, markers included."""
     lines = [
@@ -316,6 +339,8 @@ def render(root: Path) -> str:
         *copings_table(root),
         "",
         *fences_table(root),
+        "",
+        *sprinklers_table(root),
         "",
         END,
     ]

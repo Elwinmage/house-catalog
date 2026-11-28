@@ -1,0 +1,23 @@
+{
+  "name": {
+    "en": "PGP Ultra"
+  },
+  "icon": "mdi:sprinkler",
+  "keywords": [
+    "arroseur",
+    "sprinkler",
+    "rotor",
+    "turbine"
+  ],
+  "brand": "Hunter",
+  "kind": "rotor",
+  "radius": {
+    "default": 11.0,
+    "min": 4.9,
+    "max": 14.0
+  },
+  "arc": {
+    "min": 50,
+    "max": 360
+  }
+}

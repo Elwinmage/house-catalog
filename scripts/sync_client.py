@@ -66,6 +66,7 @@ TARGETS: dict[str, Target] = {
             "walls",
             "copings",
             "fences",
+            "sprinklers",
         ),
     ),
 }

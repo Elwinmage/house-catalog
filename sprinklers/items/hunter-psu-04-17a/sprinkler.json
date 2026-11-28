@@ -1,0 +1,24 @@
+{
+  "name": {
+    "en": "Pro-Spray PSU-04-17A"
+  },
+  "icon": "mdi:sprinkler-variant",
+  "keywords": [
+    "arroseur",
+    "sprinkler",
+    "spray",
+    "tuyere",
+    "buse"
+  ],
+  "brand": "Hunter",
+  "kind": "spray",
+  "radius": {
+    "default": 5.2,
+    "min": 3.9,
+    "max": 5.2
+  },
+  "arc": {
+    "min": 1,
+    "max": 360
+  }
+}

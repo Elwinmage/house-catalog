@@ -1,0 +1,23 @@
+{
+  "name": {
+    "en": "PGJ-04"
+  },
+  "icon": "mdi:sprinkler",
+  "keywords": [
+    "arroseur",
+    "sprinkler",
+    "rotor",
+    "turbine"
+  ],
+  "brand": "Hunter",
+  "kind": "rotor",
+  "radius": {
+    "default": 9.0,
+    "min": 4.3,
+    "max": 11.6
+  },
+  "arc": {
+    "min": 40,
+    "max": 360
+  }
+}

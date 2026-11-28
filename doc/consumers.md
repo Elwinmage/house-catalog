@@ -9,7 +9,7 @@ contract of [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog)
 ## Releases
 
 Each section (`trees`, `objects`, `pond_fish`, `paths`, `terraces`, `walls`,
-`copings`, `fences`) has:
+`copings`, `fences`, `sprinklers`) has:
 
 - versioned releases `<section>-<version>` (`trees-2026.11.0`) holding the
   archives that changed in that version: `<kind>.<id>.zip` per entry (flat:

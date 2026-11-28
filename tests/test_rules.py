@@ -48,10 +48,12 @@ def test_validators_cover_the_kinds_only(validators):
         "object",
         "path",
         "pond_fish",
+        "sprinkler",
         "terrace",
         "tree",
         "wall",
     ]
+    assert where_of("sprinkler", "hunter-mp2000") == "sprinklers/items/hunter-mp2000"
     assert where_of("terrace", "painted") == "terraces/items/painted"
     assert where_of("wall", "brick") == "walls/items/brick"
     assert where_of("coping", "brick") == "copings/items/brick"
@@ -634,6 +636,34 @@ def test_a_see_through_fence_is_neither_a_hedge_nor_textured(fence, validators):
     }
     report = report_of("fence", fence, validators)
     assert report.errors == [] and len(report.warnings) == 1  # the translations
+
+
+def test_a_sprinkler_throws_between_bounds_in_order(sprinkler, validators):
+    assert report_of("sprinkler", sprinkler, validators).errors == []
+    # a model asks for no picture and no translation: a name is a proper noun
+    bare = report_of("sprinkler", sprinkler, validators, files={"sprinkler.json": 400})
+    assert (bare.errors, bare.warnings) == ([], [])
+
+    sprinkler["radius"] = {"default": 9, "min": 3.4, "max": 4.6}
+    sprinkler["arc"] = {"min": 200, "max": 90}
+    report = report_of("sprinkler", sprinkler, validators)
+    assert report.errors == [
+        "sprinklers/items/draft: radius needs min <= default <= max, "
+        "got {'default': 9, 'min': 3.4, 'max': 4.6}",
+        "sprinklers/items/draft: arc needs min <= max, got {'min': 200, 'max': 90}",
+    ]
+
+
+def test_a_sprinkler_that_can_only_be_a_full_circle_is_a_warning(sprinkler, validators):
+    sprinkler["arc"] = {"min": 360, "max": 360}
+    report = report_of("sprinkler", sprinkler, validators)
+    assert (report.errors, report.warnings) == (
+        [],
+        [
+            "sprinklers/items/draft: arc starts at 360 degrees: "
+            "this head can only be a full circle"
+        ],
+    )
 
 
 def test_a_coping_is_laid_on_a_wall_only(fence, validators):

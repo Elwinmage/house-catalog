@@ -285,6 +285,22 @@ may carry a coping as well.
 
 `scripts/render_previews.py` (`open_lines`, `fence_panel`) is the reference.
 
+## Sprinklers
+
+A model of lawn sprinkler, as a watering circuit uses it. The numbers only
+pre-fill a head when it is placed: its reach, its arc and the way it faces
+stay the user's to set, between the bounds the model gives.
+
+| Field | Meaning |
+|---|---|
+| `brand` | Maker (Hunter, Rain Bird, Gardena). Left out for a model that belongs to none. |
+| `kind` | What it throws: `spray` a fixed fan of water, `rotor` one jet sweeping its arc, `rotator` several slow rotating streams. The view draws the jets accordingly. |
+| `radius` | How far it throws, in metres: the usual reach of the model (`default`) and the bounds its nozzle can be set between. |
+| `arc` | The arc it can cover, in degrees: a spray head goes down to a thin slice, a rotor seldom under 40°. |
+
+A model is picked from a list of names, under its icon: these entries carry no
+picture, and none is drawn for them.
+
 ## Shared fields
 
 | Field | Meaning |

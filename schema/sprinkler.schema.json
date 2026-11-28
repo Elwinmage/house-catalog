@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Elwinmage/house-catalog/schema/sprinkler.schema.json",
+  "title": "Sprinkler (sprinklers/items/<id>/sprinkler.json)",
+  "description": "A model of lawn sprinkler, as a watering circuit of the house view uses it: what it throws (a fixed fan, one rotating jet, several rotating streams), how far it reaches and the arc it covers. The numbers only pre-fill a head when it is placed: its reach and its arc stay the user's to set.",
+  "type": "object",
+  "required": ["name", "kind", "radius", "arc"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "description": "Name of the model (Pro-Spray PSU-04-15A). A model name seldom differs from one language to another: English alone is the rule here.",
+      "$ref": "common.schema.json#/$defs/i18n"
+    },
+    "icon": { "$ref": "common.schema.json#/$defs/icon" },
+    "keywords": { "$ref": "common.schema.json#/$defs/keywords" },
+    "brand": {
+      "description": "Maker (Hunter, Rain Bird, Gardena). Left out for a model that belongs to none.",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "kind": {
+      "description": "What it throws: `spray` a fixed fan of water, `rotor` one jet sweeping its arc, `rotator` several slow rotating streams (MP Rotator and the like). The view draws the jets accordingly.",
+      "enum": ["spray", "rotor", "rotator"]
+    },
+    "radius": {
+      "description": "How far it throws, in metres: the usual reach of the model, and the bounds its nozzle can be set between.",
+      "$ref": "common.schema.json#/$defs/bounded_length"
+    },
+    "arc": {
+      "description": "The arc it can cover, in degrees.",
+      "type": "object",
+      "required": ["min", "max"],
+      "additionalProperties": false,
+      "properties": {
+        "min": { "type": "number", "minimum": 1, "maximum": 360 },
+        "max": { "type": "number", "minimum": 1, "maximum": 360 }
+      }
+    }
+  }
+}

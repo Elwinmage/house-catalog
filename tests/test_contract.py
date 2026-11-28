@@ -82,6 +82,7 @@ def test_layout_is_the_one_of_the_client():
         "walls",
         "copings",
         "fences",
+        "sprinklers",
     }
     for section, kinds in LAYOUT.items():
         assert re.fullmatch(r"[a-z_]+", section)

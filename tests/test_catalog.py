@@ -44,7 +44,8 @@ def test_content_hash_follows_the_content_only(root: Path):
 def test_valid_catalog(root: Path, capsys):
     report = validate.validate(root)
     assert report.errors == []
-    # translations and pictures of each of the eight entries, the names of the two varieties
+    # translations and pictures of each of the eight drawn entries, the names of the two varieties
+    # (a sprinkler is shown by its icon: it asks for neither)
     assert len(report.warnings) == 18
     assert validate.main(["--root", str(root)]) == 0
     assert validate.main(["--root", str(root), "--strict"]) == 1

@@ -1,0 +1,23 @@
+{
+  "name": {
+    "en": "SRM-04"
+  },
+  "icon": "mdi:sprinkler",
+  "keywords": [
+    "arroseur",
+    "sprinkler",
+    "rotor",
+    "turbine"
+  ],
+  "brand": "Hunter",
+  "kind": "rotor",
+  "radius": {
+    "default": 8.5,
+    "min": 4.0,
+    "max": 10.7
+  },
+  "arc": {
+    "min": 40,
+    "max": 360
+  }
+}

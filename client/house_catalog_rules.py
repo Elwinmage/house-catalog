@@ -72,6 +72,7 @@ DESCRIPTORS = {
     "wall": "wall.json",
     "coping": "coping.json",
     "fence": "fence.json",
+    "sprinkler": "sprinkler.json",
 }
 #: Folder of each kind, from the root of the repository
 FOLDERS = {
@@ -83,6 +84,7 @@ FOLDERS = {
     "wall": "walls/items",
     "coping": "copings/items",
     "fence": "fences/items",
+    "sprinkler": "sprinklers/items",
 }
 
 
@@ -112,6 +114,7 @@ class Context:
     walls: dict[str, dict[str, Any]] = field(default_factory=dict)
     copings: dict[str, dict[str, Any]] = field(default_factory=dict)
     fences: dict[str, dict[str, Any]] = field(default_factory=dict)
+    sprinklers: dict[str, dict[str, Any]] = field(default_factory=dict)
 
 
 def where_of(kind: str, entry_id: str) -> str:
@@ -572,6 +575,22 @@ def _check_fence(report, where, entry_id, data, files, ctx) -> None:
         report.warn(where, "no picture, only the icon will be shown")
 
 
+def _check_sprinkler(report, where, entry_id, data, files, ctx) -> None:
+    # (the name of a model is a proper noun: no translation is asked for)
+    radius = data["radius"]
+    if not radius["min"] <= radius["default"] <= radius["max"]:
+        report.error(where, f"radius needs min <= default <= max, got {radius}")
+    arc = data["arc"]
+    if arc["min"] > arc["max"]:
+        report.error(where, f"arc needs min <= max, got {arc}")
+    # a model that only throws a full circle has nothing to set: the view would offer no arc at all
+    if arc["min"] == 360:
+        report.warn(
+            where, "arc starts at 360 degrees: this head can only be a full circle"
+        )
+    # (no picture is asked for: a model is picked from a list of names, under its icon)
+
+
 _RULES = {
     "tree": _check_tree,
     "object": _check_object,
@@ -581,6 +600,7 @@ _RULES = {
     "wall": _check_wall,
     "coping": _check_coping,
     "fence": _check_fence,
+    "sprinkler": _check_sprinkler,
 }
 #: Group of `Context` the accepted entries of each kind join
 _GROUPS = {
@@ -592,6 +612,7 @@ _GROUPS = {
     "wall": "walls",
     "coping": "copings",
     "fence": "fences",
+    "sprinkler": "sprinklers",
 }
 
 

@@ -34,4 +34,5 @@ SECTIONS: dict[str, dict[str, tuple[str, str]]] = {
     "walls": {"wall": ("items", "wall.json")},
     "copings": {"coping": ("items", "coping.json")},
     "fences": {"fence": ("items", "fence.json")},
+    "sprinklers": {"sprinkler": ("items", "sprinkler.json")},
 }

@@ -78,6 +78,24 @@ def test_the_card_finds_its_own_fences_in_the_catalog():
     assert {"mesh", "wood", "wall", "hedge", "hedge_laurel", "iron", "gabion"} <= fences
 
 
+def test_the_card_finds_its_own_sprinklers_in_the_catalog():
+    """The models of sprinkler the card knew before the catalog keep their ids."""
+    heads = {entry_id(entry) for entry in collect(REPO, "sprinklers")}
+    assert {
+        "hunter-psu-04-8a",
+        "hunter-psu-04-10a",
+        "hunter-psu-04-12a",
+        "hunter-psu-04-15a",
+        "hunter-psu-04-17a",
+        "hunter-srm-04",
+        "hunter-pgj-04",
+        "hunter-pgp-ultra",
+        "hunter-mp1000",
+        "hunter-mp2000",
+        "hunter-mp3000",
+    } <= heads
+
+
 def test_painted_surfaces_join_up_from_one_tile_to_the_next():
     """A whole number of rows in a tile (even when staggered), and of even units."""
     for section in SURROUNDINGS:

@@ -3,9 +3,10 @@
 Data catalog of the [house view](https://github.com/Elwinmage/ha-house-view-component)
 for Home Assistant: the trees and the objects it draws around and inside the
 house, the fish of its ponds, what its paths, its terraces and its low walls
-are made of and capped with, and its kinds of fences. Adding a tree species, a
-piece of furniture, a fish, a kind of path, a terrace surface, a wall facing, a
-coping or a fence is a pull request here, not a new release of the integration or of the card.
+are made of and capped with, its kinds of fences and the sprinklers of its
+watering circuits. Adding a tree species, a piece of furniture, a fish, a kind
+of path, a terrace surface, a wall facing, a coping, a fence or a model of
+sprinkler is a pull request here, not a new release of the integration or of the card.
 
 | Section | Content | Downloaded by | Shown by |
 |---|---|---|---|
@@ -17,6 +18,7 @@ coping or a fence is a pull request here, not a new release of the integration o
 | `walls` | what a low wall or a retaining wall is faced with: render, stone, brick, and its coping | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `copings` | what caps a low wall, whatever it is faced with: stone slabs, bricks on edge, tiles, a folded metal sheet | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 | `fences` | kinds of fences: height, thickness, posts, see-through or solid, hedges | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
+| `sprinklers` | models of lawn sprinkler: what they throw, how far they reach, the arc they cover | [house_view](https://github.com/Elwinmage/ha-house-view-component) | house-view-card |
 
 The catalog follows the conventions of
 [reeftech-catalog](https://github.com/Elwinmage/reeftech-catalog): one folder
@@ -67,6 +69,10 @@ fences/
   items/<fence_id>/
     fence.json                  name, height, thickness, surface, wires, posts
     image.webp / thumb.webp     pictures (optional): a run of fence from the front
+sprinklers/
+  items/<sprinkler_id>/
+    sprinkler.json              name, brand, what it throws, reach, arc
+                                (no picture: a model is picked by name, under its icon)
 scripts/                        validate.py, make_release.py, render_previews.py,
                                 readme_catalog.py, sync_client.py (description and
                                 rules into the editor, description and built-in
@@ -507,6 +513,25 @@ own may replace them.
 | <img src="fences/items/wall_stone/thumb.webp" width="48" alt=""> | Stone wall<br>`wall_stone` | solid | 1.2 m (0.3-3) | 0.3 m |  |  |
 | <img src="fences/items/wall/thumb.webp" width="48" alt=""> | Wall<br>`wall` | solid | 1.2 m (0.3-3) | 0.2 m |  | yes |
 | <img src="fences/items/wood/thumb.webp" width="48" alt=""> | Wood<br>`wood` | solid | 1.8 m (0.5-3) | 0.04 m | yes |  |
+
+</details>
+
+<details>
+<summary><b>Sprinklers</b> (11)</summary>
+
+| Sprinkler | Brand | Throw | Reach | Arc |
+|---|---|---|---|---|
+| MP Rotator MP1000<br>`hunter-mp1000` | Hunter | rotator | 4 m (2.5-4.5) | 90-360° |
+| MP Rotator MP2000<br>`hunter-mp2000` | Hunter | rotator | 5.5 m (4-6.4) | 90-360° |
+| MP Rotator MP3000<br>`hunter-mp3000` | Hunter | rotator | 8.5 m (6.7-9.1) | 90-360° |
+| PGJ-04<br>`hunter-pgj-04` | Hunter | rotor | 9 m (4.3-11.6) | 40-360° |
+| PGP Ultra<br>`hunter-pgp-ultra` | Hunter | rotor | 11 m (4.9-14) | 50-360° |
+| SRM-04<br>`hunter-srm-04` | Hunter | rotor | 8.5 m (4-10.7) | 40-360° |
+| Pro-Spray PSU-04-10A<br>`hunter-psu-04-10a` | Hunter | spray | 3 m (2.3-3) | 1-360° |
+| Pro-Spray PSU-04-12A<br>`hunter-psu-04-12a` | Hunter | spray | 3.7 m (2.8-3.7) | 1-360° |
+| Pro-Spray PSU-04-15A<br>`hunter-psu-04-15a` | Hunter | spray | 4.6 m (3.4-4.6) | 1-360° |
+| Pro-Spray PSU-04-17A<br>`hunter-psu-04-17a` | Hunter | spray | 5.2 m (3.9-5.2) | 1-360° |
+| Pro-Spray PSU-04-8A<br>`hunter-psu-04-8a` | Hunter | spray | 2.4 m (1.8-2.4) | 1-360° |
 
 </details>
 

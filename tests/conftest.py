@@ -159,6 +159,15 @@ FENCE = {
 }
 
 
+SPRINKLER = {
+    "name": {"en": "Pro-Spray PSU-04-15A"},
+    "brand": "Hunter",
+    "kind": "spray",
+    "radius": {"default": 4.6, "min": 3.4, "max": 4.6},
+    "arc": {"min": 1, "max": 360},
+}
+
+
 def dump(path: Path, data: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data), encoding="utf-8")
@@ -205,6 +214,11 @@ def fence() -> dict:
 
 
 @pytest.fixture
+def sprinkler() -> dict:
+    return copy.deepcopy(SPRINKLER)
+
+
+@pytest.fixture
 def root(tmp_path: Path) -> Path:
     """A minimal valid catalog: one entry of each kind, no picture."""
     shutil.copytree(REPO / "schema", tmp_path / "schema")
@@ -216,4 +230,5 @@ def root(tmp_path: Path) -> Path:
     dump(tmp_path / "walls/items/rubble-stone/wall.json", WALL)
     dump(tmp_path / "copings/items/brick/coping.json", COPING)
     dump(tmp_path / "fences/items/mesh/fence.json", FENCE)
+    dump(tmp_path / "sprinklers/items/hunter-psu-04-15a/sprinkler.json", SPRINKLER)
     return tmp_path

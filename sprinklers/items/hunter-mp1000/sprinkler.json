@@ -1,0 +1,23 @@
+{
+  "name": {
+    "en": "MP Rotator MP1000"
+  },
+  "icon": "mdi:sprinkler",
+  "keywords": [
+    "arroseur",
+    "sprinkler",
+    "rotator",
+    "buse rotative"
+  ],
+  "brand": "Hunter",
+  "kind": "rotator",
+  "radius": {
+    "default": 4.0,
+    "min": 2.5,
+    "max": 4.5
+  },
+  "arc": {
+    "min": 90,
+    "max": 360
+  }
+}

@@ -77,6 +77,7 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
     walls = "ha-house-view-component/catalog_builtin_walls"
     copings = "ha-house-view-component/catalog_builtin_copings"
     fences = "ha-house-view-component/catalog_builtin_fences"
+    sprinklers = "ha-house-view-component/catalog_builtin_sprinklers"
 
     assert sync_client.sync(tmp_path, check=True, root=root) == [
         SECTIONS,
@@ -90,6 +91,7 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
         walls,
         copings,
         fences,
+        sprinklers,
     ]
     assert list(house.iterdir()) == []
     sync_client.sync(tmp_path, root=root)
@@ -105,6 +107,7 @@ def test_the_house_view_gets_a_snapshot_of_each_section(tmp_path: Path, root: Pa
         "catalog_builtin_objects/items/stool/object.json",
         "catalog_builtin_paths/items/gravel/path.json",
         "catalog_builtin_pond_fish/items/goldfish/pond_fish.json",
+        "catalog_builtin_sprinklers/items/hunter-psu-04-15a/sprinkler.json",
         "catalog_builtin_terraces/items/wood-decking/terrace.json",
         "catalog_builtin_walls/items/rubble-stone/wall.json",
         "house_catalog_sections.py",

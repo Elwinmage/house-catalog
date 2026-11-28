@@ -1608,6 +1608,7 @@ PICTURES = {
     "wall": wall_pictures,
     "coping": coping_pictures,
     "fence": fence_pictures,
+    # no sprinkler: a model is picked from a list of names, under its icon
 }
 
 
@@ -1620,12 +1621,15 @@ def write_pictures(
     for section in SECTIONS:
         for entry in collect(root, section):
             descriptor = entry.files.get(DESCRIPTORS[entry.kind])
-            if descriptor is None or (wanted and entry_id(entry) not in wanted):
+            draw = PICTURES.get(entry.kind)
+            if descriptor is None or draw is None:
+                continue
+            if wanted and entry_id(entry) not in wanted:
                 continue
             drawn = any(name.startswith(("image.", "thumb.")) for name in entry.files)
             if drawn and not (force or wanted):
                 continue
-            image, thumb = PICTURES[entry.kind](read_json(descriptor))
+            image, thumb = draw(read_json(descriptor))
             folder = descriptor.parent
             image.save(folder / "image.webp", "WEBP", quality=88, method=6)
             thumb.save(folder / "thumb.webp", "WEBP", quality=88, method=6)
